@@ -1,0 +1,12 @@
+.submit-btn {
+  margin: auto;
+  display: block;
+}
+
+.reg-form {
+  padding: 20px 30px;
+}
+
+input.ng-invalid.ng-touched {
+  border-color: red;
+}
