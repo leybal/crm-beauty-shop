@@ -46,7 +46,7 @@ export class RegisterComponent {
   }
 
 
-  postData(registrationForm: NgForm) {
+  postData(registrationForm: any) {
     this.userModel = {
       name: registrationForm.controls.name.value,
       email: registrationForm.controls.email.value,
