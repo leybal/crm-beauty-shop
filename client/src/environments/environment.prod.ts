@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://baltazor.herokuapp.com/api/'
+  apiUrl: 'https://beautyshop-server.herokuapp.com/api/'
 };
