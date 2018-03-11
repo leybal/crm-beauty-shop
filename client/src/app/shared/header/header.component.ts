@@ -8,8 +8,16 @@ import { Component, OnInit } from '@angular/core';
 export class HeaderComponent implements OnInit {
 
   constructor() { }
+  active: any;
+
+  getActive(){
+    // check authorized user
+    this.active = true;
+
+  }
 
   ngOnInit() {
+    this.getActive();
   }
 
 }

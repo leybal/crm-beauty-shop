@@ -4,12 +4,22 @@ import {Observable} from "rxjs";
 
 @Injectable()
 export class AuthGuard implements CanActivate {
+    active;
+
+    setActive(value: boolean) {
+      this.active = value;
+    }
+
+    getActive() {
+      return this.active;
+    }
 
     constructor(private router: Router) { }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) : Observable<boolean> | boolean{
 
       return confirm('Вы уверены, что хотите перейти?');
+
     }
 
     // canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
