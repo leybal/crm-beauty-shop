@@ -10,7 +10,7 @@ import { NotfoundComponent } from "./pages/notfound/notfound.component";
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'users', component: UsersComponent },
-  { path: 'login', component: LoginComponent },
+  { path: 'login', component: LoginComponent, canActivate: [AuthGuard] },
   { path: 'register', component: RegisterComponent },
   { path: '**', component: NotfoundComponent }
 ];
