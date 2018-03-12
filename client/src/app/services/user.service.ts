@@ -14,7 +14,7 @@ export class UserService {
         return this.http.get<User[]>(this.apiUrl + 'users');
     }
 
-    getById(id: number) {
+    getById(id: string) {
         return this.http.get(this.apiUrl + 'users/' + id);
     }
 

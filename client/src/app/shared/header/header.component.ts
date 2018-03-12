@@ -1,23 +1,29 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, DoCheck } from '@angular/core';
+import { AuthenticationService } from '../../services/authentication.service';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, DoCheck {
+  userAuthorized: boolean;
 
-  constructor() { }
-  active: any;
-
-  getActive(){
-    // check authorized user
-    this.active = true;
-
-  }
+  constructor(
+    private router: Router,
+    private authentication: AuthenticationService) { }
 
   ngOnInit() {
-    this.getActive();
+    this.userAuthorized = this.authentication.getUserLoggedIn();
   }
 
+  logOut() {
+    this.authentication.logout();
+    //this.router.navigate(['/']);
+  }
+
+  ngDoCheck() {
+    this.userAuthorized = this.authentication.getUserLoggedIn();
+  }
 }

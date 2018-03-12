@@ -20,6 +20,8 @@ import { LoginComponent } from './pages/login/login.component';
 import { NotfoundComponent } from './pages/notfound/notfound.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { UsersComponent } from './pages/users/users.component';
+import { UserComponent } from './pages/user/user.component';
+import { EditProfileComponent } from './pages/edit-profile/edit-profile.component';
 
 
 @NgModule({
@@ -32,7 +34,9 @@ import { UsersComponent } from './pages/users/users.component';
     NotfoundComponent,
     RegisterComponent,
     UsersComponent,
-    AlertComponent
+    AlertComponent,
+    UserComponent,
+    EditProfileComponent
   ],
   imports: [
     BrowserModule,

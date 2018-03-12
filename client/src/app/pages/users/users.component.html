@@ -6,11 +6,19 @@
       <p><a [routerLink]="['/login']">Logout</a></p>
     </div>
     <h3>All registered users:</h3>
-    <ul>
-      <li *ngFor="let user of users">
-        {{user.name}}
-        - <a (click)="deleteUser(user._id)">Delete</a>
-      </li>
-    </ul>
+    <div *ngIf="users.length; then usersList else usersListIsEmpy"></div>
+
+    <ng-template #usersList>
+      <div class="row">
+        <div class="col-12" *ngFor="let user of users">
+          <p><a routerLink="{{user._id}}">{{user.name}}</a></p>
+          <p>E-mail: {{user.email}}</p>
+        </div>
+      </div>
+    </ng-template>
+
+    <ng-template #usersListIsEmpy>
+      <p>No users yet.</p>
+    </ng-template>
   </div>
 </div>

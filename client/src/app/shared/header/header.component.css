@@ -1,4 +1,32 @@
-ul.navbar-nav {
-  width: 100%;
-  justify-content: flex-end;
+.authorization {
+  display: block;
+}
+.authorization li {
+  display: inline-block;
+}
+
+.header-icon-wrap a {
+  padding-top: 0;
+  padding-bottom: 0;
+  font-size: 1.3rem;
+
+}
+
+.sign-out {
+  border: none;
+  background: transparent;
+  color: rgba(255,255,255,.5);
+  font-size: 1.2rem;
+}
+
+.sign-out:hover {
+  color: rgba(255,255,255,.75);
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .authorization li {
+    padding-right: .5rem;
+    margin-right: .5rem;
+  }
 }

@@ -1,35 +1,17 @@
 ﻿import { Injectable } from '@angular/core';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import {Observable} from "rxjs";
+import { Observable } from "rxjs";
+import { AuthenticationService } from "../services/index";
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-    active;
+    constructor( private authentication: AuthenticationService, private router: Router) { }
 
-    setActive(value: boolean) {
-      this.active = value;
+    canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
+      if (this.authentication.getUserLoggedIn()) {
+        return true;
+      }
+      this.router.navigate(['login'], { queryParams: { returnUrl: state.url }});
+      return false;
     }
-
-    getActive() {
-      return this.active;
-    }
-
-    constructor(private router: Router) { }
-
-    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) : Observable<boolean> | boolean{
-
-      return confirm('Вы уверены, что хотите перейти?');
-
-    }
-
-    // canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    //     if (localStorage.getItem('currentUser')) {
-    //         // logged in so return true
-    //         return true;
-    //     }
-    //
-    //     // not logged in so redirect to login page with the return url
-    //     this.router.navigate(['login'], { queryParams: { returnUrl: state.url }});
-    //     return false;
-
 }

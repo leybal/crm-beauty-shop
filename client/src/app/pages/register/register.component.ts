@@ -24,9 +24,12 @@ export class RegisterComponent {
     private formBuilder: FormBuilder
   ) {
     this.registrationForm = formBuilder.group({
-      name: ['', Validators.compose([Validators.required, Validators.maxLength(15), Validators.minLength(1)])],
+      name: ['', Validators.compose([Validators.required, Validators.maxLength(15),
+        Validators.minLength(1)])],
       email: ['', [Validators.required, Validators.email]],
       role: [''],
+      phoneNumber: ['', Validators.compose([Validators.required, Validators.maxLength(13),
+        Validators.minLength(10)])],
       password: ['', [Validators.required]],
       confPassword: ['', [Validators.required, confirmPasswordValidator(this)]]
     });
@@ -52,6 +55,7 @@ export class RegisterComponent {
       email: registrationForm.controls.email.value,
       password: registrationForm.controls.password.value,
       role: this.selectedRole,
+      phoneNumber: registrationForm.controls.phoneNumber.value,
     };
 
     console.log(this.userModel);

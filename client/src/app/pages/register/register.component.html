@@ -41,6 +41,23 @@
     </div>
 
     <div class="form-group">
+      <label for="phoneNumber">Phone number <span class="text-danger">*</span></label>
+      <input type="text" class="form-control "
+             id="phoneNumber" formControlName="phoneNumber"
+             placeholder="Enter phone number">
+
+      <div class="help-block"
+           *ngIf="registrationForm.controls['phoneNumber'].invalid && registrationForm.controls['phoneNumber'].touched">
+        <span *ngIf="registrationForm.controls['phoneNumber'].hasError('required')">
+            Phone number is required
+            </span>
+        <span *ngIf="registrationForm.controls['phoneNumber'].hasError('email') ">
+            Invalid phone number
+            </span>
+      </div>
+    </div>
+
+    <div class="form-group">
       <label for="role">Role</label>
       <select class="form-control" name="role" id="role" (change)="selectChangeHandler($event)">
         <option *ngFor="let role of roles" [value]="role.toLocaleLowerCase()">{{role}}</option>

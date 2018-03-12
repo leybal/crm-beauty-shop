@@ -20,10 +20,6 @@ export class UsersComponent implements OnInit {
     this.loadAllUsers();
   }
 
-  deleteUser(id: string) {
-    //this.userService.delete(id).subscribe(() => { this.loadAllUsers() });
-  }
-
   private loadAllUsers() {
     this.userService.getAll().subscribe(users => this.users = users);
   }
