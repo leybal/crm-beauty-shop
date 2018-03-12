@@ -1,12 +1,12 @@
 <div class="row justify-content-center">
   <form [formGroup]="registrationForm" (ngSubmit)="postData(registrationForm)"
-        class="col-12 col-md-8 col-lg-6 align-content-center reg-form">
+        class="col-12 col-md-8 col-lg-6 align-content-center reg-form bg-dark text-light">
 
     <h3 class="text-center">Registration</h3>
 
     <div class="form-group">
       <label for="name">Name <span class="text-danger">*</span></label>
-      <input type="text" class="form-control "
+      <input type="text" class="form-control bg-dark  text-light"
              id="name" formControlName="name" placeholder="Enter name">
 
       <div class="help-block"
@@ -25,7 +25,7 @@
 
     <div class="form-group">
       <label for="email">Email address <span class="text-danger">*</span></label>
-      <input type="email" class="form-control "
+      <input type="email" class="form-control bg-dark  text-light"
              id="email" formControlName="email"
              placeholder="Enter email">
 
@@ -42,14 +42,15 @@
 
     <div class="form-group">
       <label for="role">Role</label>
-      <select class="form-control" name="role" id="role" (change)="selectChangeHandler($event)">
+      <select class="form-control bg-dark  text-light" name="role" id="role" (change)="selectChangeHandler($event)">
         <option *ngFor="let role of roles" [value]="role.toLocaleLowerCase()">{{role}}</option>
       </select>
     </div>
 
     <div class="form-group">
       <label for="password">Password <span class="text-danger">*</span></label>
-      <input type="password" #password (keyup)="setPasswordValue(password.value)" class="form-control "
+      <input type="password" #password (keyup)="setPasswordValue(password.value)"
+             class="form-control bg-dark  text-light"
              id="password" formControlName="password" placeholder="Password">
 
       <div class="help-block"
@@ -64,7 +65,8 @@
 
     <div class="form-group">
       <label for="confPassword">Confirm password <span class="text-danger">*</span></label>
-      <input type="password" #confPassword (keyup)="setConfPassword(confPassword.value)" class="form-control "
+      <input type="password" #confPassword (keyup)="setConfPassword(confPassword.value)"
+             class="form-control bg-dark  text-light"
              id="confPassword" formControlName="confPassword" placeholder="Confirm password">
 
       <div class="help-block"
@@ -82,10 +84,13 @@
       </div>
     </div>
 
-    <button type="submit" class="btn btn-outline-dark submit-btn" id="register" [disabled]="!registrationForm.valid">
-      Register
-    </button>
-    <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+    <div class="row form-group justify-content-center">
+      <button type="submit" class="btn btn-outline-light submit-btn" id="register" [disabled]="!registrationForm.valid">
+        Register
+      </button>
+    </div>
+    <img *ngIf="loading"
+         src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
 
   </form>
 </div>
