@@ -14,7 +14,7 @@ export class EditProfileComponent implements OnInit {
     private authentication: AuthenticationService) { }
 
   ngOnInit() {
-    if (!this.authentication.getUserLoggedIn()) {
+    if (!this.authentication.userAuthorized) {
       this.router.navigate(['/']);
     }
   }

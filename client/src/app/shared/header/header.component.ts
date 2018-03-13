@@ -1,6 +1,6 @@
 import { Component, OnInit, DoCheck } from '@angular/core';
 import { AuthenticationService } from '../../services/authentication.service';
-import {Router} from "@angular/router";
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-header',
@@ -15,7 +15,7 @@ export class HeaderComponent implements OnInit, DoCheck {
     private authentication: AuthenticationService) { }
 
   ngOnInit() {
-    this.userAuthorized = this.authentication.getUserLoggedIn();
+    this.userAuthorized = this.authentication.userAuthorized;
   }
 
   logOut() {
@@ -24,6 +24,6 @@ export class HeaderComponent implements OnInit, DoCheck {
   }
 
   ngDoCheck() {
-    this.userAuthorized = this.authentication.getUserLoggedIn();
+    this.userAuthorized = this.authentication.userAuthorized;
   }
 }

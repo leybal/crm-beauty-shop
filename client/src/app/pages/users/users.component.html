@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-md-6 col-md-offset-3">
-    <div *ngIf="currentUser">
+    <div *ngIf="userAuthorized">
       <h1>Hi {{currentUser.name}}!</h1>
       <p>You're logged in with Angular 5!</p>
       <p><a [routerLink]="['/login']">Logout</a></p>
@@ -11,8 +11,8 @@
     <ng-template #usersList>
       <div class="row">
         <div class="col-12" *ngFor="let user of users">
-          <p><a routerLink="{{user._id}}">{{user.name}}</a></p>
-          <p>E-mail: {{user.email}}</p>
+          <p><a routerLink="{{user.id}}">{{user.name}}</a></p>
+          <p>Role: {{user.role}}</p>
         </div>
       </div>
     </ng-template>

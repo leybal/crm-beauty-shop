@@ -1,3 +1,17 @@
-<p>
-  user works!
-</p>
+<div class="row">
+  <div class="col-12 col-md-4 col-lg-3">
+    <img [src]="user.avatar" class="img-fluid" alt="user's photo">
+  </div>
+  <div class="col-12 col-md-6 col-lg-7">
+    <h3>{{user.name}}</h3>
+    <p>
+      E-mail: {{user.email}}
+    </p>
+    <p>
+      Phone number: {{user.phoneNumber}}
+    </p>
+    <p>
+      Role: {{user.role}}
+    </p>
+  </div>
+</div>

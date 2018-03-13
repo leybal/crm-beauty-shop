@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators, NgForm } from '@angular/forms';
 import { UserService } from '../../services/index';
 import { confirmPasswordValidator } from '../../validators/index';
 
+
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -58,18 +59,17 @@ export class RegisterComponent {
       phoneNumber: registrationForm.controls.phoneNumber.value,
     };
 
-    console.log(this.userModel);
+    // console.log(this.userModel);
 
     this.loading = true;
     this.userService.create(this.userModel)
       .subscribe(
         data => {
-          // if (data.status === 'ok') {
-          //   this.router.navigate(['login']);
-          // } else {
-          //   console.log(data);
-          // }
-          // this.router.navigate(['login']);
+          if (data) {
+            this.router.navigate(['login']);
+          } else {
+            console.log(data);
+          }
           this.loading = false;
         },
         error => {

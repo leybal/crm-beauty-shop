@@ -22,7 +22,6 @@ export class LoginComponent implements OnInit {
               private formBuilder: FormBuilder) {
     this.loginForm = formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
-      role: [''],
       password: ['', [Validators.required]]
     });
   }
@@ -37,7 +36,7 @@ export class LoginComponent implements OnInit {
 
   login(loginForm) {
     this.loading = true;
-    this.authenticationService.login(loginForm.email, loginForm.password)
+    this.authenticationService.login(loginForm.controls.email.value, loginForm.controls.password.value)
       .subscribe(
         data => {
           if (data.status === 'error') {

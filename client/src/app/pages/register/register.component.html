@@ -1,12 +1,12 @@
 <div class="row justify-content-center">
   <form [formGroup]="registrationForm" (ngSubmit)="postData(registrationForm)"
-        class="col-12 col-md-8 col-lg-6 align-content-center reg-form bg-dark text-light">
+        class="col-12 col-md-8 col-lg-6 align-content-center reg-form">
 
     <h3 class="text-center">Registration</h3>
 
     <div class="form-group">
       <label for="name">Name <span class="text-danger">*</span></label>
-      <input type="text" class="form-control bg-dark  text-light"
+      <input type="text" class="form-control "
              id="name" formControlName="name" placeholder="Enter name">
 
       <div class="help-block"
@@ -25,7 +25,7 @@
 
     <div class="form-group">
       <label for="email">Email address <span class="text-danger">*</span></label>
-      <input type="email" class="form-control bg-dark  text-light"
+      <input type="email" class="form-control "
              id="email" formControlName="email"
              placeholder="Enter email">
 
@@ -59,7 +59,7 @@
 
     <div class="form-group">
       <label for="role">Role</label>
-      <select class="form-control bg-dark  text-light" name="role" id="role" (change)="selectChangeHandler($event)">
+      <select class="form-control " name="role" id="role" (change)="selectChangeHandler($event)">
         <option *ngFor="let role of roles" [value]="role.toLocaleLowerCase()">{{role}}</option>
       </select>
     </div>
@@ -67,7 +67,7 @@
     <div class="form-group">
       <label for="password">Password <span class="text-danger">*</span></label>
       <input type="password" #password (keyup)="setPasswordValue(password.value)"
-             class="form-control bg-dark  text-light"
+             class="form-control "
              id="password" formControlName="password" placeholder="Password">
 
       <div class="help-block"
@@ -83,7 +83,7 @@
     <div class="form-group">
       <label for="confPassword">Confirm password <span class="text-danger">*</span></label>
       <input type="password" #confPassword (keyup)="setConfPassword(confPassword.value)"
-             class="form-control bg-dark  text-light"
+             class="form-control "
              id="confPassword" formControlName="confPassword" placeholder="Confirm password">
 
       <div class="help-block"
@@ -102,7 +102,7 @@
     </div>
 
     <div class="row form-group justify-content-center">
-      <button type="submit" class="btn btn-outline-light submit-btn" id="register" [disabled]="!registrationForm.valid">
+      <button type="submit" class="btn btn-outline-dark submit-btn" id="register" [disabled]="!registrationForm.valid">
         Register
       </button>
     </div>

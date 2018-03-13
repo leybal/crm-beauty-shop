@@ -15,10 +15,10 @@ export class UserService {
     }
 
     getById(id: string) {
-        return this.http.get(this.apiUrl + 'users/' + id);
+        return this.http.get<User>(this.apiUrl + 'users/' + id);
     }
 
-    create(user: User) {
+    create(user: any) {
         return this.http.post(this.apiUrl + 'users', user);
     }
 
