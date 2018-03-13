@@ -14,3 +14,17 @@ main {
   line-height: 60px;
   background-color: #f5f5f5;
 }
+
+
+.reg-form {
+  padding: 20px 30px;
+}
+
+input.ng-invalid.ng-touched {
+  border-color: red;
+}
+
+.help-block {
+  color: red;
+}
+
