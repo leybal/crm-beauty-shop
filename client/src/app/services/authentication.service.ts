@@ -1,14 +1,20 @@
 ﻿import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import 'rxjs/add/operator/map';
 import { environment } from '../../environments/environment';
 
 @Injectable()
 export class AuthenticationService {
   apiUrl = environment.apiUrl;
-  userAuthorized = this.getUserLoggedIn();
+  private  userAuthorized = new BehaviorSubject<boolean>(this.getUserLoggedIn());
+  cast = this.userAuthorized.asObservable();
 
   constructor(private http: HttpClient) { }
+
+  editUserAuthorized(value: boolean) {
+    this.userAuthorized.next(value);
+  }
 
   getUserLoggedIn() {
     if (localStorage.getItem('currentUser')) {
@@ -23,13 +29,13 @@ export class AuthenticationService {
         if (user && user.token) {
           localStorage.setItem('currentUser', JSON.stringify(user));
         }
-        this.userAuthorized = this.getUserLoggedIn();
+        this.editUserAuthorized(this.getUserLoggedIn());
         return user;
       });
   }
 
   logout() {
     localStorage.removeItem('currentUser');
-    this.userAuthorized = this.getUserLoggedIn();
+    this.editUserAuthorized(this.getUserLoggedIn());
   }
 }

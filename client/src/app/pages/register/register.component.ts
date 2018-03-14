@@ -59,14 +59,13 @@ export class RegisterComponent {
       phoneNumber: registrationForm.controls.phoneNumber.value,
     };
 
-    // console.log(this.userModel);
-
     this.loading = true;
     this.userService.create(this.userModel)
       .subscribe(
         data => {
           if (data) {
-            this.router.navigate(['login']);
+            console.log(data);
+            // this.router.navigate(['login']);
           } else {
             console.log(data);
           }

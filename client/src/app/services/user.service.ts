@@ -6,7 +6,7 @@ import { User } from '../models/index';
 
 @Injectable()
 export class UserService {
-    constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) { }
 
   apiUrl = environment.apiUrl;
 
@@ -22,7 +22,7 @@ export class UserService {
         return this.http.post(this.apiUrl + 'users', user);
     }
 
-    update(user: User) {
+    update(user: any) {
         return this.http.put(this.apiUrl + 'users/' + user.id, user);
     }
 

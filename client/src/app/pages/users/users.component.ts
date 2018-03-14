@@ -1,4 +1,4 @@
-import {Component, DoCheck, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 import { User } from '../../models/index';
 import { UserService } from '../../services/index';
@@ -9,7 +9,7 @@ import { AuthenticationService } from '../../services/index';
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.css']
 })
-export class UsersComponent implements OnInit, DoCheck {
+export class UsersComponent implements OnInit {
   currentUser: User;
   users: User[] = [];
   userAuthorized: boolean;
@@ -23,11 +23,7 @@ export class UsersComponent implements OnInit, DoCheck {
 
   ngOnInit() {
     this.loadAllUsers();
-    this.userAuthorized = this.authentication.userAuthorized;
-  }
-
-  ngDoCheck() {
-    this.userAuthorized = this.authentication.userAuthorized;
+    this.authentication.cast.subscribe(userAuthorized => this.userAuthorized = userAuthorized);
   }
 
   private loadAllUsers() {
