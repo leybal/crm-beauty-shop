@@ -52,6 +52,11 @@ export class EditProfileComponent implements OnInit, DoCheck {
       this.user = user;
       this.user.avatar = 'https://beautyshop-server.herokuapp.com/images/avatars/' + user.avatar;
       this.user.token = currentUser.token;
+
+      this.editProfileForm.get('name').setValue(this.user.name);
+      this.editProfileForm.get('email').setValue(this.user.email);
+      this.editProfileForm.get('phoneNumber').setValue(this.user.phoneNumber);
+      this.editProfileForm.get('userInfo').setValue(this.user.userInfo);
     });
   }
 
@@ -96,6 +101,9 @@ export class EditProfileComponent implements OnInit, DoCheck {
 
   postData(editProfileForm: any) {
     this.userModel = editProfileForm.value;
+    this.userModel.role = this.selectedRole;
+    this.userModel.id = this.user.id;
+    this.userModel.token = this.user.token;
 
     console.log(this.userModel );
 
