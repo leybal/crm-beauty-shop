@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {Router, ActivatedRoute} from '@angular/router';
 
-import { AlertService, AuthenticationService } from '../../services/index';
+import {AlertService, AuthenticationService} from '../../services/index';
+import {FormBuilder, FormGroup, Validators, NgForm} from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -9,15 +10,21 @@ import { AlertService, AuthenticationService } from '../../services/index';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+  loginForm: FormGroup;
   model: any = {};
   loading = false;
   returnUrl: string;
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private authenticationService: AuthenticationService,
-    private alertService: AlertService) { }
+  constructor(private route: ActivatedRoute,
+              private router: Router,
+              private authenticationService: AuthenticationService,
+              private alertService: AlertService,
+              private formBuilder: FormBuilder) {
+    this.loginForm = formBuilder.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required]]
+    });
+  }
 
   ngOnInit() {
     // reset login status
@@ -27,9 +34,9 @@ export class LoginComponent implements OnInit {
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/users';
   }
 
-  login() {
+  login(loginForm) {
     this.loading = true;
-    this.authenticationService.login(this.model.email, this.model.password)
+    this.authenticationService.login(loginForm.controls.email.value, loginForm.controls.password.value)
       .subscribe(
         data => {
           if (data.status === 'error') {

@@ -1,31 +1,41 @@
-﻿import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+﻿import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import 'rxjs/add/operator/map';
 import { environment } from '../../environments/environment';
 
 @Injectable()
 export class AuthenticationService {
-  constructor(private http: HttpClient) {
+  apiUrl = environment.apiUrl;
+  private  userAuthorized = new BehaviorSubject<boolean>(this.getUserLoggedIn());
+  cast = this.userAuthorized.asObservable();
+
+  constructor(private http: HttpClient) { }
+
+  editUserAuthorized(value: boolean) {
+    this.userAuthorized.next(value);
   }
 
-  apiUrl = environment.apiUrl;
+  getUserLoggedIn() {
+    if (localStorage.getItem('currentUser')) {
+      return true;
+    }
+    return false;
+  }
 
   login(email: string, password: string) {
-
     return this.http.post<any>(this.apiUrl + 'login', {email: email, password: password})
       .map(user => {
-        // login successful if there's a jwt token in the response
         if (user && user.token) {
-          // store user details and jwt token in local storage to keep user logged in between page refreshes
           localStorage.setItem('currentUser', JSON.stringify(user));
         }
-
+        this.editUserAuthorized(this.getUserLoggedIn());
         return user;
       });
   }
 
   logout() {
-    // remove user from local storage to log user out
     localStorage.removeItem('currentUser');
+    this.editUserAuthorized(this.getUserLoggedIn());
   }
 }

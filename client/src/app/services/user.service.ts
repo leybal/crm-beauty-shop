@@ -6,7 +6,7 @@ import { User } from '../models/index';
 
 @Injectable()
 export class UserService {
-    constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) { }
 
   apiUrl = environment.apiUrl;
 
@@ -14,15 +14,15 @@ export class UserService {
         return this.http.get<User[]>(this.apiUrl + 'users');
     }
 
-    getById(id: number) {
-        return this.http.get(this.apiUrl + 'users/' + id);
+    getById(id: string) {
+        return this.http.get<User>(this.apiUrl + 'users/' + id);
     }
 
-    create(user: User) {
+    create(user: any) {
         return this.http.post(this.apiUrl + 'users', user);
     }
 
-    update(user: User) {
+    update(user: any) {
         return this.http.put(this.apiUrl + 'users/' + user.id, user);
     }
 

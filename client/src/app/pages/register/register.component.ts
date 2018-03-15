@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators, NgForm } from '@angular/forms';
 import { UserService } from '../../services/index';
 import { confirmPasswordValidator } from '../../validators/index';
 
+
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -24,9 +25,12 @@ export class RegisterComponent {
     private formBuilder: FormBuilder
   ) {
     this.registrationForm = formBuilder.group({
-      name: ['', Validators.compose([Validators.required, Validators.maxLength(15), Validators.minLength(1)])],
+      name: ['', Validators.compose([Validators.required, Validators.maxLength(15),
+        Validators.minLength(1)])],
       email: ['', [Validators.required, Validators.email]],
       role: [''],
+      phoneNumber: ['', Validators.compose([Validators.required, Validators.maxLength(13),
+        Validators.minLength(10)])],
       password: ['', [Validators.required]],
       confPassword: ['', [Validators.required, confirmPasswordValidator(this)]]
     });
@@ -52,20 +56,19 @@ export class RegisterComponent {
       email: registrationForm.controls.email.value,
       password: registrationForm.controls.password.value,
       role: this.selectedRole,
+      phoneNumber: registrationForm.controls.phoneNumber.value,
     };
-
-    console.log(this.userModel);
 
     this.loading = true;
     this.userService.create(this.userModel)
       .subscribe(
         data => {
-          // if (data.status === 'ok') {
-          //   this.router.navigate(['login']);
-          // } else {
-          //   console.log(data);
-          // }
-          // this.router.navigate(['login']);
+          if (data) {
+            console.log(data);
+            // this.router.navigate(['login']);
+          } else {
+            console.log(data);
+          }
           this.loading = false;
         },
         error => {
