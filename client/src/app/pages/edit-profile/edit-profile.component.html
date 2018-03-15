@@ -1,6 +1,6 @@
 <div class="row justify-content-center">
   <form [formGroup]="editProfileForm" (ngSubmit)="postData(editProfileForm)"
-        class="col-12 col-md-8 col-lg-6 align-content-center reg-form">
+        class="col-12 col-md-8 col-lg-6 align-content-center reg-form" enctype="multipart/form-data">
 
     <h3 class="text-center">Edit profile</h3>
 
@@ -17,8 +17,7 @@
     <div class="form-group">
       <label for="name">Name <span class="text-danger">*</span></label>
       <input type="text" class="form-control "
-             id="name" formControlName="name"
-             [value]="user.name" placeholder="Enter name">
+             id="name" formControlName="name" placeholder="Enter name">
 
       <div class="help-block"
            *ngIf="editProfileForm.controls['name'].touched && !editProfileForm.controls['name'].valid">
@@ -37,8 +36,7 @@
     <div class="form-group">
       <label for="email">Email address <span class="text-danger">*</span></label>
       <input type="email" class="form-control "
-             id="email" formControlName="email"
-             [value]="user.email" placeholder="Enter email">
+             id="email" formControlName="email" placeholder="Enter email">
 
       <div class="help-block"
            *ngIf="editProfileForm.controls['email'].invalid && editProfileForm.controls['email'].touched">
@@ -54,8 +52,7 @@
     <div class="form-group">
       <label for="phoneNumber">Phone number <span class="text-danger">*</span></label>
       <input type="text" class="form-control "
-             id="phoneNumber" formControlName="phoneNumber"
-             [value]="user.phoneNumber" placeholder="Enter phone number">
+             id="phoneNumber" formControlName="phoneNumber" placeholder="Enter phone number">
 
       <div class="help-block"
            *ngIf="editProfileForm.controls['phoneNumber'].invalid && editProfileForm.controls['phoneNumber'].touched">
@@ -119,12 +116,8 @@
                 id="userInfo"
                 class="form-control"
                 formControlName="userInfo">
-      {{user.userInfo}}}
       </textarea>
     </div>
-
-    <input type="hidden" formControlName="token" [value]="user.token">
-    <input type="hidden" formControlName="id" [value]="user.id">
 
 
     <div class="row form-group justify-content-center">
