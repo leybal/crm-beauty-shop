@@ -83,10 +83,18 @@ export class EditProfileComponent implements OnInit, DoCheck {
     fd.append('userInfo', this.user.userInfo);
 
 
-    this.http.post(URL, fd)
-      .subscribe(res => {
-        console.log(res);
-      });
+    this.loading = true;
+    this.userService.update(fd)
+      .subscribe(
+        data => {
+          console.log(data);
+          this.loading = false;
+        },
+        error => {
+          console.log(error);
+          this.loading = false;
+        });
+
   }
   //   onFileChange(event) {
   //   //console.log(event.target.files[0]);
@@ -110,10 +118,6 @@ export class EditProfileComponent implements OnInit, DoCheck {
     this.fileInput.nativeElement.value = '';
   }
 
-  selectChangeHandler (event: any) {
-    this.selectedRole = event.target.value;
-  }
-
   setPasswordValue(password) {
     this.userPassword = password;
   }
@@ -125,7 +129,6 @@ export class EditProfileComponent implements OnInit, DoCheck {
 
   postData(editProfileForm: any) {
     this.userModel = editProfileForm.value;
-    this.userModel.role = this.selectedRole;
     this.userModel.id = this.user.id;
     this.userModel.token = this.user.token;
 
