@@ -3,6 +3,9 @@ import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, NgForm } from '@angular/forms';
 import { UserService } from '../../services/index';
 import { confirmPasswordValidator } from '../../validators/index';
+import { AlertService } from "../../services";
+import { IntervalObservable } from "rxjs/observable/IntervalObservable";
+
 
 
 @Component({
@@ -22,6 +25,7 @@ export class RegisterComponent {
   constructor(
     private router: Router,
     private userService: UserService,
+    private alertService: AlertService,
     private formBuilder: FormBuilder
   ) {
     this.registrationForm = formBuilder.group({
@@ -63,16 +67,22 @@ export class RegisterComponent {
     this.userService.create(this.userModel)
       .subscribe(
         data => {
-          if (data) {
-            console.log(data);
-            // this.router.navigate(['login']);
+          console.log(data);
+          if (data.id) {
+            this.alertService.success('Registration is completed successfully. ' +
+              'Redirect to login page in 5 seconds');
+
+            IntervalObservable.create(5000)
+              .subscribe(() => {
+                this.router.navigate(['login']);
+              });
           } else {
-            console.log(data);
+            this.alertService.error('Error. Please try later.');
           }
           this.loading = false;
         },
         error => {
-          console.log(error);
+          this.alertService.error(error.error.message);
           this.loading = false;
         });
   }

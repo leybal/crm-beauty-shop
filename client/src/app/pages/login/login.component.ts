@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {Router, ActivatedRoute} from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 
-import {AlertService, AuthenticationService} from '../../services/index';
-import {FormBuilder, FormGroup, Validators, NgForm} from '@angular/forms';
+import { AlertService, AuthenticationService } from '../../services/index';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -15,11 +15,13 @@ export class LoginComponent implements OnInit {
   loading = false;
   returnUrl: string;
 
-  constructor(private route: ActivatedRoute,
-              private router: Router,
-              private authenticationService: AuthenticationService,
-              private alertService: AlertService,
-              private formBuilder: FormBuilder) {
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private authenticationService: AuthenticationService,
+    private alertService: AlertService,
+    private formBuilder: FormBuilder
+  ) {
     this.loginForm = formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]]
@@ -39,16 +41,16 @@ export class LoginComponent implements OnInit {
     this.authenticationService.login(loginForm.controls.email.value, loginForm.controls.password.value)
       .subscribe(
         data => {
-          if (data.status === 'error') {
-            // show error
-            console.log(data);
-          } else {
+          if (data.id && data.token) {
+            this.alertService.success('You\'ve successfully logged in.');
             this.router.navigate([this.returnUrl]);
+          } else {
+            this.alertService.error('Error. Please try later.');
           }
           this.loading = false;
         },
         error => {
-          this.alertService.error(error);
+          this.alertService.error(error.error.message);
           this.loading = false;
         });
   }

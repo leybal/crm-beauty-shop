@@ -10,23 +10,25 @@ export class UserService {
 
   apiUrl = environment.apiUrl;
 
-    getAll() {
-        return this.http.get<User[]>(this.apiUrl + 'users');
-    }
+  getAll() {
+    return this.http.get<User[]>(this.apiUrl + 'users');
+  }
 
-    getById(id: string) {
-        return this.http.get<User>(this.apiUrl + 'users/' + id);
-    }
+  getById(id: string) {
+    return this.http.get<User>(this.apiUrl + 'users/' + id);
+  }
 
-    create(user: any) {
-        return this.http.post(this.apiUrl + 'users', user);
-    }
+  create(user: any) {
+    return this.http.post<User>(this.apiUrl + 'users', user);
+  }
 
-    update(user: any) {
-        return this.http.put(this.apiUrl + 'users/' + user.id, user);
-    }
+  update(user: any, id: string, token: string) {
+    return this.http.put<User>(this.apiUrl + 'users/' + id, user, {
+      headers: {'Authorization': token}
+    });
+  }
 
-    delete(id: number) {
-        return this.http.delete(this.apiUrl + 'users/' + id);
-    }
+  delete(id: number) {
+    return this.http.delete(this.apiUrl + 'users/' + id);
+  }
 }
