@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { AuthenticationService, UserService } from "../../services";
 import { confirmPasswordValidator } from "../../validators";
 import { User } from "../../models";
+import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'app-edit-profile',
@@ -16,8 +17,6 @@ export class EditProfileComponent implements OnInit, DoCheck {
   userPassword: string;
   userConfPassword: string;
   userModel: any = {};
-  roles: string[] = ['Customer', 'Master'];
-  selectedRole: string = this.roles[0].toLowerCase();
   loading = false;
   user: User;
 
@@ -25,7 +24,8 @@ export class EditProfileComponent implements OnInit, DoCheck {
     private router: Router,
     private authentication: AuthenticationService,
     private userService: UserService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private http: HttpClient
   ) {
     this.editProfileForm = formBuilder.group({
       id: [''],
@@ -33,7 +33,6 @@ export class EditProfileComponent implements OnInit, DoCheck {
       name: ['', Validators.compose([Validators.required, Validators.maxLength(15),
         Validators.minLength(1)])],
       email: ['', [Validators.required, Validators.email]],
-      role: [''],
       phoneNumber: ['', Validators.compose([Validators.required, Validators.maxLength(13),
         Validators.minLength(10)])],
       password: ['', [Validators.required]],
@@ -43,7 +42,7 @@ export class EditProfileComponent implements OnInit, DoCheck {
     });
   }
 
-  @ViewChild('fileInput') fileInput: ElementRef;
+  @ViewChild('fileInput') fileInput: File;
 
   ngOnInit() {
     this.authentication.cast.subscribe(userAuthorized => this.userAuthorized = userAuthorized);
@@ -66,28 +65,57 @@ export class EditProfileComponent implements OnInit, DoCheck {
     }
   }
 
+  selectedFile: File = null;
+
   onFileChange(event) {
-    const reader = new FileReader();
-    if (event.target.files && event.target.files.length > 0) {
-      const file = event.target.files[0];
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        this.editProfileForm.get('avatar').setValue({
-          filename: file.name,
-          filetype: file.type,
-          value: reader.result.split(',')[1]
-        });
-      };
-    }
+    this.selectedFile = <File>event.target.files[0];
+    console.log(this.selectedFile);
   }
+
+  onUpload(){
+    const fd = new FormData();
+    const URL = 'https://beautyshop-server.herokuapp.com/api/';
+    fd.append('image', this.selectedFile, this.selectedFile.name);
+    fd.append('name', this.user.name);
+    fd.append('email', this.user.email);
+    fd.append('phoneNumber', this.user.phoneNumber);
+    fd.append('password', this.user.password);
+    fd.append('userInfo', this.user.userInfo);
+
+
+    this.loading = true;
+    this.userService.update(fd)
+      .subscribe(
+        data => {
+          console.log(data);
+          this.loading = false;
+        },
+        error => {
+          console.log(error);
+          this.loading = false;
+        });
+
+  }
+  //   onFileChange(event) {
+  //   //console.log(event.target.files[0]);
+  //   const reader = new FileReader();
+  //   if (event.target.files && event.target.files.length > 0) {
+  //     const file = event.target.files[0];
+  //     reader.readAsDataURL(file);
+  //     reader.onload = () => {
+  //       this.editProfileForm.get('avatar').setValue({
+  //         filename: file.name,
+  //         filetype: file.type,
+  //         value: reader.result.split(',')[1]
+  //       });
+  //     };
+  //   }
+  //
+  // }
 
   clearFile() {
     this.editProfileForm.get('avatar').setValue(null);
     this.fileInput.nativeElement.value = '';
-  }
-
-  selectChangeHandler (event: any) {
-    this.selectedRole = event.target.value;
   }
 
   setPasswordValue(password) {
@@ -101,11 +129,10 @@ export class EditProfileComponent implements OnInit, DoCheck {
 
   postData(editProfileForm: any) {
     this.userModel = editProfileForm.value;
-    this.userModel.role = this.selectedRole;
     this.userModel.id = this.user.id;
     this.userModel.token = this.user.token;
 
-    console.log(this.userModel );
+    //console.log(this.userModel );
 
     this.loading = true;
     this.userService.update(this.userModel)
