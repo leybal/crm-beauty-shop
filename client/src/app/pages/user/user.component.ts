@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UserService, AuthenticationService } from "../../services/index";
 import { User } from "../../models/index";
+import 'rxjs/add/operator/map';
 
 @Component({
   selector: 'app-user',
@@ -24,10 +25,12 @@ export class UserComponent implements OnInit {
 
   ngOnInit() {
     const id: string = this.currentRout.snapshot.paramMap.get('id');
-    this.userService.getById(id).subscribe(user => {
-      this.user = user;
-      this.user.avatar = 'https://beautyshop-server.herokuapp.com/images/avatars/' + user.avatar;
-    });
+    this.userService.getById(id)
+      .map(user => {
+        user.avatar = 'https://beautyshop-server.herokuapp.com/images/avatars/' + user.avatar;
+        return user;
+      })
+      .subscribe(user => this.user = user);
 
     this.authentication.cast.subscribe(userAuthorized => this.userAuthorized = userAuthorized);
     if (this.userAuthorized) {

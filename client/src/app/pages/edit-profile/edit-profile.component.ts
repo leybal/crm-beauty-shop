@@ -1,9 +1,11 @@
-import { Component, OnInit, DoCheck, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, DoCheck, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import {AlertService, AuthenticationService, UserService} from "../../services";
+import { AlertService, AuthenticationService, UserService } from "../../services";
 import { confirmPasswordValidator } from "../../validators";
 import { User } from "../../models";
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/do';
 
 @Component({
   selector: 'app-edit-profile',
@@ -15,11 +17,10 @@ export class EditProfileComponent implements OnInit, DoCheck {
   editProfileForm: FormGroup;
   userPassword: string;
   userConfPassword: string;
-  roles: string[] = ['Customer', 'Master'];
-  selectedRole: string = this.roles[0].toLowerCase();
   loading = false;
   user: User;
   avatar: File;
+  avatarLocalUrl: any[];
 
   constructor(
     private router: Router,
@@ -34,7 +35,6 @@ export class EditProfileComponent implements OnInit, DoCheck {
       name: ['', Validators.compose([Validators.required, Validators.maxLength(15),
         Validators.minLength(1)])],
       email: ['', [Validators.required, Validators.email]],
-      role: [''],
       phoneNumber: ['', Validators.compose([Validators.required, Validators.maxLength(13),
         Validators.minLength(10)])],
       password: ['', [Validators.required]],
@@ -49,16 +49,21 @@ export class EditProfileComponent implements OnInit, DoCheck {
   ngOnInit() {
     this.authentication.cast.subscribe(userAuthorized => this.userAuthorized = userAuthorized);
     const currentUser: User = JSON.parse(localStorage.getItem('currentUser'));
-    this.userService.getById(currentUser.id).subscribe(user => {
-      this.user = user;
-      this.user.avatar = 'https://beautyshop-server.herokuapp.com/images/avatars/' + user.avatar;
-      this.user.token = currentUser.token;
-
-      this.editProfileForm.get('name').setValue(this.user.name);
-      this.editProfileForm.get('email').setValue(this.user.email);
-      this.editProfileForm.get('phoneNumber').setValue(this.user.phoneNumber);
-      this.editProfileForm.get('userInfo').setValue(this.user.userInfo);
-    });
+    this.userService.getById(currentUser.id)
+      .map(user => {
+        user.avatar = 'https://beautyshop-server.herokuapp.com/images/avatars/' + user.avatar;
+        return user;
+      })
+      .do((user) => {
+        this.editProfileForm.get('name').setValue(user.name);
+        this.editProfileForm.get('email').setValue(user.email);
+        this.editProfileForm.get('phoneNumber').setValue(user.phoneNumber);
+        this.editProfileForm.get('userInfo').setValue(user.userInfo);
+      })
+      .subscribe(user => {
+        this.user = user;
+        this.user.token = currentUser.token;
+      });
   }
 
   ngDoCheck() {
@@ -69,14 +74,19 @@ export class EditProfileComponent implements OnInit, DoCheck {
 
   onFileChange(event) {
     this.avatar = <File>event.target.files[0];
+
+    if (event.target.files && event.target.files[0]) {
+      const reader = new FileReader();
+      reader.onload = (event: any) => {
+        this.avatarLocalUrl = event.target.result;
+      };
+      reader.readAsDataURL(event.target.files[0]);
+    }
   }
 
   clearFile() {
     this.avatar = null;
-  }
-
-  selectChangeHandler (event: any) {
-    this.selectedRole = event.target.value;
+    this.avatarLocalUrl = this.user.avatar;
   }
 
   setPasswordValue(password) {
@@ -86,7 +96,6 @@ export class EditProfileComponent implements OnInit, DoCheck {
   setConfPassword(confPassword) {
     this.userConfPassword = confPassword;
   }
-
 
   postData(editProfileForm: any) {
     const fd = new FormData();
@@ -98,18 +107,16 @@ export class EditProfileComponent implements OnInit, DoCheck {
     fd.append('name', editProfileForm.value.name);
     fd.append('email', editProfileForm.value.email);
     fd.append('phoneNumber', editProfileForm.value.phoneNumber);
-    fd.append('role', this.selectedRole);
     fd.append('password', editProfileForm.value.password);
     fd.append('userInfo', editProfileForm.value.userInfo);
-
 
     this.loading = true;
     this.userService.update(fd, this.user.id, this.user.token)
       .subscribe(
         data => {
-          console.log(data);
-          this.alertService.success('Profile saved successfully.');
+          this.userService.updateLocalData(data);
           this.loading = false;
+          this.alertService.success('Profile saved successfully.');
         },
         error => {
           console.log(error);

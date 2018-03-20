@@ -1,11 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, NgForm } from '@angular/forms';
-import { UserService } from '../../services/index';
-import { confirmPasswordValidator } from '../../validators/index';
-import { AlertService } from "../../services";
-import { IntervalObservable } from "rxjs/observable/IntervalObservable";
-
+import { UserService, AlertService } from '../../services/';
+import { confirmPasswordValidator } from '../../validators/';
+import 'rxjs/add/operator/map';
 
 
 @Component({
@@ -13,7 +11,7 @@ import { IntervalObservable } from "rxjs/observable/IntervalObservable";
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnDestroy {
   registrationForm: FormGroup;
   userPassword: string;
   userConfPassword: string;
@@ -21,6 +19,7 @@ export class RegisterComponent {
   roles: string[] = ['Customer', 'Master'];
   selectedRole: string = this.roles[0].toLowerCase();
   loading = false;
+  timer: any;
 
   constructor(
     private router: Router,
@@ -40,6 +39,9 @@ export class RegisterComponent {
     });
   }
 
+  ngOnDestroy() {
+    clearTimeout(this.timer);
+  }
 
   selectChangeHandler (event: any) {
     this.selectedRole = event.target.value;
@@ -72,10 +74,9 @@ export class RegisterComponent {
             this.alertService.success('Registration is completed successfully. ' +
               'Redirect to login page in 5 seconds');
 
-            IntervalObservable.create(5000)
-              .subscribe(() => {
-                this.router.navigate(['login']);
-              });
+            this.timer = setTimeout(() => {
+              this.router.navigate(['login']);
+            }, 5000);
           } else {
             this.alertService.error('Error. Please try later.');
           }
