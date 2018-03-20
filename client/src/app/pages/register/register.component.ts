@@ -1,8 +1,9 @@
-import { Component, OnDestroy } from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators, NgForm } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService, AlertService } from '../../services/';
 import { confirmPasswordValidator } from '../../validators/';
+import { ISubscription } from "rxjs/Subscription";
 import 'rxjs/add/operator/map';
 
 
@@ -11,7 +12,7 @@ import 'rxjs/add/operator/map';
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
-export class RegisterComponent implements OnDestroy {
+export class RegisterComponent implements OnInit, OnDestroy {
   registrationForm: FormGroup;
   userPassword: string;
   userConfPassword: string;
@@ -20,6 +21,7 @@ export class RegisterComponent implements OnDestroy {
   selectedRole: string = this.roles[0].toLowerCase();
   loading = false;
   timer: any;
+  private subscription: ISubscription;
 
   constructor(
     private router: Router,
@@ -39,8 +41,11 @@ export class RegisterComponent implements OnDestroy {
     });
   }
 
+  ngOnInit() { }
+
   ngOnDestroy() {
     clearTimeout(this.timer);
+    this.subscription.unsubscribe();
   }
 
   selectChangeHandler (event: any) {
@@ -66,7 +71,7 @@ export class RegisterComponent implements OnDestroy {
     };
 
     this.loading = true;
-    this.userService.create(this.userModel)
+    this.subscription = this.userService.create(this.userModel)
       .subscribe(
         data => {
           console.log(data);

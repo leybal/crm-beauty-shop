@@ -1,19 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { AlertService, AuthenticationService } from '../../services/index';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ISubscription } from "rxjs/Subscription";
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   loginForm: FormGroup;
-  model: any = {};
   loading = false;
   returnUrl: string;
+  private subscription: ISubscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -36,9 +37,13 @@ export class LoginComponent implements OnInit {
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/users';
   }
 
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+
   login(loginForm) {
     this.loading = true;
-    this.authenticationService.login(loginForm.controls.email.value, loginForm.controls.password.value)
+    this.subscription = this.authenticationService.login(loginForm.value.email, loginForm.value.password)
       .subscribe(
         data => {
           if (data.id && data.token) {

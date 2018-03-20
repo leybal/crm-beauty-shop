@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UserService, AuthenticationService } from "../../services/index";
 import { User } from "../../models/index";
+import { ISubscription } from "rxjs/Subscription";
 import 'rxjs/add/operator/map';
 
 @Component({
@@ -9,11 +10,12 @@ import 'rxjs/add/operator/map';
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.css']
 })
-export class UserComponent implements OnInit {
+export class UserComponent implements OnInit, OnDestroy {
   user: User;
   userAuthorized: boolean;
   currentUser: User;
   profileOwner: boolean;
+  private subscription: ISubscription;
 
   constructor(
     private userService: UserService,
@@ -25,7 +27,7 @@ export class UserComponent implements OnInit {
 
   ngOnInit() {
     const id: string = this.currentRout.snapshot.paramMap.get('id');
-    this.userService.getById(id)
+    this.subscription = this.userService.getById(id)
       .map(user => {
         user.avatar = 'https://beautyshop-server.herokuapp.com/images/avatars/' + user.avatar;
         return user;
@@ -40,5 +42,9 @@ export class UserComponent implements OnInit {
     if (id === this.currentUser.id) {
       this.profileOwner = true;
     }
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }

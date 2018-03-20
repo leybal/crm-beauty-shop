@@ -1,9 +1,10 @@
-import { Component, OnInit, DoCheck, ViewChild } from '@angular/core';
+import {Component, OnInit, DoCheck, ViewChild, OnDestroy} from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { AlertService, AuthenticationService, UserService } from "../../services";
 import { confirmPasswordValidator } from "../../validators";
 import { User } from "../../models";
+import { ISubscription } from "rxjs/Subscription";
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 
@@ -12,7 +13,7 @@ import 'rxjs/add/operator/do';
   templateUrl: './edit-profile.component.html',
   styleUrls: ['./edit-profile.component.css']
 })
-export class EditProfileComponent implements OnInit, DoCheck {
+export class EditProfileComponent implements OnInit, DoCheck, OnDestroy {
   userAuthorized: boolean;
   editProfileForm: FormGroup;
   userPassword: string;
@@ -21,6 +22,7 @@ export class EditProfileComponent implements OnInit, DoCheck {
   user: User;
   avatar: File;
   avatarLocalUrl: any[];
+  private subscription: ISubscription;
 
   constructor(
     private router: Router,
@@ -49,7 +51,7 @@ export class EditProfileComponent implements OnInit, DoCheck {
   ngOnInit() {
     this.authentication.cast.subscribe(userAuthorized => this.userAuthorized = userAuthorized);
     const currentUser: User = JSON.parse(localStorage.getItem('currentUser'));
-    this.userService.getById(currentUser.id)
+    this.subscription = this.userService.getById(currentUser.id)
       .map(user => {
         user.avatar = 'https://beautyshop-server.herokuapp.com/images/avatars/' + user.avatar;
         return user;
@@ -70,6 +72,10 @@ export class EditProfileComponent implements OnInit, DoCheck {
     if (!this.userAuthorized) {
       this.router.navigate(['/']);
     }
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   onFileChange(event) {
