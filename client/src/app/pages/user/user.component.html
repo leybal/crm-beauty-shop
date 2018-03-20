@@ -4,7 +4,7 @@
   </div>
   <div class="col-12 col-md-6 col-lg-7">
     <h3>{{user.name}}</h3>
-    <p *ngIf="profileOwner">
+    <p *ngIf="profileOwner && userAuthorized">
       <a routerLink="/edit-profile">Edit profile</a>
     </p>
     <p>
@@ -19,5 +19,11 @@
     <p>
       About user: {{user.userInfo}}
     </p>
+  </div>
+  <div *ngIf="user.role === 'master'" class="col-12 col-md-6 col-lg-7">
+    Calendar
+  </div>
+  <div *ngIf="user.role === 'customer'" class="col-12 col-md-6 col-lg-7">
+    Some info
   </div>
 </div>
