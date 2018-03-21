@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 
-import { User } from '../../models/index';
-import { UserService } from '../../services/index';
-import { AuthenticationService } from '../../services/index';
+import {User} from '../../models/index';
+import {UserService} from '../../services/index';
+import {AuthenticationService} from '../../services/index';
 
 @Component({
   selector: 'app-users',
@@ -13,11 +13,10 @@ export class UsersComponent implements OnInit {
   currentUser: User;
   users: User[] = [];
   userAuthorized: boolean;
+  queryString: string;
 
-  constructor(
-    private userService: UserService,
-    private authentication: AuthenticationService
-  ) {
+  constructor(private userService: UserService,
+              private authentication: AuthenticationService) {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
   }
 
