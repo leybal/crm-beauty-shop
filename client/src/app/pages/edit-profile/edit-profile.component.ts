@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { AlertService, AuthenticationService, UserService } from "../../services";
 import { confirmPasswordValidator } from "../../validators";
 import { User } from "../../models";
+import { environment } from '../../../environments/environment';
 import { ISubscription } from "rxjs/Subscription";
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
@@ -22,6 +23,7 @@ export class EditProfileComponent implements OnInit, DoCheck, OnDestroy {
   user: User;
   avatar: File;
   avatarLocalUrl: any[];
+  avatarUrl = environment.avatarUrl;
   private subscription: ISubscription;
 
   constructor(
@@ -53,7 +55,7 @@ export class EditProfileComponent implements OnInit, DoCheck, OnDestroy {
     const currentUser: User = JSON.parse(localStorage.getItem('currentUser'));
     this.subscription = this.userService.getById(currentUser.id)
       .map(user => {
-        user.avatar = 'https://beautyshop-server.herokuapp.com/images/avatars/' + user.avatar;
+        user.avatar = this.avatarUrl + user.avatar;
         return user;
       })
       .do((user) => {

@@ -1,10 +1,10 @@
 import {Component, OnInit, OnDestroy } from '@angular/core';
-
 import { User } from '../../models/index';
 import { UserService } from '../../services/index';
 import { AuthenticationService } from '../../services/index';
-
+import { environment } from '../../../environments/environment';
 import { ISubscription } from "rxjs/Subscription";
+import 'rxjs/add/operator/map';
 
 @Component({
   selector: 'app-users',
@@ -16,6 +16,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   users: User[] = [];
   userAuthorized: boolean;
   queryString: string;
+  avatarUrl = environment.avatarUrl;
   private subscription: ISubscription;
 
   constructor(
@@ -35,6 +36,13 @@ export class UsersComponent implements OnInit, OnDestroy {
   }
 
   private loadAllUsers() {
-    this.subscription =  this.userService.getAll().subscribe(users => this.users = users);
+    this.subscription =  this.userService.getAll()
+      .map(users => {
+        users.forEach(user => {
+          user.avatar = this.avatarUrl + user.avatar;
+        });
+        return users;
+      })
+      .subscribe(users => this.users = users);
   }
 }

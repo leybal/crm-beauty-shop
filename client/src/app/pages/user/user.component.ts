@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UserService, AuthenticationService } from "../../services/index";
 import { User } from "../../models/index";
+import { environment } from '../../../environments/environment';
 import { ISubscription } from "rxjs/Subscription";
 import 'rxjs/add/operator/map';
 
@@ -15,6 +16,7 @@ export class UserComponent implements OnInit, OnDestroy {
   userAuthorized: boolean;
   currentUser: User;
   profileOwner: boolean;
+  avatarUrl = environment.avatarUrl;
   private subscription: ISubscription;
 
   constructor(
@@ -29,7 +31,7 @@ export class UserComponent implements OnInit, OnDestroy {
     const id: string = this.currentRout.snapshot.paramMap.get('id');
     this.subscription = this.userService.getById(id)
       .map(user => {
-        user.avatar = 'https://beautyshop-server.herokuapp.com/images/avatars/' + user.avatar;
+        user.avatar = this.avatarUrl + user.avatar;
         return user;
       })
       .subscribe(user => this.user = user);
