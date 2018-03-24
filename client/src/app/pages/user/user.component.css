@@ -1,0 +1,11 @@
+.user-info {
+  border-left: 1px solid #ccc;
+  padding-left: 20px;
+  min-height: 200px;
+}
+
+.search-link {
+  color: #343a40;
+  border: 1px solid #a5a5a5;
+  padding: 8px;
+}

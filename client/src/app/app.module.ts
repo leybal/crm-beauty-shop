@@ -22,6 +22,7 @@ import { RegisterComponent } from './pages/register/register.component';
 import { UsersComponent } from './pages/users/users.component';
 import { UserComponent } from './pages/user/user.component';
 import { EditProfileComponent } from './pages/edit-profile/edit-profile.component';
+import { SearchFilterPipe } from './pipes/search-filter.pipe';
 
 
 @NgModule({
@@ -36,7 +37,8 @@ import { EditProfileComponent } from './pages/edit-profile/edit-profile.componen
     UsersComponent,
     AlertComponent,
     UserComponent,
-    EditProfileComponent
+    EditProfileComponent,
+    SearchFilterPipe
   ],
   imports: [
     BrowserModule,

@@ -3,6 +3,7 @@ import {Component, OnInit, OnDestroy } from '@angular/core';
 import { User } from '../../models/index';
 import { UserService } from '../../services/index';
 import { AuthenticationService } from '../../services/index';
+
 import { ISubscription } from "rxjs/Subscription";
 
 @Component({
@@ -14,6 +15,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   currentUser: User;
   users: User[] = [];
   userAuthorized: boolean;
+  queryString: string;
   private subscription: ISubscription;
 
   constructor(
