@@ -1,0 +1,11 @@
+<p>
+  calendar works!
+</p>
+
+<div class="row">
+  <div class="col-6">
+    <div class="week" *ngFor="let week of month">
+      <div class="day" *ngFor="let day of week">{{day.context.date|date:'d'}}</div>
+    </div>
+  </div>
+</div>

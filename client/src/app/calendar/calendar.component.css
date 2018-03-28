@@ -1,0 +1,18 @@
+:host {
+  display: flex;
+  flex-direction: column;
+}
+
+.week {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+}
+
+.day {
+  flex: 1;
+  border: 1px solid #f9f9f9;
+  margin-top: -1px;
+  margin-left: -1px;
+  padding:10px;
+}
