@@ -22,7 +22,7 @@ import { UsersComponent } from './pages/users/users.component';
 import { UserComponent } from './pages/user/user.component';
 import { EditProfileComponent } from './pages/edit-profile/edit-profile.component';
 import { CalendarComponent } from './calendar/calendar.component';
-
+import {CalendarDayDirective} from "./directives/calendar-day.directive";
 
 @NgModule({
   declarations: [
@@ -37,7 +37,8 @@ import { CalendarComponent } from './calendar/calendar.component';
     AlertComponent,
     UserComponent,
     EditProfileComponent,
-    CalendarComponent
+    CalendarComponent,
+    CalendarDayDirective
   ],
   imports: [
     BrowserModule,

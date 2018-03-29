@@ -1,5 +1,6 @@
-import {Component, Input, OnInit} from "@angular/core";
+import {Component, ContentChild, Input, OnInit} from "@angular/core";
 import {chunk, range} from 'lodash';
+import {CalendarDayDirective} from "../directives/calendar-day.directive";
 import {
   addDays,
   addMonths,
@@ -23,6 +24,8 @@ import {
   styleUrls: ['calendar.component.css']
 })
 export class CalendarComponent implements OnInit {
+
+  @ContentChild(CalendarDayDirective) dayTemplate: CalendarDayDirective;
 
   month: any[][];
 
