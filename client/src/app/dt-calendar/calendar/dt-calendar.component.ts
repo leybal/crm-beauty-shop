@@ -1,6 +1,5 @@
 import {Component, ContentChild, Input, OnInit} from "@angular/core";
 import {chunk, range} from 'lodash';
-import {CalendarDayDirective} from "../directives/calendar-day.directive";
 import {
   addDays,
   addMonths,
@@ -17,16 +16,20 @@ import {
   subDays,
   subMonths
 } from 'date-fns';
+import {DTCalendarDayDirective} from "../calendar-day/dt-calendar-day.directive";
 
 @Component({
-  selector: 'calendar',
-  templateUrl: 'calendar.component.html',
-  styleUrls: ['calendar.component.css']
+  selector: 'dt-calendar',
+  templateUrl: './dt-calendar.component.html',
+  styleUrls: ['./dt-calendar.component.css']
 })
-export class CalendarComponent implements OnInit {
+export class DTCalendarComponent implements OnInit {
 
-  @ContentChild(CalendarDayDirective) dayTemplate: CalendarDayDirective;
 
+  @ContentChild(DTCalendarDayDirective) dayTemplate: DTCalendarDayDirective;
+
+  @Input() max: Date;
+  @Input() min: Date;
   month: any[][];
 
   private _displayDate: Date;
@@ -53,19 +56,20 @@ export class CalendarComponent implements OnInit {
 
   refresh() {
     const monthStart = startOfMonth(this.displayDate);
-    const weekDay = CalendarComponent.fixWeekday(getDay(monthStart));
+    const weekDay = DTCalendarComponent.fixWeekday(getDay(monthStart));
     const startOfWeek = subDays(monthStart, weekDay);
-    const count = CalendarComponent.fixCount(weekDay + getDaysInMonth(this.displayDate));
+    const count = DTCalendarComponent.fixCount(weekDay + getDaysInMonth(this.displayDate));
     const days = range(0, count).map(number => {
       const date = addDays(startOfWeek, number);
       const past = isPast(date);
       const today = isToday(date);
       const weekend = isWeekend(date);
-      const this_month = isThisMonth(this.displayDate);
+      const this_month = isThisMonth(date);
+      const disabled = (this.min && isBefore(date, this.min)) || (this.max && isAfter(date, this.max));
       const key = format(date, 'YYYY-MM-DD');
       return {
         context: {
-          date, key, past, today, this_month, weekend
+          date, key, past, today, this_month, disabled, weekend
         }
       };
     });
@@ -83,4 +87,5 @@ export class CalendarComponent implements OnInit {
   public previous() {
     this.displayDate = subMonths(this.displayDate, 1);
   }
+
 }

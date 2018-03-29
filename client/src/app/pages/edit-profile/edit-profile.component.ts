@@ -49,7 +49,7 @@ export class EditProfileComponent implements OnInit, DoCheck {
     const currentUser: User = JSON.parse(localStorage.getItem('currentUser'));
     this.userService.getById(currentUser.id).subscribe(user => {
       this.user = user;
-      this.user.avatar = 'https://beautyshop-server.herokuapp.com/images/avatars/' + user.avatar;
+      //this.user.avatar = 'https://beautyshop-server.herokuapp.com/images/avatars/' + user.avatar;
       this.user.token = currentUser.token;
 
       this.editProfileForm.get('name').setValue(this.user.name);
@@ -115,7 +115,7 @@ export class EditProfileComponent implements OnInit, DoCheck {
 
   clearFile() {
     this.editProfileForm.get('avatar').setValue(null);
-    this.fileInput.nativeElement.value = '';
+    //this.fileInput.nativeElement.value = '';
   }
 
   setPasswordValue(password) {

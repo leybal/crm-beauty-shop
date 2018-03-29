@@ -22,4 +22,8 @@
   </div>
 </div>
 
-<calendar></calendar>
+<dt-calendar>
+  <dt-calendar-cell *dtCalendarDay="let day = context" [day]="day" [selected]="selectedKey == day.key" (click)="selectDay(day.key)">
+    inside cell
+  </dt-calendar-cell>
+</dt-calendar>

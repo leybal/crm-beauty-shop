@@ -21,8 +21,8 @@ import { RegisterComponent } from './pages/register/register.component';
 import { UsersComponent } from './pages/users/users.component';
 import { UserComponent } from './pages/user/user.component';
 import { EditProfileComponent } from './pages/edit-profile/edit-profile.component';
-import { CalendarComponent } from './calendar/calendar.component';
 import {CalendarDayDirective} from "./directives/calendar-day.directive";
+import {DTCalendarModule} from "./dt-calendar/dt-calendar.module";
 
 @NgModule({
   declarations: [
@@ -37,7 +37,6 @@ import {CalendarDayDirective} from "./directives/calendar-day.directive";
     AlertComponent,
     UserComponent,
     EditProfileComponent,
-    CalendarComponent,
     CalendarDayDirective
   ],
   imports: [
@@ -45,7 +44,8 @@ import {CalendarDayDirective} from "./directives/calendar-day.directive";
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    DTCalendarModule
   ],
   providers: [
     AuthGuard,
