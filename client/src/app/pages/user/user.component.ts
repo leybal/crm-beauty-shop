@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UserService, AuthenticationService } from "../../services/index";
 import { User } from "../../models/index";
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbdDatepickerBasic } from '../../datepicker/datepicker-basic';
 
 @Component({
   selector: 'app-user',

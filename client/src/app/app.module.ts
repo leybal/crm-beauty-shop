@@ -22,7 +22,10 @@ import { UsersComponent } from './pages/users/users.component';
 import { UserComponent } from './pages/user/user.component';
 import { EditProfileComponent } from './pages/edit-profile/edit-profile.component';
 import {CalendarDayDirective} from "./directives/calendar-day.directive";
-import {DTCalendarModule} from "./dt-calendar/dt-calendar.module";
+import {CalendarModule} from "angular-calendar";
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap'
+import {NgbdDatepickerBasic} from "./datepicker/datepicker-basic";
+
 
 @NgModule({
   declarations: [
@@ -37,7 +40,8 @@ import {DTCalendarModule} from "./dt-calendar/dt-calendar.module";
     AlertComponent,
     UserComponent,
     EditProfileComponent,
-    CalendarDayDirective
+    CalendarDayDirective,
+    NgbdDatepickerBasic
   ],
   imports: [
     BrowserModule,
@@ -45,7 +49,7 @@ import {DTCalendarModule} from "./dt-calendar/dt-calendar.module";
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    DTCalendarModule
+    NgbModule.forRoot()
   ],
   providers: [
     AuthGuard,
