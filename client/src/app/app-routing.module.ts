@@ -8,6 +8,7 @@ import { RegisterComponent } from './pages/register/register.component';
 import { AuthGuard } from './guards/index';
 import { NotfoundComponent } from "./pages/notfound/notfound.component";
 import { EditProfileComponent } from "./pages/edit-profile/edit-profile.component";
+import { EntriesListComponent } from "./pages/entries-list/entries-list.component";
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'edit-profile', canActivate: [AuthGuard], component: EditProfileComponent },
+  { path: 'entries', canActivate: [AuthGuard], component: EntriesListComponent },
   { path: '**', component: NotfoundComponent}
 ];
 

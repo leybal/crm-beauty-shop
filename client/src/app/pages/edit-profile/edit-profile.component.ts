@@ -44,7 +44,6 @@ export class EditProfileComponent implements OnInit, DoCheck, OnDestroy {
       password: ['', [Validators.required]],
       confPassword: ['', [Validators.required, confirmPasswordValidator(this)]],
       userInfo: [''],
-      token: [''],
     });
   }
 
@@ -66,7 +65,6 @@ export class EditProfileComponent implements OnInit, DoCheck, OnDestroy {
       })
       .subscribe(user => {
         this.user = user;
-        this.user.token = currentUser.token;
       });
   }
 
@@ -119,7 +117,7 @@ export class EditProfileComponent implements OnInit, DoCheck, OnDestroy {
     fd.append('userInfo', editProfileForm.value.userInfo);
 
     this.loading = true;
-    this.userService.update(fd, this.user.id, this.user.token)
+    this.userService.update(fd, this.user.id)
       .subscribe(
         data => {
           this.userService.updateLocalData(data);

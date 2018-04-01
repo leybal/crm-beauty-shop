@@ -22,10 +22,8 @@ export class UserService {
     return this.http.post<User>(this.apiUrl + 'users', user);
   }
 
-  update(user: any, id: string, token: string) {
-    return this.http.put<User>(this.apiUrl + 'users/' + id, user, {
-      headers: {'Authorization': token}
-    });
+  update(user: any, id: string) {
+    return this.http.put<User>(this.apiUrl + 'users/' + id, user);
   }
 
   delete(id: number) {

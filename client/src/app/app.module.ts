@@ -4,12 +4,12 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 
 import { FormsModule } from '@angular/forms';
-import {ReactiveFormsModule} from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AlertComponent } from './directives/index';
 import { AuthGuard } from './guards/index';
-import { AlertService, AuthenticationService, UserService } from './services/index';
+import { AlertService, AuthenticationService, UserService, EntryService } from './services/index';
 import { JwtInterceptor } from './helpers/index';
 
 import { AppComponent } from './app.component';
@@ -23,8 +23,9 @@ import { UsersComponent } from './pages/users/users.component';
 import { UserComponent } from './pages/user/user.component';
 import { EditProfileComponent } from './pages/edit-profile/edit-profile.component';
 import { SearchFilterPipe } from './pipes/search-filter.pipe';
-import {NgbdDatepickerBasic} from "./datepicker/datepicker-basic";
-import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
+import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
+import { EntriesComponent } from './shared/entries/entries.component';
+import { EntriesListComponent } from './pages/entries-list/entries-list.component';
 
 
 @NgModule({
@@ -41,7 +42,8 @@ import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
     UserComponent,
     EditProfileComponent,
     SearchFilterPipe,
-    NgbdDatepickerBasic
+    EntriesComponent,
+    EntriesListComponent
   ],
   imports: [
     BrowserModule,
@@ -56,6 +58,7 @@ import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
     AlertService,
     AuthenticationService,
     UserService,
+    EntryService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: JwtInterceptor,
