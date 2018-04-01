@@ -34,3 +34,6 @@
     <a routerLink="/users" class="search-link">Find all masters</a>
   </div>
 </div>
+
+
+<ngbd-datepicker-basic #dp [(ngModel)]="model" (navigate)="date = $event.next"></ngbd-datepicker-basic>

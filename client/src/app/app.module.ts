@@ -23,6 +23,8 @@ import { UsersComponent } from './pages/users/users.component';
 import { UserComponent } from './pages/user/user.component';
 import { EditProfileComponent } from './pages/edit-profile/edit-profile.component';
 import { SearchFilterPipe } from './pipes/search-filter.pipe';
+import {NgbdDatepickerBasic} from "./datepicker/datepicker-basic";
+import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 
 
 @NgModule({
@@ -38,14 +40,16 @@ import { SearchFilterPipe } from './pipes/search-filter.pipe';
     AlertComponent,
     UserComponent,
     EditProfileComponent,
-    SearchFilterPipe
+    SearchFilterPipe,
+    NgbdDatepickerBasic
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    NgbModule.forRoot()
   ],
   providers: [
     AuthGuard,
