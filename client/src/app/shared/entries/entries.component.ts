@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { NgbDateStruct } from "@ng-bootstrap/ng-bootstrap";
+import { NgbDateStruct, NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 import { EntryService } from "../../services";
 import { Entry } from "../../models/index";
 
@@ -14,6 +14,7 @@ const now = new Date();
 export class EntriesComponent implements OnInit {
   entries: Entry[] = [];
   dpModel: NgbDateStruct;
+  model: NgbDateStruct;
   userId: string = '';
   date: string = '';
   entriesStart: number = 9;
@@ -21,10 +22,12 @@ export class EntriesComponent implements OnInit {
   entriesStep: number = 1;
   entriesTimes: string[] = [];
   selectedTime: string = '';
+  closeResult: string;
 
   constructor(
     private entryService: EntryService,
-    private currentRout: ActivatedRoute
+    private currentRout: ActivatedRoute,
+    private modalService: NgbModal
   ) { }
 
   ngOnInit() {
@@ -54,6 +57,24 @@ export class EntriesComponent implements OnInit {
 
     this.entryService.getByUserIdAndDate(this.userId, this.date)
       .subscribe(entries => this.entries = entries);
+  }
+
+  open(content) {
+    this.modalService.open(content).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return  `with: ${reason}`;
+    }
   }
 
 }
