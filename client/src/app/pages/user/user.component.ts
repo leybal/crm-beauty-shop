@@ -15,7 +15,7 @@ export class UserComponent implements OnInit, OnDestroy {
   user: User;
   userAuthorized: boolean;
   currentUser: User;
-  profileOwner: boolean;
+  profileOwner: boolean = false;
   avatarUrl = environment.avatarUrl;
   private subscription: ISubscription;
 
@@ -23,9 +23,7 @@ export class UserComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private currentRout: ActivatedRoute,
     private authentication: AuthenticationService
-  ) {
-    this.profileOwner = false;
-  }
+  ) { }
 
   ngOnInit() {
     const id: string = this.currentRout.snapshot.paramMap.get('id');

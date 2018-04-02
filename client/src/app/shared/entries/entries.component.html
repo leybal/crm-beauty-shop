@@ -1,0 +1,23 @@
+<div class="row mt-5">
+  <div class="col-12 col-md-6">
+    <p>Select date:</p>
+    <div>
+      <ngb-datepicker #dp [(ngModel)]="dpModel"></ngb-datepicker>
+    </div>
+    <br>
+    <div class="btn-group" role="group" aria-label="Basic example">
+      <button type="button" class="btn btn-sm btn-secondary" (click)="selectToday(); dp.navigateTo()">Select Today</button>
+      <button type="button" class="btn btn-sm btn-secondary" (click)="dp.navigateTo()">To current month</button>
+    </div>
+  </div>
+  <div class="col-12 col-md-6">
+    <p>Select time:</p>
+    <ul class="list-group">
+      <li class="list-group-item entry-time" *ngFor="let time of entriesTimes" (click)="selectTimeHandler($event)">{{time}}</li>
+    </ul>
+  </div>
+</div>
+
+<pre>Model: {{ dpModel | json }}</pre>
+<pre>selectedTime: {{selectedTime}}</pre>
+<pre>entries: {{entries}}</pre>
