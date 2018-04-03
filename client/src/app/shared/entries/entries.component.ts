@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { NgbDateStruct, NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 import { EntryService } from "../../services";
 import { Entry } from "../../models/index";
+import { NgForm} from '@angular/forms';
 
 const now = new Date();
 
@@ -14,7 +15,6 @@ const now = new Date();
 export class EntriesComponent implements OnInit {
   entries: Entry[] = [];
   dpModel: NgbDateStruct;
-  model: NgbDateStruct;
   userId: string = '';
   date: string = '';
   entriesStart: number = 9;
@@ -75,6 +75,10 @@ export class EntriesComponent implements OnInit {
     } else {
       return  `with: ${reason}`;
     }
+  }
+
+  submit(form: NgForm){
+    console.log(form);
   }
 
 }
