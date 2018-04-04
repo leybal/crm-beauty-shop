@@ -29,7 +29,8 @@
   </div>
 </div>
 
-<app-entries *ngIf="user.role === 'master'"></app-entries>
+<app-entries *ngIf="user.role === 'master'" [user]="user" [userAuthorized]="userAuthorized"
+             [profileOwner]="profileOwner"></app-entries>
 
 
 <!--<ngbd-datepicker-basic [(ngModel)]="model" (navigate)="date = $event.next"></ngbd-datepicker-basic>-->

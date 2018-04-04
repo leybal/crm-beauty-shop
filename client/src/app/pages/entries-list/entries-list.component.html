@@ -1,7 +1,7 @@
-<p>
-  entries-list works!
-</p>
-
-<ul class="list-group">
-  <li class="list-group-item" *ngFor="let entry of entries">{{entry}}</li>
+<ul class="list-group" *ngIf="entries.length; else usersListIsEmpy">
+  <li class="list-group-item" *ngFor="let entry of entries">{{entry | json}}</li>
 </ul>
+
+<ng-template #usersListIsEmpy>
+  <p>No entries yet.</p>
+</ng-template>

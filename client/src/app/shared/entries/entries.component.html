@@ -2,73 +2,84 @@
   <div class="col-12 col-md-6">
     <p>Select date:</p>
     <div>
-      <ngb-datepicker #dp [(ngModel)]="dpModel"></ngb-datepicker>
+      <ngb-datepicker #dp [(ngModel)]="dpModel" (ngModelChange)="selectedDateHandler()"></ngb-datepicker>
     </div>
     <br>
     <div class="btn-group" role="group" aria-label="Basic example">
-      <button type="button" class="btn btn-sm btn-secondary" (click)="selectToday(); dp.navigateTo()">Select Today</button>
-      <button type="button" class="btn btn-sm btn-secondary" (click)="dp.navigateTo()">To current month</button>
+      <button type="button" class="btn btn-sm btn-secondary"
+              (click)="selectToday(); dp.navigateTo()">Select Today</button>
+      <button type="button" class="btn btn-sm btn-secondary"
+              (click)="dp.navigateTo()">To current month</button>
     </div>
   </div>
   <div class="col-12 col-md-6">
     <p>Select time:</p>
-    <ul class="list-group">
-      <li class="list-group-item entry-time" *ngFor="let time of entriesTimes" (click)="open(content)" (click)="selectTimeHandler($event)">{{time}}</li>
+    <div *ngIf="entriesLoading" class="text-center">
+      <img src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
+    </div>
+    <ul class="list-group" *ngIf="!entriesLoading">
+      <li class="list-group-item entry-time"
+          *ngFor="let time of entriesTimes; let i = index">
+        <div *ngIf="availableEntriesTimes[i] && userAuthorized && !profileOwner ; else unclickableTime" (click)="selectTimeHandler($event); open(entryModal)"
+            class="entry-time_free">
+          {{time}}
+        </div>
+        <ng-template #unclickableTime>
+          <div *ngIf="availableEntriesTimes[i]">
+            {{time}}
+          </div>
+        </ng-template>
+
+        <div *ngIf="!availableEntriesTimes[i]" class="entry-time_busy">
+          <div class="row">
+            <div class="col-6">{{time}}</div>
+            <div class="col-6 text-right">
+              <a class="" href="users/{{entriesForTemplate[i].customerId._id}}">
+                {{entriesForTemplate[i].customerId.name}}
+              </a>
+            </div>
+          </div>
+        </div>
+      </li>
     </ul>
   </div>
 </div>
 
-<pre>Model: {{ dpModel | json }}</pre>
-<pre>selectedTime: {{selectedTime}}</pre>
-<pre>entries: {{entries}}</pre>
-
-
-<!--<ng-template #content let-c="close" let-d="dismiss">-->
-  <!--<div class="modal-header">-->
-    <!--<h4 class="modal-title">Modal title</h4>-->
-    <!--<button type="button" class="close" aria-label="Close" (click)="d('Cross click')">-->
-      <!--<span aria-hidden="true">&times;</span>-->
-    <!--</button>-->
-  <!--</div>-->
-  <!--<div class="modal-body">-->
-    <!--<p>One fine body&hellip;</p>-->
-  <!--</div>-->
-  <!--<div class="modal-footer">-->
-    <!--<button type="button" class="btn btn-outline-dark" (click)="c('Close click')">Close</button>-->
-  <!--</div>-->
-<!--</ng-template>-->
-
-<ng-template #content let-c="close" let-d="dismiss">
+<ng-template #entryModal let-c="close" let-d="dismiss">
   <div class="modal-header">
-    <h4 class="modal-title">Your entry</h4>
+    <h4 class="modal-title">Make an appointment with {{user.name}}</h4>
     <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
-    <form #myForm="ngForm" novalidate>
-      <div class="form-group">
-        <label>Date</label>
-        <p>{{dpModel.day + "." + dpModel.month + "." + dpModel.year}}</p>
+    <form #entryForm="ngForm" novalidate>
+      <alert></alert>
+      <div class="row">
+        <div class="col-6">
+          <div class="form-group">
+            <label>Date</label>
+            <p>{{selectedDate}}</p>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="form-group">
+            <label>Time</label>
+            <p>{{selectedTime}}</p>
+          </div>
+        </div>
       </div>
       <div class="form-group">
-        <label>Time</label>
-        <p></p>
-      </div>
-      <div class="form-group">
-        <label>Comment</label>
-        <input class="form-control" name="name" [(ngModel)]="name" />
+        <label for="comment">Comment</label>
+        <textarea class="form-control" name="comment" id="comment" [(ngModel)]="comment"></textarea>
       </div>
 
-      <div class="form-group">
-        <button [disabled]="myForm.invalid"
-                class="btn btn-default" (click)="submit(myForm)">Submit</button>
+      <div class="form-group text-center">
+        <button class="btn btn-dark" (click)="submitForm(entryForm)">Submit</button>
+        <img *ngIf="loading"
+             src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
       </div>
     </form>
-
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="c('Close click')">Close</button>
   </div>
 </ng-template>
 

@@ -17,7 +17,7 @@ export class EntriesListComponent implements OnInit {
 
   ngOnInit() {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    this.entryService.getByUserId(this.currentUser.id)
+    this.entryService.getByUserId(this.currentUser.id, this.currentUser.role)
       .subscribe(entries => this.entries = entries);
   }
 

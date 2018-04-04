@@ -76,7 +76,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.subscription = this.userService.create(this.userModel)
       .subscribe(
         data => {
-          console.log(data);
           if (data.id) {
             this.alertService.success('Registration is completed successfully. ' +
               'Redirect to login page in 5 seconds');
@@ -90,7 +89,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
           this.loading = false;
         },
         error => {
-          this.alertService.error(error.error.message);
+          this.alertService.error(error.error.errmsg);
           this.loading = false;
         });
   }
