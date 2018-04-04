@@ -125,8 +125,7 @@ export class EditProfileComponent implements OnInit, DoCheck, OnDestroy {
           this.alertService.success('Profile saved successfully.');
         },
         error => {
-          console.log(error);
-          this.alertService.error(error.error.message);
+          this.alertService.error(error.statusText);
           this.loading = false;
         });
   }

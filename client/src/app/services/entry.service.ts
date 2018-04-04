@@ -18,13 +18,12 @@ export class EntryService {
     return this.http.get<Entry>(this.apiUrl + 'entries/' + id);
   }
 
-  getByUserId(id: string) {
-    // need api url fix
-    return this.http.get<Entry[]>(this.apiUrl + 'entries/' + id + '?q=user');
+  getByUserId(id: string, role: string) {
+    return this.http.get<Entry[]>(this.apiUrl + `entries/${id}?q=${role}`);
   }
 
   getByUserIdAndDate(id: string, date: string) {
-    return this.http.get<Entry[]>(this.apiUrl + `entries/master/${id}?date='${date}'`);
+    return this.http.get<Entry[]>(this.apiUrl + `entries/master/${id}?date=${date}`);
   }
 
   create(entry: Entry) {
