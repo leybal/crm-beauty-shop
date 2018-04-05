@@ -1,7 +1,7 @@
 ﻿export class Entry {
-  id: string;
-  masterId: string;
-  customerId: string;
+  _id: string;
+  masterId: string | Object;
+  customerId: string | Object;
   date: string;
   time: string;
   masterComment: string;

@@ -14,11 +14,10 @@ export class EntriesListComponent implements OnInit {
   entries: Entry[] = [];
   currentUser: User;
   closeResult: string;
-  masterId: string = '';
-  selectedDate: string = '';
-  selectedTime: string = '';
   loading: boolean = false;
   accept: any;
+  newStatus: string = '';
+  selectedEntryId: string = "";
 
   constructor(
     private entryService: EntryService,
@@ -30,10 +29,11 @@ export class EntriesListComponent implements OnInit {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.entryService.getByUserId(this.currentUser.id, this.currentUser.role)
       .subscribe(entries => this.entries = entries);
-    console.log(this.entries)
   }
 
-  open(content) {
+  open(content, selectedEntryId, newStatus) {
+    this.newStatus = newStatus;
+    this.selectedEntryId = selectedEntryId;
     this.modalService.open(content).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
@@ -54,15 +54,12 @@ export class EntriesListComponent implements OnInit {
   submitForm(form: NgForm) {
     let comment = form.value.comment || '';
     let model: any =  {
-      masterId: this.masterId,
-      customerId: this.currentUser.id,
-      date: this.selectedDate,
-      time: this.selectedTime,
-      customerComment: comment
+      masterComment: comment;
+      status: this.newStatus;
     };
 
     this.loading = true;
-    this.entryService.create(model)
+    this.entryService.update(model, this.selectedEntryId)
       .subscribe(
         data => {
           console.log(data);
@@ -80,16 +77,5 @@ export class EntriesListComponent implements OnInit {
           this.loading = false;
         });
   }
-
-  confirmEntry(){
-    this.accept = true;
-    console.log(this.accept)
-  }
-
-  rejectEntry(){
-    this.accept = false;
-    console.log(this.accept)
-  }
-
 
 }
