@@ -1,18 +1,21 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import { EntryService, AlertService } from "../../services";
+import { Component, OnDestroy, OnInit, DoCheck } from '@angular/core';
+import { Router } from "@angular/router";
+import { EntryService, AlertService, AuthenticationService } from "../../services";
 import { User, Entry } from "../../models";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { NgForm } from '@angular/forms';
 import "rxjs/add/operator/takeWhile";
+
 
 @Component({
   selector: 'app-entries-list',
   templateUrl: './entries-list.component.html',
   styleUrls: ['./entries-list.component.css']
 })
-export class EntriesListComponent implements OnInit, OnDestroy {
+export class EntriesListComponent implements OnInit, DoCheck, OnDestroy {
   entries: Entry[] = [];
   currentUser: User;
+  userAuthorized: boolean;
   loading: boolean = false;
   newStatus: string = '';
   selectedEntry: Entry;
@@ -22,14 +25,23 @@ export class EntriesListComponent implements OnInit, OnDestroy {
   private alive: boolean = true;
 
   constructor(
+    private router: Router,
+    private authentication: AuthenticationService,
     private entryService: EntryService,
     private modalService: NgbModal,
     private alertService: AlertService,
   ) { }
 
   ngOnInit() {
+    this.authentication.cast.subscribe(userAuthorized => this.userAuthorized = userAuthorized);
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.getEntries();
+  }
+
+  ngDoCheck() {
+    if (!this.userAuthorized) {
+      this.router.navigate(['/']);
+    }
   }
 
   ngOnDestroy() {
