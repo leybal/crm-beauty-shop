@@ -1,58 +1,76 @@
 <ul class="list-group" *ngIf="entries.length; else usersListIsEmpy">
-  <!--<li class="list-group-item" *ngFor="let entry of entries">{{entry | json}}</li>-->
   <li class="list-group-item" *ngFor="let entry of entries">
-    {{entry | json}}
-    <div>
-      <button type="button" class="btn btn-primary" (click)="open(content, entry._id, 'accept')">accept</button>
-      <button type="button" class="btn btn-secondary" (click)="open(content, entry._id, 'reject')">reject</button>
+    <div class="row mb-3">
+      <div class="col-6">
+        <a *ngIf="currentUser.role === 'master'"
+           routerLink="/users/{{entry.customerId._id}}">{{entry.customerId.name}}</a>
+        <a *ngIf="currentUser.role === 'customer'"
+           routerLink="/users/{{entry.masterId._id}}">{{entry.masterId.name}}</a>
+      </div>
+      <div class="col-6 text-right">
+        <span *ngIf="entry.status === 'New'" class="bg-primary p-1 text-white">{{entry.status}}</span>
+        <span *ngIf="entry.status === 'Accepted'" class="bg-success p-1 text-white">{{entry.status}}</span>
+        <span *ngIf="entry.status === 'Rejected'" class="bg-warning p-1">{{entry.status}}</span>
+        <span *ngIf="entry.status === 'Completed'" class="bg-light p-1">{{entry.status}}</span>
+      </div>
     </div>
-
-    <ng-template #content let-c="close" let-d="dismiss">
-      <div class="modal-header">
-        <h4 class="modal-title">Modal title</h4>
-        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-
-      <div class="modal-body">
-        <p>One fine body&hellip;</p>
-        <form #acceptForm="ngForm" novalidate>
-          <div class="row">
-            <div class="col-6">
-              <div class="form-group">
-                <label>Date</label>
-                <p>{{entry.date}}</p>
-              </div>
-            </div>
-            <div class="col-6">
-              <div class="form-group">
-                <label>Time</label>
-                <p>{{entry.time}}</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="comment">Comment</label>
-            <textarea class="form-control" name="comment" id="comment" [(ngModel)]="comment"></textarea>
-          </div>
-
-          <div class="form-group text-center">
-            <button class="btn btn-primary" (click)="submitForm(acceptForm)" >{{newStatus}}</button>
-          </div>
-        </form>
-
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-outline-dark" (click)="c('Close click')">Close</button>
-      </div>
-    </ng-template>
-
+    <div class="row mb-3">
+      <div class="col-6">Date: {{entry.date}}</div>
+      <div class="col-6 text-right">Time: {{entry.time}}</div>
+    </div>
+    <p>
+      Phone:
+      <span *ngIf="currentUser.role === 'master'">{{entry.customerId.phoneNumber}}</span>
+      <span *ngIf="currentUser.role === 'customer'">{{entry.masterId.phoneNumber}}</span>
+    </p>
+    <p *ngIf="entry.customerComment">Customer comment: {{entry.customerComment}}</p>
+    <p *ngIf="entry.masterComment">Master comment: {{entry.masterComment}}</p>
+    <div>
+      <button *ngIf="currentUser.role === 'master' && entry.status === 'New'" type="button" class="btn btn-primary"
+              (click)="open(changeStatusModal, entry, 'Accept')">accept</button>
+      <button *ngIf="entry.status !== 'Rejected'" type="button" class="btn btn-secondary"
+              (click)="open(changeStatusModal, entry, 'Reject')">reject</button>
+    </div>
   </li>
-
 </ul>
 
 <ng-template #usersListIsEmpy>
   <p>No entries yet.</p>
+</ng-template>
+
+<ng-template #changeStatusModal let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">{{newStatus}} entry</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form #changeStatusForm="ngForm" novalidate>
+      <alert></alert>
+      <div class="row">
+        <div class="col-6">
+          <div class="form-group">
+            <label>Date</label>
+            <p>{{selectedEntry.date}}</p>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="form-group">
+            <label>Time</label>
+            <p>{{selectedEntry.time}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="comment">Comment</label>
+        <textarea class="form-control" name="comment" id="comment" [(ngModel)]="comment"></textarea>
+      </div>
+      <div class="form-group text-center">
+        <button [disabled]="buttonDisable" class="btn btn-dark" (click)="submitForm(changeStatusForm)">{{newStatus}}</button>
+        <img *ngIf="loading"
+             src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
+      </div>
+    </form>
+  </div>
 </ng-template>

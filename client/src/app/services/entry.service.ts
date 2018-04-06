@@ -23,7 +23,7 @@ export class EntryService {
   }
 
   getByUserIdAndDate(id: string, date: string) {
-    return this.http.get<Entry[]>(this.apiUrl + `entries/master/${id}?date=${date}`);
+    return this.http.get<Entry[]>(this.apiUrl + `entries/user/${id}?date=${date}`);
   }
 
   create(entry: Entry) {

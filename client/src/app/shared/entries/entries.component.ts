@@ -1,19 +1,18 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NgbDateStruct, NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { AlertService, EntryService } from "../../services";
 import { Entry, User } from "../../models";
 import { NgForm } from '@angular/forms';
 import 'rxjs/add/operator/map';
-
-const now = new Date();
+import "rxjs/add/operator/takeWhile";
 
 @Component({
   selector: 'app-entries',
   templateUrl: './entries.component.html',
   styleUrls: ['./entries.component.css'],
 })
-export class EntriesComponent implements OnInit {
+export class EntriesComponent implements OnInit, OnDestroy {
   entries: Entry[] = [];
   entriesForTemplate: any[] = [];
   dpModel: NgbDateStruct;
@@ -26,16 +25,19 @@ export class EntriesComponent implements OnInit {
   entriesStep: number = 1;
   entriesTimes: string[] = [];
   availableEntriesTimes: boolean[] = [];
+  availableTimes: boolean[] = [];
   comment: any;
   entriesLoading: boolean = false;
   loading: boolean = false;
+  buttonDisable: boolean = false;
+  now: any = new Date();
   timer: any;
   private modalRef: NgbModalRef;
+  private alive: boolean = true;
 
   @Input() user;
   @Input() userAuthorized;
   @Input() profileOwner;
-
 
   constructor(
     private entryService: EntryService,
@@ -50,8 +52,11 @@ export class EntriesComponent implements OnInit {
     this.setEntriesTimes();
     this.selectToday();
     this.selectedDateHandler();
+  }
 
-    console.log(this.profileOwner);
+  ngOnDestroy() {
+    clearTimeout(this.timer);
+    this.alive = false;
   }
 
   setEntriesTimes(): void {
@@ -61,12 +66,33 @@ export class EntriesComponent implements OnInit {
   }
 
   selectToday(): void {
-    this.dpModel = {year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate()};
+    this.dpModel = {year: this.now.getFullYear(), month: this.now.getMonth() + 1, day: this.now.getDate()};
   }
 
-  setAvailableTime(): void {
+  setAvailableTimes(): void {
+    for (let i = 0; i < this.entriesTimes.length; i++) {
+      let hour, minute;
+      if (this.entriesTimes[i].length === 5) {
+        hour = parseInt(this.entriesTimes[i].slice(0, 2));
+        minute = parseInt(this.entriesTimes[i].slice(3));
+      } else {
+        hour = parseInt(this.entriesTimes[i].slice(0, 1));
+        minute = parseInt(this.entriesTimes[i].slice(2));
+      }
+      let locEntryTime = new Date(`${this.dpModel.year},${this.dpModel.month}, ${this.dpModel.day} 
+              ${hour}:${minute}`);
+      if (this.now < locEntryTime) {
+        this.availableTimes[i] = true;
+      } else {
+        this.availableTimes[i] = false;
+      }
+    }
+  }
+
+  setAvailableEntriesTimes(): void {
     this.entriesLoading = true;
     this.entryService.getByUserIdAndDate(this.masterId, this.selectedDate)
+      .takeWhile(() => this.alive)
       .subscribe(
         entries => this.entries = entries,
         error => console.log("Error: ", error),
@@ -78,10 +104,13 @@ export class EntriesComponent implements OnInit {
           for (let entry of this.entries) {
             let index = this.entriesTimes.indexOf(entry.time);
             if (index > -1) {
-              this.availableEntriesTimes[index] = false;
+              if (entry.status === 'Accepted') {
+                this.availableEntriesTimes[index] = false;
+              }
               this.entriesForTemplate[index] = entry;
             }
           }
+          this.setAvailableTimes();
           this.entriesLoading = false;
         }
       )
@@ -94,7 +123,7 @@ export class EntriesComponent implements OnInit {
     if (month.length === 1) month = '0' + month;
 
     this.selectedDate = `${day}.${month}.${this.dpModel.year}`;
-    this.setAvailableTime();
+    this.setAvailableEntriesTimes();
   }
 
   selectTimeHandler(event: any): void {
@@ -118,25 +147,27 @@ export class EntriesComponent implements OnInit {
       customerComment: comment
     };
 
+    this.buttonDisable = !this.buttonDisable;
     this.loading = true;
     this.entryService.create(model)
+      .takeWhile(() => this.alive)
       .subscribe(
         data => {
-          console.log(data);
-          if (data) {
-            this.setAvailableTime();
-            this.alertService.success('Entry is created successfully.');
-            this.timer = setTimeout(() => {
-              this.modalRef.close();
-            }, 500);
+          if (data._id ) {
+            this.alertService.success('Entry created successfully.');
           } else {
             this.alertService.error('Error. Please try later.');
           }
-          this.loading = false;
         },
-        error => {
-          this.alertService.error(error.statusText);
+        error => this.alertService.error(error.statusText),
+        () => {
           this.loading = false;
+          this.now = new Date();
+          this.setAvailableEntriesTimes();
+          this.timer = setTimeout(() => {
+            this.modalRef.close();
+            this.buttonDisable = !this.buttonDisable;
+          }, 2000);
         });
   }
 }

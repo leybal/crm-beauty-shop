@@ -77,7 +77,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
       .subscribe(
         data => {
           if (data.id) {
-            this.alertService.success('Registration is completed successfully. ' +
+            this.alertService.success('Registration was successfully completed. ' +
               'Redirect to login page in 5 seconds');
 
             this.timer = setTimeout(() => {
