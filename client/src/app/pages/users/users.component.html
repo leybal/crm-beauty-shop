@@ -1,54 +1,44 @@
-<div class="row justify-content-center">
-  <div class="col-md-6 col-md-offset-3">
-    <div *ngIf="userAuthorized" class="col-md-12 text-center">
-      <h1>Hi {{currentUser.name}}!</h1>
-      <p>You're logged in with Angular 5!</p>
-      <p><a [routerLink]="['/login']">Logout</a></p>
-      <hr>
-    </div>
-
-    <h3 class="text-center">All registered users:</h3>
-
-    <div *ngIf="currentUser.role === 'customer' && userAuthorized" class="row">
-      <b class="text-uppercase">Search: </b>
-      <p>&nbsp;Find master by word</p>
-      <input
-        type="search"
-        [(ngModel)]="queryString"
-        class="form-control"
-        placeholder="Enter key word"
-        name="search"
-        required>
-    </div>
-
-    <div *ngIf="currentUser.role === 'master' && userAuthorized">
-      <h4>Search</h4>
-      <p>Find customer by word</p>
-      <input
-        type="search"
-        [(ngModel)]="queryString"
-        class="form-control"
-        placeholder="Enter key word"
-        name="search"
-        required>
-    </div>
-
-    <br>
-
-    <div *ngIf="users.length; then usersList else usersListIsEmpy"></div>
-
-    <ng-template #usersList>
-      <div class="row">
-        <div class="col-12" *ngFor="let user of users | SearchFilterPipe: queryString">
-          <p><a routerLink="{{user.id}}">{{user.name}}</a></p>
-          <p>Role: {{user.role}}</p>
-          <hr>
-        </div>
+<div>
+  <h3 class="text-center mb-4">All registered users:</h3>
+  <div class="row">
+    <aside class="col-md-4 col-lg-3 mb-4 mb-md-0">
+      <div class="users-filter">
+        <p><b>Search</b>: Find user by name</p>
+        <input
+          type="search"
+          [(ngModel)]="queryString"
+          class="form-control"
+          placeholder="Enter name"
+          name="search">
       </div>
-    </ng-template>
+    </aside>
 
-    <ng-template #usersListIsEmpy>
-      <p>No users yet.</p>
-    </ng-template>
+    <div class="col-md-8 col-lg-9 order-md-first">
+      <div *ngIf="users.length; then usersList else usersListIsEmpy"></div>
+
+      <ng-template #usersList>
+        <ul class="list-unstyled mb-4 user-wrap" *ngFor="let user of users | SearchFilterPipe: queryString">
+          <li class="d-flex flex-wrap">
+
+            <div class="col-12 col-md-4 col-lg-3 mb-3 mb-md-0 text-center" >
+              <a routerLink="{{user.id}}">
+                <img src="{{user.avatar}}" class="img-fluid" alt="{{user.name}}">
+              </a>
+            </div>
+
+            <div class="col-12 col-md-8 col-lg-9">
+              <p><a routerLink="{{user.id}}">{{user.name}}</a></p>
+              <p>Role: {{user.role}}</p>
+              <p *ngIf="user.userInfo">Info: {{user.userInfo}}</p>
+            </div>
+
+          </li>
+        </ul>
+      </ng-template>
+
+      <ng-template #usersListIsEmpy>
+        <p>No users yet.</p>
+      </ng-template>
+    </div>
   </div>
 </div>

@@ -1,30 +1,36 @@
-import { Component, OnInit, DoCheck, ElementRef, ViewChild } from '@angular/core';
+import {Component, OnInit, DoCheck, ViewChild, OnDestroy} from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { AuthenticationService, UserService } from "../../services";
+import { AlertService, AuthenticationService, UserService } from "../../services";
 import { confirmPasswordValidator } from "../../validators";
 import { User } from "../../models";
+import { environment } from '../../../environments/environment';
+import { ISubscription } from "rxjs/Subscription";
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/do';
 
 @Component({
   selector: 'app-edit-profile',
   templateUrl: './edit-profile.component.html',
   styleUrls: ['./edit-profile.component.css']
 })
-export class EditProfileComponent implements OnInit, DoCheck {
+export class EditProfileComponent implements OnInit, DoCheck, OnDestroy {
   userAuthorized: boolean;
   editProfileForm: FormGroup;
   userPassword: string;
   userConfPassword: string;
-  userModel: any = {};
-  roles: string[] = ['Customer', 'Master'];
-  selectedRole: string = this.roles[0].toLowerCase();
   loading = false;
   user: User;
+  avatar: File;
+  avatarLocalUrl: any[];
+  avatarUrl = environment.avatarUrl;
+  private subscription: ISubscription;
 
   constructor(
     private router: Router,
     private authentication: AuthenticationService,
     private userService: UserService,
+    private alertService: AlertService,
     private formBuilder: FormBuilder
   ) {
     this.editProfileForm = formBuilder.group({
@@ -33,31 +39,33 @@ export class EditProfileComponent implements OnInit, DoCheck {
       name: ['', Validators.compose([Validators.required, Validators.maxLength(15),
         Validators.minLength(1)])],
       email: ['', [Validators.required, Validators.email]],
-      role: [''],
       phoneNumber: ['', Validators.compose([Validators.required, Validators.maxLength(13),
         Validators.minLength(10)])],
       password: ['', [Validators.required]],
       confPassword: ['', [Validators.required, confirmPasswordValidator(this)]],
       userInfo: [''],
-      token: [''],
     });
   }
 
-  @ViewChild('fileInput') fileInput: ElementRef;
+  @ViewChild('fileInput') fileInput: File;
 
   ngOnInit() {
     this.authentication.cast.subscribe(userAuthorized => this.userAuthorized = userAuthorized);
     const currentUser: User = JSON.parse(localStorage.getItem('currentUser'));
-    this.userService.getById(currentUser.id).subscribe(user => {
-      this.user = user;
-      this.user.avatar = 'https://beautyshop-server.herokuapp.com/images/avatars/' + user.avatar;
-      this.user.token = currentUser.token;
-
-      this.editProfileForm.get('name').setValue(this.user.name);
-      this.editProfileForm.get('email').setValue(this.user.email);
-      this.editProfileForm.get('phoneNumber').setValue(this.user.phoneNumber);
-      this.editProfileForm.get('userInfo').setValue(this.user.userInfo);
-    });
+    this.subscription = this.userService.getById(currentUser.id)
+      .map(user => {
+        user.avatar = this.avatarUrl + user.avatar;
+        return user;
+      })
+      .do((user) => {
+        this.editProfileForm.get('name').setValue(user.name);
+        this.editProfileForm.get('email').setValue(user.email);
+        this.editProfileForm.get('phoneNumber').setValue(user.phoneNumber);
+        this.editProfileForm.get('userInfo').setValue(user.userInfo);
+      })
+      .subscribe(user => {
+        this.user = user;
+      });
   }
 
   ngDoCheck() {
@@ -66,28 +74,25 @@ export class EditProfileComponent implements OnInit, DoCheck {
     }
   }
 
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+
   onFileChange(event) {
-    const reader = new FileReader();
-    if (event.target.files && event.target.files.length > 0) {
-      const file = event.target.files[0];
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        this.editProfileForm.get('avatar').setValue({
-          filename: file.name,
-          filetype: file.type,
-          value: reader.result.split(',')[1]
-        });
+    this.avatar = <File>event.target.files[0];
+
+    if (event.target.files && event.target.files[0]) {
+      const reader = new FileReader();
+      reader.onload = (event: any) => {
+        this.avatarLocalUrl = event.target.result;
       };
+      reader.readAsDataURL(event.target.files[0]);
     }
   }
 
   clearFile() {
-    this.editProfileForm.get('avatar').setValue(null);
-    this.fileInput.nativeElement.value = '';
-  }
-
-  selectChangeHandler (event: any) {
-    this.selectedRole = event.target.value;
+    this.avatar = null;
+    this.avatarLocalUrl = this.user.avatar;
   }
 
   setPasswordValue(password) {
@@ -98,24 +103,29 @@ export class EditProfileComponent implements OnInit, DoCheck {
     this.userConfPassword = confPassword;
   }
 
-
   postData(editProfileForm: any) {
-    this.userModel = editProfileForm.value;
-    this.userModel.role = this.selectedRole;
-    this.userModel.id = this.user.id;
-    this.userModel.token = this.user.token;
-
-    console.log(this.userModel );
+    const fd = new FormData();
+    if (this.avatar) {
+      fd.append('avatar', this.avatar, this.avatar.name);
+    } else {
+      fd.append('avatar', null);
+    }
+    fd.append('name', editProfileForm.value.name);
+    fd.append('email', editProfileForm.value.email);
+    fd.append('phoneNumber', editProfileForm.value.phoneNumber);
+    fd.append('password', editProfileForm.value.password);
+    fd.append('userInfo', editProfileForm.value.userInfo);
 
     this.loading = true;
-    this.userService.update(this.userModel)
+    this.userService.update(fd, this.user.id)
       .subscribe(
         data => {
-          console.log(data);
+          this.userService.updateLocalData(data);
           this.loading = false;
+          this.alertService.success('Profile saved successfully.');
         },
         error => {
-          console.log(error);
+          this.alertService.error(error.statusText);
           this.loading = false;
         });
   }

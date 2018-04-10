@@ -17,10 +17,12 @@ export class HeaderComponent implements OnInit {
     private authentication: AuthenticationService) { }
 
   ngOnInit() {
-    this.authentication.cast.subscribe(userAuthorized => this.userAuthorized = userAuthorized);
-    if (this.userAuthorized) {
-      this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    }
+    this.authentication.cast.subscribe(userAuthorized => {
+      this.userAuthorized = userAuthorized;
+      if (this.userAuthorized) {
+        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+      }
+    });
   }
 
   logOut() {

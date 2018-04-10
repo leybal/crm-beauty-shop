@@ -1,0 +1,143 @@
+<div class="row mt-5 entry-comp-wrap">
+  <div class="col-12 col-md-5 col-lg-4">
+    <p>Select date:</p>
+    <div>
+      <ngb-datepicker #dp [(ngModel)]="dpModel" (ngModelChange)="selectedDateHandler()"></ngb-datepicker>
+    </div>
+    <br>
+    <div class="btn-group" role="group" aria-label="Basic example">
+      <button type="button" class="btn btn-sm btn-secondary"
+              (click)="selectToday(); dp.navigateTo()">Select Today</button>
+      <button type="button" class="btn btn-sm btn-secondary"
+              (click)="dp.navigateTo()">To current month</button>
+    </div>
+  </div>
+  <div class="col-12 col-md-7 col-lg-6">
+    <p>Select time:</p>
+    <ul class="list-group" *ngIf="!entriesLoading">
+      <li class="list-group-item entry-time"
+          *ngFor="let time of entriesTimes; let i = index">
+        <div *ngIf="availableEntriesTimes[i] && availableTimes[i] && userAuthorized &&
+            !profileOwner; else unclickableTime"
+            (click)="selectTimeHandler($event); open(entryModal)"
+            class="entry-time_free">
+          {{time}}
+        </div>
+        <ng-template #unclickableTime>
+          <div *ngIf="availableEntriesTimes[i]" [ngClass]="{'past-entries': !availableTimes[i]}">
+            {{time}}
+          </div>
+        </ng-template>
+
+        <div *ngIf="!availableEntriesTimes[i]" class="entry-time_busy">
+          <div class="row">
+            <div class="col-6">{{time}}</div>
+            <div class="col-6 text-right">
+              <a class="" href="users/{{entriesForTemplate[i].customerId._id}}">
+                {{entriesForTemplate[i].customerId.name}}
+              </a>
+            </div>
+          </div>
+        </div>
+      </li>
+    </ul>
+
+    <div *ngIf="entriesLoading" class="text-center">
+      <svg class="lds-spin" width="50px" height="50px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><g transform="translate(80,50)">
+        <g transform="rotate(0)">
+          <circle cx="0" cy="0" r="10" fill="#000000" fill-opacity="1" transform="scale(1.0725 1.0725)">
+            <animateTransform attributeName="transform" type="scale" begin="-0.875s" values="1.1 1.1;1 1" keyTimes="0;1" dur="1s" repeatCount="indefinite"></animateTransform>
+            <animate attributeName="fill-opacity" keyTimes="0;1" dur="1s" repeatCount="indefinite" values="1;0" begin="-0.875s"></animate>
+          </circle>
+        </g>
+      </g><g transform="translate(71.21320343559643,71.21320343559643)">
+        <g transform="rotate(45)">
+          <circle cx="0" cy="0" r="10" fill="#000000" fill-opacity="0.875" transform="scale(1.085 1.085)">
+            <animateTransform attributeName="transform" type="scale" begin="-0.75s" values="1.1 1.1;1 1" keyTimes="0;1" dur="1s" repeatCount="indefinite"></animateTransform>
+            <animate attributeName="fill-opacity" keyTimes="0;1" dur="1s" repeatCount="indefinite" values="1;0" begin="-0.75s"></animate>
+          </circle>
+        </g>
+      </g><g transform="translate(50,80)">
+        <g transform="rotate(90)">
+          <circle cx="0" cy="0" r="10" fill="#000000" fill-opacity="0.75" transform="scale(1.0975 1.0975)">
+            <animateTransform attributeName="transform" type="scale" begin="-0.625s" values="1.1 1.1;1 1" keyTimes="0;1" dur="1s" repeatCount="indefinite"></animateTransform>
+            <animate attributeName="fill-opacity" keyTimes="0;1" dur="1s" repeatCount="indefinite" values="1;0" begin="-0.625s"></animate>
+          </circle>
+        </g>
+      </g><g transform="translate(28.786796564403577,71.21320343559643)">
+        <g transform="rotate(135)">
+          <circle cx="0" cy="0" r="10" fill="#000000" fill-opacity="0.625" transform="scale(1.01 1.01)">
+            <animateTransform attributeName="transform" type="scale" begin="-0.5s" values="1.1 1.1;1 1" keyTimes="0;1" dur="1s" repeatCount="indefinite"></animateTransform>
+            <animate attributeName="fill-opacity" keyTimes="0;1" dur="1s" repeatCount="indefinite" values="1;0" begin="-0.5s"></animate>
+          </circle>
+        </g>
+      </g><g transform="translate(20,50.00000000000001)">
+        <g transform="rotate(180)">
+          <circle cx="0" cy="0" r="10" fill="#000000" fill-opacity="0.5" transform="scale(1.0225 1.0225)">
+            <animateTransform attributeName="transform" type="scale" begin="-0.375s" values="1.1 1.1;1 1" keyTimes="0;1" dur="1s" repeatCount="indefinite"></animateTransform>
+            <animate attributeName="fill-opacity" keyTimes="0;1" dur="1s" repeatCount="indefinite" values="1;0" begin="-0.375s"></animate>
+          </circle>
+        </g>
+      </g><g transform="translate(28.78679656440357,28.786796564403577)">
+        <g transform="rotate(225)">
+          <circle cx="0" cy="0" r="10" fill="#000000" fill-opacity="0.375" transform="scale(1.035 1.035)">
+            <animateTransform attributeName="transform" type="scale" begin="-0.25s" values="1.1 1.1;1 1" keyTimes="0;1" dur="1s" repeatCount="indefinite"></animateTransform>
+            <animate attributeName="fill-opacity" keyTimes="0;1" dur="1s" repeatCount="indefinite" values="1;0" begin="-0.25s"></animate>
+          </circle>
+        </g>
+      </g><g transform="translate(49.99999999999999,20)">
+        <g transform="rotate(270)">
+          <circle cx="0" cy="0" r="10" fill="#000000" fill-opacity="0.25" transform="scale(1.0475 1.0475)">
+            <animateTransform attributeName="transform" type="scale" begin="-0.125s" values="1.1 1.1;1 1" keyTimes="0;1" dur="1s" repeatCount="indefinite"></animateTransform>
+            <animate attributeName="fill-opacity" keyTimes="0;1" dur="1s" repeatCount="indefinite" values="1;0" begin="-0.125s"></animate>
+          </circle>
+        </g>
+      </g><g transform="translate(71.21320343559643,28.78679656440357)">
+        <g transform="rotate(315)">
+          <circle cx="0" cy="0" r="10" fill="#000000" fill-opacity="0.125" transform="scale(1.06 1.06)">
+            <animateTransform attributeName="transform" type="scale" begin="0s" values="1.1 1.1;1 1" keyTimes="0;1" dur="1s" repeatCount="indefinite"></animateTransform>
+            <animate attributeName="fill-opacity" keyTimes="0;1" dur="1s" repeatCount="indefinite" values="1;0" begin="0s"></animate>
+          </circle>
+        </g>
+      </g></svg>
+    </div>
+  </div>
+</div>
+
+<ng-template #entryModal let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Make an appointment with {{user.name}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form #entryForm="ngForm" novalidate>
+      <alert></alert>
+      <div class="row">
+        <div class="col-6">
+          <div class="form-group">
+            <label>Date</label>
+            <p>{{selectedDate}}</p>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="form-group">
+            <label>Time</label>
+            <p>{{selectedTime}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="comment">Comment</label>
+        <textarea class="form-control" name="comment" id="comment" [(ngModel)]="comment"></textarea>
+      </div>
+
+      <div class="form-group text-center">
+        <button [disabled]="buttonDisable" class="btn btn-dark" (click)="submitForm(entryForm)">Submit</button>
+        <img *ngIf="loading"
+             src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
+      </div>
+    </form>
+  </div>
+</ng-template>

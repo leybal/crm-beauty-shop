@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators, NgForm } from '@angular/forms';
-import { UserService } from '../../services/index';
-import { confirmPasswordValidator } from '../../validators/index';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UserService, AlertService } from '../../services/';
+import { confirmPasswordValidator } from '../../validators/';
+import { ISubscription } from "rxjs/Subscription";
+import 'rxjs/add/operator/map';
 
 
 @Component({
@@ -10,7 +12,7 @@ import { confirmPasswordValidator } from '../../validators/index';
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnInit, OnDestroy {
   registrationForm: FormGroup;
   userPassword: string;
   userConfPassword: string;
@@ -18,10 +20,13 @@ export class RegisterComponent {
   roles: string[] = ['Customer', 'Master'];
   selectedRole: string = this.roles[0].toLowerCase();
   loading = false;
+  timer: any;
+  private subscription: ISubscription;
 
   constructor(
     private router: Router,
     private userService: UserService,
+    private alertService: AlertService,
     private formBuilder: FormBuilder
   ) {
     this.registrationForm = formBuilder.group({
@@ -36,6 +41,14 @@ export class RegisterComponent {
     });
   }
 
+  ngOnInit() { }
+
+  ngOnDestroy() {
+    clearTimeout(this.timer);
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
 
   selectChangeHandler (event: any) {
     this.selectedRole = event.target.value;
@@ -60,19 +73,23 @@ export class RegisterComponent {
     };
 
     this.loading = true;
-    this.userService.create(this.userModel)
+    this.subscription = this.userService.create(this.userModel)
       .subscribe(
         data => {
-          if (data) {
-            console.log(data);
-            // this.router.navigate(['login']);
+          if (data.id) {
+            this.alertService.success('Registration was successfully completed. ' +
+              'Redirect to login page in 5 seconds');
+
+            this.timer = setTimeout(() => {
+              this.router.navigate(['login']);
+            }, 5000);
           } else {
-            console.log(data);
+            this.alertService.error('Error. Please try later.');
           }
           this.loading = false;
         },
         error => {
-          console.log(error);
+          this.alertService.error(error.error.errmsg);
           this.loading = false;
         });
   }

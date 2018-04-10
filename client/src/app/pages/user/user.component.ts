@@ -1,33 +1,38 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UserService, AuthenticationService } from "../../services/index";
 import { User } from "../../models/index";
+import { environment } from '../../../environments/environment';
+import { ISubscription } from "rxjs/Subscription";
+import 'rxjs/add/operator/map';
 
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.css']
 })
-export class UserComponent implements OnInit {
+export class UserComponent implements OnInit, OnDestroy {
   user: User;
   userAuthorized: boolean;
   currentUser: User;
-  profileOwner: boolean;
+  profileOwner: boolean = false;
+  avatarUrl = environment.avatarUrl;
+  private subscription: ISubscription;
 
   constructor(
     private userService: UserService,
     private currentRout: ActivatedRoute,
     private authentication: AuthenticationService
-  ) {
-    this.profileOwner = false;
-  }
+  ) { }
 
   ngOnInit() {
     const id: string = this.currentRout.snapshot.paramMap.get('id');
-    this.userService.getById(id).subscribe(user => {
-      this.user = user;
-      this.user.avatar = 'https://beautyshop-server.herokuapp.com/images/avatars/' + user.avatar;
-    });
+    this.subscription = this.userService.getById(id)
+      .map(user => {
+        user.avatar = this.avatarUrl + user.avatar;
+        return user;
+      })
+      .subscribe(user => this.user = user);
 
     this.authentication.cast.subscribe(userAuthorized => this.userAuthorized = userAuthorized);
     if (this.userAuthorized) {
@@ -37,5 +42,9 @@ export class UserComponent implements OnInit {
     if (id === this.currentUser.id) {
       this.profileOwner = true;
     }
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }

@@ -21,16 +21,16 @@
     </p>
   </div>
 
-  <div *ngIf="user.role === 'master' && userAuthorized && profileOwner" class="col-12 col-md-2 col-lg-3">
-    <a routerLink="/users" class="search-link">Find all customers</a>
-  </div>
-  <div *ngIf="user.role === 'master' && userAuthorized && profileOwner" class="col-12 col-md-10 col-lg-7">
-    <div>Calendar for master</div>
-  </div>
-  <div *ngIf="user.role === 'master'" class="col-12 col-md-10 col-lg-7">
-    <div>Calendar for customer</div>
-  </div>
-  <div *ngIf="user.role === 'customer' && userAuthorized && profileOwner" class="col-12 col-md-2 col-lg-3">
-    <a routerLink="/users" class="search-link">Find all masters</a>
+  <div  class="col-12 col-md-2 col-lg-3">
+    <a *ngIf="user.role === 'master' && userAuthorized && profileOwner"
+       routerLink="/users" class="search-link">Find all customers</a>
+    <a *ngIf="user.role === 'customer' && userAuthorized && profileOwner"
+       routerLink="/users" class="search-link">Find all masters</a>
   </div>
 </div>
+
+<app-entries *ngIf="user.role === 'master'" [user]="user" [userAuthorized]="userAuthorized"
+             [profileOwner]="profileOwner"></app-entries>
+
+
+<!--<ngbd-datepicker-basic [(ngModel)]="model" (navigate)="date = $event.next"></ngbd-datepicker-basic>-->
