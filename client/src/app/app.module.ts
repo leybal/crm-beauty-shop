@@ -26,6 +26,7 @@ import { SearchFilterPipe } from './pipes/search-filter.pipe';
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { EntriesComponent } from './shared/entries/entries.component';
 import { EntriesListComponent } from './pages/entries-list/entries-list.component';
+import {SearchStatusPipe} from "./pipes/searchStatus.pipe";
 
 
 @NgModule({
@@ -43,7 +44,8 @@ import { EntriesListComponent } from './pages/entries-list/entries-list.componen
     EditProfileComponent,
     SearchFilterPipe,
     EntriesComponent,
-    EntriesListComponent
+    EntriesListComponent,
+    SearchStatusPipe
   ],
   imports: [
     BrowserModule,
