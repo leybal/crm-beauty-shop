@@ -1,14 +1,12 @@
-<div class="entries-filter">
-  <p><b>Search</b>: Find entry</p>
-  <input
-    type="search"
-    [(ngModel)]="queryString"
-    class="form-control"
-    placeholder="Choose status"
-    name="search">
-</div>
+<p><b>Search</b>: Find entry</p>
+<select type="number" [(ngModel)]="selectStatus">
+  <option *ngFor="let status of statuses" [ngValue]="status">{{status}}</option>
+</select>
+
+
 <ul class="list-group" *ngIf="entries.length; else usersListIsEmpy">
-  <li class="list-group-item" *ngFor="let entry of entries | searchStatus: queryString">
+  <!--<li class="list-group-item" *ngFor="let entry of entries | searchStatus: queryString">-->
+  <li class="list-group-item" *ngFor="let entry of entries | searchStatus: selectStatus">
     <div class="row mb-3">
       <div class="col-6">
         <a *ngIf="currentUser.role === 'master'"

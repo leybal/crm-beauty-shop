@@ -1,11 +1,11 @@
-import { Component, OnDestroy, OnInit, DoCheck } from '@angular/core';
+import {Component, OnDestroy, OnInit, DoCheck, ViewChild} from '@angular/core';
 import { Router } from "@angular/router";
 import { EntryService, AlertService, AuthenticationService } from "../../services";
 import { User, Entry } from "../../models";
-import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
+import {NgbModal, NgbModalRef, NgbTypeahead} from "@ng-bootstrap/ng-bootstrap";
 import { NgForm } from '@angular/forms';
 import "rxjs/add/operator/takeWhile";
-
+import {Subject, Observable} from "rxjs";
 
 @Component({
   selector: 'app-entries-list',
@@ -23,6 +23,12 @@ export class EntriesListComponent implements OnInit, DoCheck, OnDestroy {
   timer: any;
   private modalRef: NgbModalRef;
   private alive: boolean = true;
+  statuses: Array<String> = [
+  'new',
+  'acepted',
+  'rejected',
+  'closed'
+]
 
   constructor(
     private router: Router,
