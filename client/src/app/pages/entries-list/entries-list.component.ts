@@ -25,10 +25,10 @@ export class EntriesListComponent implements OnInit, DoCheck, OnDestroy {
   private modalRef: NgbModalRef;
   private alive: boolean = true;
   statuses: Array<String> = [
-    'new',
-    'acepted',
-    'rejected',
-    'closed'
+    'New',
+    'Acepted',
+    'Rejected',
+    'Closed'
   ];
 
   model: NgbDateStruct;

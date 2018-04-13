@@ -1,51 +1,66 @@
-<ngb-datepicker #dp [(ngModel)]="model" (navigate)="date = $event.next"></ngb-datepicker>
-
-<hr/>
-
-<button class="btn btn-sm btn-outline-primary" (click)="selectToday()">Select Today</button>
-<button class="btn btn-sm btn-outline-primary" (click)="dp.navigateTo()">To current month</button>
-
-<hr/>
-
-<p><b>Search</b>: Find entry</p>
-<select type="number" [(ngModel)]="selectStatus">
-  <option *ngFor="let status of statuses" [ngValue]="status">{{status}}</option>
-</select>
-<ul class="list-group" *ngIf="entries.length; else usersListIsEmpy">
-  <li class="list-group-item" *ngFor="let entry of entries | searchStatus: selectStatus | searchDate: model">
-    <div class="row mb-3">
-      <div class="col-6">
-        <a *ngIf="currentUser.role === 'master'"
-           routerLink="/users/{{entry.customerId._id}}">{{entry.customerId.name}}</a>
-        <a *ngIf="currentUser.role === 'customer'"
-           routerLink="/users/{{entry.masterId._id}}">{{entry.masterId.name}}</a>
+<div class="row mt-5 entry-comp-wrap">
+  <div class="col-12 col-md-6 col-lg-3">
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <label class="input-group-text" for="inputGroupSelect">Statuses</label>
       </div>
-      <div class="col-6 text-right">
-        <span *ngIf="entry.status === 'New'" class="bg-primary p-1 text-white">{{entry.status}}</span>
-        <span *ngIf="entry.status === 'Accepted'" class="bg-success p-1 text-white">{{entry.status}}</span>
-        <span *ngIf="entry.status === 'Rejected'" class="bg-warning p-1">{{entry.status}}</span>
-        <span *ngIf="entry.status === 'Completed'" class="bg-light p-1">{{entry.status}}</span>
-      </div>
+      <select class="custom-select" id="inputGroupSelect" type="number" [(ngModel)]="selectStatus">
+        <option *ngFor="let status of statuses" [ngValue]="status">{{status}}</option>
+      </select>
     </div>
-    <div class="row mb-3">
-      <div class="col-6">Date: {{entry.date}}</div>
-      <div class="col-6 text-right">Time: {{entry.time}}</div>
-    </div>
-    <p>
-      Phone:
-      <span *ngIf="currentUser.role === 'master'">{{entry.customerId.phoneNumber}}</span>
-      <span *ngIf="currentUser.role === 'customer'">{{entry.masterId.phoneNumber}}</span>
-    </p>
-    <p *ngIf="entry.customerComment">Customer comment: {{entry.customerComment}}</p>
-    <p *ngIf="entry.masterComment">Master comment: {{entry.masterComment}}</p>
+  </div>
+  <div class="col-12 col-md-6 col-lg-3">
+    <p>Select date:</p>
     <div>
-      <button *ngIf="currentUser.role === 'master' && entry.status === 'New'" type="button" class="btn btn-primary"
-              (click)="open(changeStatusModal, entry, 'Accept')">accept</button>
-      <button *ngIf="entry.status !== 'Rejected'" type="button" class="btn btn-secondary"
-              (click)="open(changeStatusModal, entry, 'Reject')">reject</button>
+      <ngb-datepicker #dp [(ngModel)]="model" (navigate)="date = $event.next"></ngb-datepicker>
     </div>
-  </li>
-</ul>
+    <br>
+    <div class="btn-group" role="group" aria-label="Basic example">
+      <button type="button" class="btn btn-sm btn-secondary"
+              (click)="selectToday(); dp.navigateTo()">Select Today</button>
+      <button type="button" class="btn btn-sm btn-secondary"
+              (click)="dp.navigateTo()">To current month</button>
+    </div>
+  </div>
+  <div class="col-12 col-md-6 col-lg-6">
+    <ul class="list-group" *ngIf="entries.length; else usersListIsEmpy">
+      <li class="list-group-item" *ngFor="let entry of entries | searchStatus: selectStatus | searchDate: model">
+        <div class="row mb-3">
+          <div class="col-6">
+            <a *ngIf="currentUser.role === 'master'"
+               routerLink="/users/{{entry.customerId._id}}">{{entry.customerId.name}}</a>
+            <a *ngIf="currentUser.role === 'customer'"
+               routerLink="/users/{{entry.masterId._id}}">{{entry.masterId.name}}</a>
+          </div>
+          <div class="col-6 text-right">
+            <span *ngIf="entry.status === 'New'" class="bg-primary p-1 text-white">{{entry.status}}</span>
+            <span *ngIf="entry.status === 'Accepted'" class="bg-success p-1 text-white">{{entry.status}}</span>
+            <span *ngIf="entry.status === 'Rejected'" class="bg-warning p-1">{{entry.status}}</span>
+            <span *ngIf="entry.status === 'Completed'" class="bg-light p-1">{{entry.status}}</span>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-6">Date: {{entry.date}}</div>
+          <div class="col-6 text-right">Time: {{entry.time}}</div>
+        </div>
+        <p>
+          Phone:
+          <span *ngIf="currentUser.role === 'master'">{{entry.customerId.phoneNumber}}</span>
+          <span *ngIf="currentUser.role === 'customer'">{{entry.masterId.phoneNumber}}</span>
+        </p>
+        <p *ngIf="entry.customerComment">Customer comment: {{entry.customerComment}}</p>
+        <p *ngIf="entry.masterComment">Master comment: {{entry.masterComment}}</p>
+        <div>
+          <button *ngIf="currentUser.role === 'master' && entry.status === 'New'" type="button" class="btn btn-primary"
+                  (click)="open(changeStatusModal, entry, 'Accept')">accept</button>
+          <button *ngIf="entry.status !== 'Rejected'" type="button" class="btn btn-secondary"
+                  (click)="open(changeStatusModal, entry, 'Reject')">reject</button>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+</div>
 
 <ng-template #usersListIsEmpy>
   <p>No entries yet.</p>
