@@ -1,0 +1,55 @@
+h3 {
+  height: 20px;
+  text-align: center;
+}
+
+ngx-carousel img {
+  width: 150px;
+  margin: auto;
+  object-position: center;
+}
+
+ngx-item > div {
+  display: flex;
+}
+
+ngx-carousel button {
+  border: none;
+  position: absolute;
+  bottom: 0;
+  top: 0;
+  width: 50px;
+  height: 50px;
+  border-radius: 999%;
+  margin: auto;
+}
+
+ngx-carousel button[NgxCarouselPrev] {
+  left: 0;
+  display: block;
+  background: #fff;
+  border: 1px solid #ccc;
+}
+
+ngx-carousel button[NgxCarouselNext] {
+  right: 0;
+  display: block;
+  background: #fff;
+  border: 1px solid #ccc;
+}
+
+.ngxcarouselPointDefault[_ngcontent-c5] .ngxcarouselPoint[_ngcontent-c5] li[_ngcontent-c5] {
+  border-radius: 0;
+  width: 50px;
+  height: 5px;
+}
+
+.item-image {
+  height: 200px;
+  color: white;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid #f1f1f1;
+  box-shadow: 0 0 6px rgba(101, 101, 101, 0.15);
+  width: 93%;
+}
