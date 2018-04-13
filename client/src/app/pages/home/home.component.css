@@ -1,0 +1,34 @@
+app-slider {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  right: 0;
+  top: 56px;
+}
+
+.slider {
+  min-height: 450px;
+}
+
+.info-about-site {
+  padding: 35px 0;
+}
+
+.list-icon {
+  font-size: 80px;
+  color: #d8d8d8;
+  text-shadow: 3px 3px 5px rgba(138, 138, 138, 0.98);
+}
+
+.advantages-list-item {
+  width: 200px;
+}
+
+.advantages-list {
+  margin: 50px 0;
+}
+
+.advantages-list-item-text {
+  padding: 0 10px;
+  color: #676767;
+}

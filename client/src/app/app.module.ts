@@ -6,6 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { NgxCarouselModule } from 'ngx-carousel';
 
 import { AlertComponent } from './directives/index';
 import { AuthGuard } from './guards/index';
@@ -26,6 +27,8 @@ import { SearchFilterPipe } from './pipes/search-filter.pipe';
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { EntriesComponent } from './shared/entries/entries.component';
 import { EntriesListComponent } from './pages/entries-list/entries-list.component';
+import { CarouselComponent } from './shared/carousel/carousel.component';
+import { SliderComponent } from './shared/slider/slider.component';
 
 
 @NgModule({
@@ -43,7 +46,9 @@ import { EntriesListComponent } from './pages/entries-list/entries-list.componen
     EditProfileComponent,
     SearchFilterPipe,
     EntriesComponent,
-    EntriesListComponent
+    EntriesListComponent,
+    CarouselComponent,
+    SliderComponent
   ],
   imports: [
     BrowserModule,
@@ -51,7 +56,8 @@ import { EntriesListComponent } from './pages/entries-list/entries-list.componen
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    NgbModule.forRoot()
+    NgbModule.forRoot(),
+    NgxCarouselModule
   ],
   providers: [
     AuthGuard,
