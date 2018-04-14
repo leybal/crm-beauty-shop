@@ -50,7 +50,7 @@ import { SliderComponent } from './shared/slider/slider.component';
     EntriesComponent,
     EntriesListComponent,
     SearchStatusPipe,
-    SearchDatePipe
+    SearchDatePipe,
     CarouselComponent,
     SliderComponent
   ],
