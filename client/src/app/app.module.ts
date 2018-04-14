@@ -27,6 +27,8 @@ import { SearchFilterPipe } from './pipes/search-filter.pipe';
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { EntriesComponent } from './shared/entries/entries.component';
 import { EntriesListComponent } from './pages/entries-list/entries-list.component';
+import {SearchStatusPipe} from "./pipes/searchStatus.pipe";
+import {SearchDatePipe} from "./pipes/search-date";
 import { CarouselComponent } from './shared/carousel/carousel.component';
 import { SliderComponent } from './shared/slider/slider.component';
 
@@ -47,6 +49,8 @@ import { SliderComponent } from './shared/slider/slider.component';
     SearchFilterPipe,
     EntriesComponent,
     EntriesListComponent,
+    SearchStatusPipe,
+    SearchDatePipe
     CarouselComponent,
     SliderComponent
   ],
