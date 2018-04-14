@@ -1,12 +1,12 @@
-import {Component, OnDestroy, OnInit, DoCheck} from '@angular/core';
+import { Component, OnDestroy, OnInit, DoCheck } from '@angular/core';
 import { Router } from "@angular/router";
 import { EntryService, AlertService, AuthenticationService } from "../../services";
 import { User, Entry } from "../../models";
-import {NgbModal, NgbModalRef, NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
+import { NgbModal, NgbModalRef, NgbDateStruct } from "@ng-bootstrap/ng-bootstrap";
 import { NgForm } from '@angular/forms';
 import "rxjs/add/operator/takeWhile";
 
-const   now = new Date();
+const now = new Date();
 
 @Component({
   selector: 'app-entries-list',
@@ -24,21 +24,11 @@ export class EntriesListComponent implements OnInit, DoCheck, OnDestroy {
   timer: any;
   private modalRef: NgbModalRef;
   private alive: boolean = true;
-  statuses: Array<String> = [
-    'New',
-    'Acepted',
-    'Rejected',
-    'Closed'
-  ];
-
   model: NgbDateStruct;
+  comment: any;
   date: {year: number, month: number};
-
-  selectToday() {
-    this.model = {year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate()};
-  }
-
-
+  statuses: Array<String> = ['All', 'New', 'Accepted', 'Rejected', 'Finished'];
+  selectStatus: string;
 
   constructor(
     private router: Router,
@@ -65,15 +55,23 @@ export class EntriesListComponent implements OnInit, DoCheck, OnDestroy {
     this.alive = false;
   }
 
+  selectToday() {
+    this.model = {year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate()};
+  }
+
   getEntries(): void {
     this.entryService.getByUserId(this.currentUser.id, this.currentUser.role)
       .subscribe(entries => this.entries = entries);
   }
 
   open(content, selectedEntry, newStatus) {
+    this.comment = '';
     this.newStatus = newStatus;
     this.selectedEntry = selectedEntry;
     this.modalRef = this.modalService.open(content);
+  }
+
+  resetFilters() {
   }
 
   submitForm(form: NgForm) {
@@ -90,8 +88,21 @@ export class EntriesListComponent implements OnInit, DoCheck, OnDestroy {
       customerComment = form.value.comment || '';
     }
 
-    if (this.newStatus === 'Accept') newStatus = 'Accepted';
-    if (this.newStatus === 'Reject') newStatus = 'Rejected';
+    switch (this.newStatus) {
+      case 'Accept':
+        newStatus = 'Accepted';
+        break;
+      case 'Reject':
+        newStatus = 'Rejected';
+        break;
+      case 'Finish':
+        newStatus = 'Finished';
+        break;
+      default:
+        newStatus = 'New';
+        break;
+    }
+
     model =  {
       masterComment: masterComment,
       customerComment: customerComment,
@@ -104,7 +115,6 @@ export class EntriesListComponent implements OnInit, DoCheck, OnDestroy {
       .takeWhile(() => this.alive)
       .subscribe(
         data => {
-          console.log(data);
           if (data._id) {
             this.alertService.success('Status updated successfully.');
           } else {

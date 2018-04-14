@@ -1,26 +1,23 @@
-import {Component, OnInit} from '@angular/core';
-import {NgxCarousel} from 'ngx-carousel';
-import {ISubscription} from "rxjs/Subscription";
-
-import {environment} from '../../../environments/environment';
-import {User} from './../../models';
-import {UserService} from '../../services/index';
-
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { NgxCarousel } from 'ngx-carousel';
+import { ISubscription } from "rxjs/Subscription";
+import { environment } from '../../../environments/environment';
+import { User } from './../../models';
+import { UserService } from '../../services';
 
 @Component({
   selector: 'app-carousel',
   templateUrl: './carousel.component.html',
   styleUrls: ['./carousel.component.css']
 })
-export class CarouselComponent implements OnInit {
+export class CarouselComponent implements OnInit, OnDestroy {
   users: User[] = [];
   avatarUrl = environment.avatarUrl;
   public items: object[] = [];
   public carouselConfig: NgxCarousel;
   private subscription: ISubscription;
 
-  constructor(private userService: UserService) {
-  }
+  constructor(private userService: UserService) { }
 
   private loadAllUsers() {
     this.subscription = this.userService.getAll()
@@ -45,7 +42,6 @@ export class CarouselComponent implements OnInit {
   }
 
   ngOnInit() {
-
     this.loadAllUsers();
 
     this.carouselConfig = {
@@ -59,5 +55,9 @@ export class CarouselComponent implements OnInit {
       loop: true,
       touch: true
     };
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }

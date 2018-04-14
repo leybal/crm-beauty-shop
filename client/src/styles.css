@@ -75,3 +75,10 @@ input:-webkit-autofill:active {
 .past-entries {
   background-color: #f6f6f6;
 }
+
+@media only screen and (min-width: 768px) {
+  header ul.navbar-nav {
+    position: relative;
+    top: 2px;
+  }
+}

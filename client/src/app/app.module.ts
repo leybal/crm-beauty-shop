@@ -23,14 +23,14 @@ import { RegisterComponent } from './pages/register/register.component';
 import { UsersComponent } from './pages/users/users.component';
 import { UserComponent } from './pages/user/user.component';
 import { EditProfileComponent } from './pages/edit-profile/edit-profile.component';
-import { SearchFilterPipe } from './pipes/search-filter.pipe';
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { EntriesComponent } from './shared/entries/entries.component';
 import { EntriesListComponent } from './pages/entries-list/entries-list.component';
-import {SearchStatusPipe} from "./pipes/searchStatus.pipe";
-import {SearchDatePipe} from "./pipes/search-date";
+import { SearchFilterPipe, SearchStatusPipe, SearchDatePipe } from "./pipes";
 import { CarouselComponent } from './shared/carousel/carousel.component';
 import { SliderComponent } from './shared/slider/slider.component';
+import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
+import { UpdatePasswordComponent } from './pages/update-password/update-password.component';
 
 
 @NgModule({
@@ -52,7 +52,9 @@ import { SliderComponent } from './shared/slider/slider.component';
     SearchStatusPipe,
     SearchDatePipe,
     CarouselComponent,
-    SliderComponent
+    SliderComponent,
+    ForgotPasswordComponent,
+    UpdatePasswordComponent
   ],
   imports: [
     BrowserModule,

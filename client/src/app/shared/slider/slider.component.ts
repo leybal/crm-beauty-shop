@@ -1,6 +1,5 @@
-import {Component} from '@angular/core';
-import {NgxCarousel} from 'ngx-carousel';
-
+import { Component } from '@angular/core';
+import { NgxCarousel } from 'ngx-carousel';
 
 @Component({
   selector: 'app-slider',
@@ -29,7 +28,7 @@ export class SliderComponent {
         color: 'f1f1f1',
         src: 'https://jivaspa.tajhotels.com/content/dam/jiva-spa/generic-image/16x7/JivaSpaDetails1_16x7.jpg'
       }
-    ]
+    ];
 
     this.carouselConfig = {
       grid: {xs: 1, sm: 1, md: 1, lg: 1, all: 0},
