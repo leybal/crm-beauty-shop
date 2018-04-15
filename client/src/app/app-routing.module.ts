@@ -9,6 +9,8 @@ import { AuthGuard } from './guards/index';
 import { NotfoundComponent } from "./pages/notfound/notfound.component";
 import { EditProfileComponent } from "./pages/edit-profile/edit-profile.component";
 import { EntriesListComponent } from "./pages/entries-list/entries-list.component";
+import { ForgotPasswordComponent } from "./pages/forgot-password/forgot-password.component";
+import { UpdatePasswordComponent } from "./pages/update-password/update-password.component";
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -18,6 +20,8 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'edit-profile', canActivate: [AuthGuard], component: EditProfileComponent },
   { path: 'entries', canActivate: [AuthGuard], component: EntriesListComponent },
+  { path: 'forgot-password', component: ForgotPasswordComponent },
+  { path: 'update-password', component: UpdatePasswordComponent },
   { path: '**', component: NotfoundComponent}
 ];
 

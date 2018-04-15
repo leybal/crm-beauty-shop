@@ -104,7 +104,7 @@ export class EntriesComponent implements OnInit, OnDestroy {
           for (let entry of this.entries) {
             let index = this.entriesTimes.indexOf(entry.time);
             if (index > -1) {
-              if (entry.status === 'Accepted') {
+              if (entry.status !== 'Rejected') {
                 this.availableEntriesTimes[index] = false;
               }
               this.entriesForTemplate[index] = entry;
