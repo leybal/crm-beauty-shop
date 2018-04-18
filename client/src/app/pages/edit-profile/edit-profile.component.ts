@@ -41,7 +41,7 @@ export class EditProfileComponent implements OnInit, DoCheck, OnDestroy {
       email: ['', [Validators.required, Validators.email]],
       phoneNumber: ['', Validators.compose([Validators.required, Validators.maxLength(13),
         Validators.minLength(10)])],
-      password: ['', [Validators.required]],
+      password: ['', [Validators.required, Validators.minLength(4)]],
       confPassword: ['', [Validators.required, confirmPasswordValidator(this)]],
       userInfo: [''],
     });
@@ -125,7 +125,11 @@ export class EditProfileComponent implements OnInit, DoCheck, OnDestroy {
           this.alertService.success('Profile saved successfully.');
         },
         error => {
-          this.alertService.error(error.statusText);
+          if (error.error.code === 'LIMIT_FILE_SIZE') {
+            this.alertService.error('Image is too large.');
+          } else {
+            this.alertService.error(error.statusText);
+          }
           this.loading = false;
         });
   }

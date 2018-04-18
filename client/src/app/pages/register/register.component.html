@@ -78,6 +78,9 @@
         <span *ngIf="registrationForm.controls['password'].hasError('required') ">
             password is required
         </span>
+        <span *ngIf="registrationForm.controls['password'].hasError('minlength')">
+          Your password must be at least 4 characters long.
+        </span>
 
       </div>
     </div>
