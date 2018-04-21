@@ -1,3 +1,6 @@
+
+
+
 <div class="row mt-5 entry-comp-wrap">
   <div class="col-12 col-md-12 col-lg-3 order-first order-lg-last text-center text-md-left">
     <div class="mb-3">
@@ -8,7 +11,7 @@
         <label class="input-group-text" for="inputGroupSelect">Status</label>
       </div>
       <select class="custom-select" id="inputGroupSelect" type="number" [(ngModel)]="selectStatus">
-        <option *ngFor="let status of statuses" [ngValue]="status">{{status}}</option>
+        <option *ngFor="let status of statuses" [ngValue]="status">{{status.title}}</option>
       </select>
     </div>
     <div class="mb-3">
@@ -24,7 +27,7 @@
 
   <div class="col-12 col-md-12 col-lg-9 order-last order-lg-first">
     <ul class="list-group" *ngIf="entries.length; else usersListIsEmpy">
-      <li class="list-group-item" *ngFor="let entry of entries | searchStatus: selectStatus | searchDate: model">
+      <li class="list-group-item" *ngFor="let entry of entries |  searchDate: model | searchStatus: selectStatus ">
         <div class="row mb-3">
           <div class="col-6">
             <a *ngIf="currentUser.role === 'master'"

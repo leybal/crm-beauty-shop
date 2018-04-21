@@ -32,7 +32,6 @@ import { SliderComponent } from './shared/slider/slider.component';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 import { UpdatePasswordComponent } from './pages/update-password/update-password.component';
 
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -54,7 +53,7 @@ import { UpdatePasswordComponent } from './pages/update-password/update-password
     CarouselComponent,
     SliderComponent,
     ForgotPasswordComponent,
-    UpdatePasswordComponent
+    UpdatePasswordComponent,
   ],
   imports: [
     BrowserModule,
@@ -63,7 +62,7 @@ import { UpdatePasswordComponent } from './pages/update-password/update-password
     ReactiveFormsModule,
     HttpClientModule,
     NgbModule.forRoot(),
-    NgxCarouselModule
+    NgxCarouselModule,
   ],
   providers: [
     AuthGuard,

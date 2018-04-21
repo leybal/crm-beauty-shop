@@ -3,7 +3,7 @@ import { Router } from "@angular/router";
 import { EntryService, AlertService, AuthenticationService } from "../../services";
 import { User, Entry } from "../../models";
 import { NgbModal, NgbModalRef, NgbDateStruct } from "@ng-bootstrap/ng-bootstrap";
-import { NgForm } from '@angular/forms';
+import {NgForm, FormControl} from '@angular/forms';
 import "rxjs/add/operator/takeWhile";
 
 const now = new Date();
@@ -27,8 +27,15 @@ export class EntriesListComponent implements OnInit, DoCheck, OnDestroy {
   model: NgbDateStruct;
   comment: any;
   date: {year: number, month: number};
-  statuses: Array<String> = ['All', 'New', 'Accepted', 'Rejected', 'Finished'];
-  selectStatus: string;
+  // statuses: Array<String> = ['All', 'New', 'Accepted', 'Rejected', 'Finished'];
+  statuses: Array<Object> = [{'title': 'All', 'status':['New', 'Accepted', 'Rejected', 'Finished']},
+                             {'title':'New', 'status':['New']},
+                             {'title':'Accepted', 'status':['Accepted']},
+                             {'title':'Rejected', 'status':['Rejected']},
+                             {'title':'Finished', 'status':['Finished']},
+  ];
+  defaultStatus = [{'title': 'All', 'status':['New', 'Accepted', 'Rejected', 'Finished']}];
+  selectStatus:  string;
 
   constructor(
     private router: Router,
