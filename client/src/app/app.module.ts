@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -16,6 +17,9 @@ import { AuthGuard } from './guards/index';
 import { AlertService, AuthenticationService, UserService, EntryService, PushService } from './services';
 import { JwtInterceptor } from './helpers/index';
 
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { MatSnackBarModule } from '@angular/material';
+
 import { AppComponent } from './app.component';
 import { HomeComponent } from './pages/home/home.component';
 import { FooterComponent } from './shared/footer/footer.component';
@@ -26,7 +30,6 @@ import { RegisterComponent } from './pages/register/register.component';
 import { UsersComponent } from './pages/users/users.component';
 import { UserComponent } from './pages/user/user.component';
 import { EditProfileComponent } from './pages/edit-profile/edit-profile.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { EntriesComponent } from './shared/entries/entries.component';
 import { EntriesListComponent } from './pages/entries-list/entries-list.component';
 import { SearchFilterPipe, SearchStatusPipe, SearchDatePipe } from './pipes';
@@ -67,6 +70,8 @@ import { UpdatePasswordComponent } from './pages/update-password/update-password
     HttpClientModule,
     NgbModule.forRoot(),
     NgxCarouselModule,
+    MatSnackBarModule,
+    BrowserAnimationsModule,
     ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [
