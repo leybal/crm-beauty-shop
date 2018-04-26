@@ -1,9 +1,15 @@
+<h3 class="text-center mb-4">Edit profile</h3>
+<div class="row">
+  <div class="col-12 text-center mb-4">
+    <button *ngIf="!userSubscribed" class="btn btn-dark" (click)="subscribeToPush(user.id)">Subscribe for push</button>
+    <button *ngIf="userSubscribed" class="btn btn-dark" (click)="unsubscribeToPush()">Unsubscribe for push</button>
+  </div>
+</div>
+
 <div class="row justify-content-center">
   <form [formGroup]="editProfileForm" (ngSubmit)="postData(editProfileForm)"
         class="col-12 col-md-8 col-lg-6 align-content-center reg-form">
 
-    <h3 class="text-center">Edit profile</h3>
-    <br>
     <alert></alert>
 
     <div class="form-group">

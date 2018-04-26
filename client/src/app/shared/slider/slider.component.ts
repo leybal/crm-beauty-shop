@@ -16,17 +16,17 @@ export class SliderComponent {
       {
         title: 'slide 1',
         color: 'f1f1f1',
-        src: 'http://www.ciudadypoder.mx/wp-content/uploads/2017/07/spaa.jpg'
+        src: 'https://s3.eu-central-1.amazonaws.com/aws-avatars/slider/slider-1.jpg'
       },
       {
         title: 'slide 2',
         color: 'f1f1f1',
-        src: 'http://www.tichkule.com/upload/image/home_1505296587.jpg'
+        src: 'https://s3.eu-central-1.amazonaws.com/aws-avatars/slider/slider-2.jpg'
       },
       {
         title: 'slide 3',
         color: 'f1f1f1',
-        src: 'https://jivaspa.tajhotels.com/content/dam/jiva-spa/generic-image/16x7/JivaSpaDetails1_16x7.jpg'
+        src: 'https://s3.eu-central-1.amazonaws.com/aws-avatars/slider/slider-3.jpg'
       }
     ];
 

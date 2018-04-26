@@ -77,6 +77,17 @@ input:-webkit-autofill:active {
   background-color: #f6f6f6;
 }
 
+@media only screen and (max-width: 767px) {
+  header {
+    position: relative;
+    z-index: 9;
+  }
+
+  .navbar-toggler:focus {
+    outline: none;
+  }
+}
+
 @media only screen and (min-width: 768px) {
   header ul.navbar-nav {
     position: relative;

@@ -1,7 +1,7 @@
 import { Component, OnInit, DoCheck, ViewChild, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { AlertService, AuthenticationService, UserService } from "../../services";
+import { AlertService, AuthenticationService, UserService, PushService } from "../../services";
 import { confirmPasswordValidator } from "../../validators";
 import { User } from "../../models";
 import { environment } from '../../../environments/environment';
@@ -16,6 +16,7 @@ import 'rxjs/add/operator/do';
 })
 export class EditProfileComponent implements OnInit, DoCheck, OnDestroy {
   userAuthorized: boolean;
+  userSubscribed: boolean;
   editProfileForm: FormGroup;
   userPassword: string;
   userConfPassword: string;
@@ -31,7 +32,9 @@ export class EditProfileComponent implements OnInit, DoCheck, OnDestroy {
     private authentication: AuthenticationService,
     private userService: UserService,
     private alertService: AlertService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private pushService: PushService
+
   ) {
     this.editProfileForm = formBuilder.group({
       id: [''],
@@ -51,6 +54,7 @@ export class EditProfileComponent implements OnInit, DoCheck, OnDestroy {
 
   ngOnInit() {
     this.authentication.cast.subscribe(userAuthorized => this.userAuthorized = userAuthorized);
+    this.pushService.cast.subscribe(userSubscribed => this.userSubscribed = userSubscribed);
     const currentUser: User = JSON.parse(localStorage.getItem('currentUser'));
     this.subscription = this.userService.getById(currentUser.id)
       .map(user => {
@@ -76,6 +80,14 @@ export class EditProfileComponent implements OnInit, DoCheck, OnDestroy {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+  }
+
+  subscribeToPush(userId: string): void {
+    this.pushService.subscribeToPush(userId);
+  }
+
+  unsubscribeToPush(): void {
+    this.pushService.unsubscribeToPush()
   }
 
   onFileChange(event) {
