@@ -54,7 +54,7 @@ export class LoginComponent implements OnInit, OnDestroy {
             this.alertService.success('You\'ve successfully logged in.');
             if ('serviceWorker' in navigator && environment.production) {
               if (!this.pushService.checkSubscribe(data.id)) {
-                this.pushService.subscribeToPush(data.id);
+                this.pushService.subscribeToPush();
               }
             }
             this.router.navigate([this.returnUrl]);

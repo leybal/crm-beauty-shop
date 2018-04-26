@@ -1,4 +1,5 @@
-<div class="row mt-5 entry-comp-wrap">
+<h2 class="text-center mb-4">Entries list</h2>
+<div class="row entry-comp-wrap">
   <div class="col-12 col-md-12 col-lg-3 order-first order-lg-last text-center text-md-left">
     <div class="mb-3">
       <button class="btn btn-secondary" (click)="resetFilters()">Reset filters</button>
@@ -8,7 +9,7 @@
         <label class="input-group-text" for="inputGroupSelect">Status</label>
       </div>
       <select class="custom-select" id="inputGroupSelect" type="number" [(ngModel)]="selectStatus">
-        <option *ngFor="let status of statuses" [ngValue]="status">{{status.title}}</option>
+        <option *ngFor="let status of statuses" [ngValue]="status" >{{status.title}}</option>
       </select>
     </div>
     <div class="mb-3">

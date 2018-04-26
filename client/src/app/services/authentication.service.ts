@@ -1,6 +1,6 @@
 ﻿import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { PushService } from '../services';
+import { PushService } from './../services/push.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import 'rxjs/add/operator/map';
 import { environment } from '../../environments/environment';
@@ -13,7 +13,7 @@ export class AuthenticationService {
 
   constructor(
     private http: HttpClient,
-    private pushService: PushService,
+    private pushService: PushService
   ) { }
 
   editUserAuthorized(value: boolean) {

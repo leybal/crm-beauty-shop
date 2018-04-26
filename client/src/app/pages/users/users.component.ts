@@ -1,10 +1,12 @@
-import {Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { User } from '../../models/index';
 import { UserService } from '../../services/index';
 import { AuthenticationService } from '../../services/index';
 import { environment } from '../../../environments/environment';
 import { ISubscription } from "rxjs/Subscription";
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/retryWhen';
+import 'rxjs/add/operator/delay';
 
 @Component({
   selector: 'app-users',
@@ -37,6 +39,7 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   private loadAllUsers() {
     this.subscription =  this.userService.getAll()
+      .retryWhen(errors => errors.delay(1000))
       .map(users => {
         users.forEach(user => {
           user.avatar = this.avatarUrl + user.avatar;
