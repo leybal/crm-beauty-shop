@@ -36,7 +36,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
       role: [''],
       phoneNumber: ['', Validators.compose([Validators.required, Validators.maxLength(13),
         Validators.minLength(10)])],
-      password: ['', [Validators.required]],
+      password: ['', [Validators.required, Validators.minLength(4)]],
       confPassword: ['', [Validators.required, confirmPasswordValidator(this)]]
     });
   }
@@ -61,7 +61,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
   setConfPassword(confPassword) {
     this.userConfPassword = confPassword;
   }
-
 
   postData(registrationForm: any) {
     this.userModel = {

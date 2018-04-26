@@ -1,5 +1,6 @@
 ﻿import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { PushService } from '../services';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import 'rxjs/add/operator/map';
 import { environment } from '../../environments/environment';
@@ -10,7 +11,10 @@ export class AuthenticationService {
   private  userAuthorized = new BehaviorSubject<boolean>(this.getUserLoggedIn());
   cast = this.userAuthorized.asObservable();
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private pushService: PushService,
+  ) { }
 
   editUserAuthorized(value: boolean) {
     this.userAuthorized.next(value);
@@ -28,7 +32,9 @@ export class AuthenticationService {
       .map(user => {
         if (user && user.token) {
           localStorage.setItem('currentUser', JSON.stringify(user));
+          this.pushService.checkSubscribe(user.id)
         }
+
         this.editUserAuthorized(this.getUserLoggedIn());
         return user;
       });

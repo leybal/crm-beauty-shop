@@ -33,7 +33,6 @@ export class CarouselComponent implements OnInit, OnDestroy {
                 id: user.id
               }
             );
-            console.log(user);
           }
         });
         return users;

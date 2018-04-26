@@ -1,7 +1,11 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
+
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -10,8 +14,11 @@ import { NgxCarouselModule } from 'ngx-carousel';
 
 import { AlertComponent } from './directives/index';
 import { AuthGuard } from './guards/index';
-import { AlertService, AuthenticationService, UserService, EntryService } from './services/index';
+import { AlertService, AuthenticationService, UserService, EntryService, PushService } from './services';
 import { JwtInterceptor } from './helpers/index';
+
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { MatSnackBarModule } from '@angular/material';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './pages/home/home.component';
@@ -23,10 +30,9 @@ import { RegisterComponent } from './pages/register/register.component';
 import { UsersComponent } from './pages/users/users.component';
 import { UserComponent } from './pages/user/user.component';
 import { EditProfileComponent } from './pages/edit-profile/edit-profile.component';
-import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { EntriesComponent } from './shared/entries/entries.component';
 import { EntriesListComponent } from './pages/entries-list/entries-list.component';
-import { SearchFilterPipe, SearchStatusPipe, SearchDatePipe } from "./pipes";
+import { SearchFilterPipe, SearchStatusPipe, SearchDatePipe } from './pipes';
 import { CarouselComponent } from './shared/carousel/carousel.component';
 import { SliderComponent } from './shared/slider/slider.component';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
@@ -44,9 +50,9 @@ import { UpdatePasswordComponent } from './pages/update-password/update-password
     AlertComponent,
     UserComponent,
     EditProfileComponent,
-    SearchFilterPipe,
     EntriesComponent,
     EntriesListComponent,
+    SearchFilterPipe,
     SearchStatusPipe,
     SearchDatePipe,
     CarouselComponent,
@@ -62,6 +68,9 @@ import { UpdatePasswordComponent } from './pages/update-password/update-password
     HttpClientModule,
     NgbModule.forRoot(),
     NgxCarouselModule,
+    MatSnackBarModule,
+    BrowserAnimationsModule,
+    ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [
     AuthGuard,
@@ -69,6 +78,7 @@ import { UpdatePasswordComponent } from './pages/update-password/update-password
     AuthenticationService,
     UserService,
     EntryService,
+    PushService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: JwtInterceptor,

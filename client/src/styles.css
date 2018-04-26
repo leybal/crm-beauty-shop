@@ -1,4 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @import "~bootstrap/dist/css/bootstrap.min.css";
 @import "~font-awesome/css/font-awesome.css";
 
@@ -74,6 +75,17 @@ input:-webkit-autofill:active {
 
 .past-entries {
   background-color: #f6f6f6;
+}
+
+@media only screen and (max-width: 767px) {
+  header {
+    position: relative;
+    z-index: 9;
+  }
+
+  .navbar-toggler:focus {
+    outline: none;
+  }
 }
 
 @media only screen and (min-width: 768px) {

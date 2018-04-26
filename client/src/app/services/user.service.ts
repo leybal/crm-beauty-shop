@@ -27,12 +27,20 @@ export class UserService {
   }
 
   delete(id: number) {
-    return this.http.delete(this.apiUrl + 'users/' + id);
+    // return this.http.delete(this.apiUrl + 'users/' + id);
   }
 
   updateLocalData(user: User): void {
     const currentUser: User = JSON.parse(localStorage.getItem('currentUser'));
     user.token = currentUser.token;
     localStorage.setItem('currentUser', JSON.stringify(user));
+  }
+
+  recovery(data: object) {
+    return this.http.post(this.apiUrl + 'recovery', data);
+  }
+
+  setPassword(data: object) {
+    return this.http.put(this.apiUrl + 'setpass', data);
   }
 }
