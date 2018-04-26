@@ -79,6 +79,8 @@ export class EntriesListComponent implements OnInit, DoCheck, OnDestroy {
   }
 
   resetFilters() {
+    this.selectStatus = '';
+    this.model =  null;
   }
 
   submitForm(form: NgForm) {
