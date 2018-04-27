@@ -3,7 +3,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { AlertService, AuthenticationService, PushService } from '../../services';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ISubscription } from "rxjs/Subscription";
-import { environment } from '../../../environments/environment';
 
 
 @Component({
@@ -22,8 +21,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     private router: Router,
     private authenticationService: AuthenticationService,
     private alertService: AlertService,
-    private formBuilder: FormBuilder,
-    private pushService: PushService
+    private formBuilder: FormBuilder
   ) {
     this.loginForm = formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
@@ -52,11 +50,6 @@ export class LoginComponent implements OnInit, OnDestroy {
         data => {
           if (data.id && data.token) {
             this.alertService.success('You\'ve successfully logged in.');
-            if ('serviceWorker' in navigator && environment.production) {
-              if (!this.pushService.checkSubscribe(data.id)) {
-                this.pushService.subscribeToPush();
-              }
-            }
             this.router.navigate([this.returnUrl]);
           } else {
             this.alertService.error('Error. Please try later.');

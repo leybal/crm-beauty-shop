@@ -53,6 +53,7 @@ export class PushService {
 
     this.getUserSubscribed(userId)
       .subscribe(data => {
+        console.log('checkSubscribe', data);
         if (data.subscribed) {
           this.userSubscribed.next(true);
           return true;

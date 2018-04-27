@@ -32,9 +32,19 @@ export class AuthenticationService {
       .map(user => {
         if (user && user.token) {
           localStorage.setItem('currentUser', JSON.stringify(user));
-          this.pushService.checkSubscribe(user.id)
-        }
 
+          if ('serviceWorker' in navigator && environment.production) {
+            this.pushService.getUserSubscribed(user.id)
+              .subscribe(
+                data => {
+                  console.log('aut', data)
+                  if (!data.subscribed) {
+                    this.pushService.subscribeToPush()
+                  }
+                },
+                err => console.log(err))
+          }
+        }
         this.editUserAuthorized(this.getUserLoggedIn());
         return user;
       });
