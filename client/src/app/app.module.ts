@@ -12,13 +12,13 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgxCarouselModule } from 'ngx-carousel';
 
-import { AlertComponent } from './directives/index';
-import { AuthGuard } from './guards/index';
+import { AlertComponent } from './directives';
+import { AuthGuard } from './guards';
 import { AlertService, AuthenticationService, UserService, EntryService, PushService } from './services';
-import { JwtInterceptor } from './helpers/index';
+import { JwtInterceptor } from './helpers';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { MatSnackBarModule } from '@angular/material';
+import { MatSnackBarModule, MatDialogModule, MatCardModule, MatButtonModule } from '@angular/material';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './pages/home/home.component';
@@ -37,6 +37,7 @@ import { CarouselComponent } from './shared/carousel/carousel.component';
 import { SliderComponent } from './shared/slider/slider.component';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 import { UpdatePasswordComponent } from './pages/update-password/update-password.component';
+import { DialogComponent } from './shared/dialog/dialog.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -59,6 +60,7 @@ import { UpdatePasswordComponent } from './pages/update-password/update-password
     SliderComponent,
     ForgotPasswordComponent,
     UpdatePasswordComponent,
+    DialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -70,7 +72,13 @@ import { UpdatePasswordComponent } from './pages/update-password/update-password
     NgxCarouselModule,
     MatSnackBarModule,
     BrowserAnimationsModule,
+    MatCardModule,
+    MatDialogModule,
+    MatButtonModule,
     ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production })
+  ],
+  entryComponents: [
+    DialogComponent
   ],
   providers: [
     AuthGuard,
