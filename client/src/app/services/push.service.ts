@@ -47,7 +47,7 @@ export class PushService {
   }
 
   deleteSubscriber(subscription) {
-    return this.http.delete(this.apiUrl + 'unsubscribe', subscription)
+    return this.http.post(this.apiUrl + 'unsubscribe', subscription)
       .catch(this.handleError);
   }
 
