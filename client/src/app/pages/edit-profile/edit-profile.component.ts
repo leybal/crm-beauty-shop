@@ -26,6 +26,7 @@ export class EditProfileComponent implements OnInit, DoCheck, OnDestroy {
   avatarLocalUrl: any[];
   avatarUrl = environment.avatarUrl;
   private subscription: ISubscription;
+  subAvailable: boolean = false;
 
   constructor(
     private router: Router,
@@ -48,6 +49,10 @@ export class EditProfileComponent implements OnInit, DoCheck, OnDestroy {
       confPassword: ['', [Validators.required, confirmPasswordValidator(this)]],
       userInfo: [''],
     });
+
+    if ('serviceWorker' in navigator && environment.production) {
+      this.subAvailable = true;
+    }
   }
 
   @ViewChild('fileInput') fileInput: File;
@@ -55,7 +60,10 @@ export class EditProfileComponent implements OnInit, DoCheck, OnDestroy {
   ngOnInit() {
     this.authentication.cast.subscribe(userAuthorized => this.userAuthorized = userAuthorized);
     this.pushService.cast.subscribe(userSubscribed => this.userSubscribed = userSubscribed);
+
     const currentUser: User = JSON.parse(localStorage.getItem('currentUser'));
+    this.pushService.checkSubscribe(currentUser.id);
+
     this.subscription = this.userService.getById(currentUser.id)
       .map(user => {
         user.avatar = this.avatarUrl + user.avatar;
@@ -82,8 +90,8 @@ export class EditProfileComponent implements OnInit, DoCheck, OnDestroy {
     this.subscription.unsubscribe();
   }
 
-  subscribeToPush(userId: string): void {
-    this.pushService.subscribeToPush(userId);
+  subscribeToPush(): void {
+    this.pushService.subscribeToPush();
   }
 
   unsubscribeToPush(): void {

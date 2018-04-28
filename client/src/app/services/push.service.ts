@@ -38,10 +38,7 @@ export class PushService {
     return this.http.get<any>(this.apiUrl + `checksubscribe/${userId}`);
   }
 
-  addSubscriber(subscription, userId) {
-    // subscription.userId = userId;
-    // console.log('subscription ', subscription);
-
+  addSubscriber(subscription) {
     return this.http.post(this.apiUrl + 'subscribe', subscription)
       .catch(this.handleError);
   }
@@ -56,6 +53,7 @@ export class PushService {
 
     this.getUserSubscribed(userId)
       .subscribe(data => {
+        console.log('checkSubscribe', data);
         if (data.subscribed) {
           this.userSubscribed.next(true);
           return true;
@@ -100,7 +98,7 @@ export class PushService {
     return Observable.throw(errMsg);
   }
 
-  subscribeToPush(userId: string) {
+  subscribeToPush() {
     if ('serviceWorker' in navigator && environment.production) {
       let convertedVapidKey = this.urlBase64ToUint8Array(this.VAPID_PUBLIC_KEY);
       navigator['serviceWorker']
@@ -109,7 +107,7 @@ export class PushService {
           registration.pushManager
             .subscribe({ userVisibleOnly: true, applicationServerKey: convertedVapidKey })
             .then(pushSubscription => {
-              this.addSubscriber(pushSubscription, userId)
+              this.addSubscriber(pushSubscription)
                 .subscribe(
                   res => {
                     console.log('[App] Add subscriber request answer', res);
