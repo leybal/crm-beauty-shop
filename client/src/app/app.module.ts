@@ -37,6 +37,8 @@ import { CarouselComponent } from './shared/carousel/carousel.component';
 import { SliderComponent } from './shared/slider/slider.component';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 import { UpdatePasswordComponent } from './pages/update-password/update-password.component';
+import {FilterByRolePipe} from './pipes/filter-by-role.pipe';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -55,6 +57,7 @@ import { UpdatePasswordComponent } from './pages/update-password/update-password
     SearchFilterPipe,
     SearchStatusPipe,
     SearchDatePipe,
+    FilterByRolePipe,
     CarouselComponent,
     SliderComponent,
     ForgotPasswordComponent,
