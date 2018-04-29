@@ -1,10 +1,12 @@
 import { Component, OnDestroy, OnInit, DoCheck } from '@angular/core';
 import { Router } from "@angular/router";
-import { EntryService, AlertService, AuthenticationService } from "../../services";
+import { EntryService, AlertService, AuthenticationService,  } from "../../services";
 import { User, Entry } from "../../models";
 import { NgbModal, NgbModalRef, NgbDateStruct } from "@ng-bootstrap/ng-bootstrap";
 import { NgForm } from '@angular/forms';
 import "rxjs/add/operator/takeWhile";
+import {NgxPaginationModule} from 'ngx-pagination';
+
 
 const now = new Date();
 
@@ -35,6 +37,10 @@ export class EntriesListComponent implements OnInit, DoCheck, OnDestroy {
     {'title':'Finished', 'status':['Finished']}
   ];
   selectStatus:  string;
+  private allItems: any[];
+  pager: any = {};
+  pagedItems: any[];
+
 
   constructor(
     private router: Router,
@@ -139,4 +145,6 @@ export class EntriesListComponent implements OnInit, DoCheck, OnDestroy {
           }, 2000);
         })
   }
+
+
 }
