@@ -16,8 +16,7 @@ app-slider {
 
 .list-icon {
   font-size: 80px;
-  color: #d8d8d8;
-  text-shadow: 3px 3px 5px rgba(138, 138, 138, 0.98);
+  color: #ccc;
 }
 
 .advantages-list-item {
@@ -31,4 +30,10 @@ app-slider {
 .advantages-list-item-text {
   padding: 0 10px;
   color: #676767;
+}
+
+.info-about-site p {
+  max-width: 360px;
+  width: 100%;
+  margin: auto;
 }
