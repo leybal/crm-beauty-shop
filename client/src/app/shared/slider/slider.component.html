@@ -3,7 +3,7 @@
     <ngx-item
       *ngFor="let item of items"
       NgxCarouselItem>
-      <div [ngStyle]="{'background-color': item.color, 'height.px': 450, 'color': 'white'}">
+      <div [ngStyle]="{'background-color': item.color, 'color': 'white'}">
         <img  src="{{item.src}}" alt="First slide">
         <h3>{{item.title}}</h3>
       </div>
