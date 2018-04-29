@@ -6,19 +6,6 @@ import 'rxjs/add/operator/map';
 })
 
 export class SearchStatusPipe implements PipeTransform {
-
-  // transform(users, value) {
-  //   console.log(typeof value)
-  //   if (value) {
-  //     console.log(value)
-  //     value = value.toLowerCase();
-  //     return users.filter(user => {
-  //       return user.status.toLowerCase().indexOf(value) > -1;
-  //     })
-  //   }
-  //   return users;
-  // }
-
   transform(users: any, value: any): any {
     if (value && Array.isArray(users)) {
       if (value.status.length === 1) {
@@ -27,6 +14,5 @@ export class SearchStatusPipe implements PipeTransform {
     }
     return users;
   }
-
 }
 

@@ -1,23 +1,23 @@
 <div class="row">
-  <div class="col-12 col-md-4 col-lg-4">
+  <div *ngIf="user" class="col-12 col-md-4 col-lg-4">
     <img [src]="user.avatar" class="img-fluid" alt="user's photo">
   </div>
   <div class="col-12 col-md-3 col-lg-4 user-info">
-    <h3>{{user.name}}</h3>
+    <h3>{{user?.name}}</h3>
     <p *ngIf="profileOwner && userAuthorized">
       <a routerLink="/edit-profile">Edit profile</a>
     </p>
-    <p>E-mail: {{user.email}}</p>
-    <p>Phone number: {{user.phoneNumber}}</p>
+    <p>E-mail: {{user?.email}}</p>
+    <p>Phone number: {{user?.phoneNumber}}</p>
     <p>
-      Role: {{user.role}}
+      Role: {{user?.role}}
     </p>
     <p>
-      About user: {{user.userInfo}}
+      About user: {{user?.userInfo}}
     </p>
   </div>
 
-  <div  class="col-12 col-md-2 col-lg-3">
+  <div  class="col-12 col-md-2 col-lg-3" *ngIf="user">
     <a *ngIf="user.role === 'master' && userAuthorized && profileOwner"
        routerLink="/users" class="search-link">Find all customers</a>
     <a *ngIf="user.role === 'customer' && userAuthorized && profileOwner"
@@ -25,8 +25,5 @@
   </div>
 </div>
 
-<app-entries *ngIf="user.role === 'master'" [user]="user" [userAuthorized]="userAuthorized"
+<app-entries *ngIf="user && user.role === 'master'" [user]="user" [userAuthorized]="userAuthorized"
              [profileOwner]="profileOwner"></app-entries>
-
-
-<!--<ngbd-datepicker-basic [(ngModel)]="model" (navigate)="date = $event.next"></ngbd-datepicker-basic>-->
