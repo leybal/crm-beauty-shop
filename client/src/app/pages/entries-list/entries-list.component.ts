@@ -35,6 +35,7 @@ export class EntriesListComponent implements OnInit, DoCheck, OnDestroy {
     {'title':'Finished', 'status':['Finished']}
   ];
   selectStatus:  string;
+  currentPage: any;
 
   constructor(
     private router: Router,
