@@ -1,0 +1,4 @@
+input[type="radio"] {
+  display: inline-block;
+  width: 50px;
+}
