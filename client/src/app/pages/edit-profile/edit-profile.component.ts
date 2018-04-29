@@ -62,7 +62,8 @@ export class EditProfileComponent implements OnInit, DoCheck, OnDestroy {
     this.pushService.cast.subscribe(userSubscribed => this.userSubscribed = userSubscribed);
 
     const currentUser: User = JSON.parse(localStorage.getItem('currentUser'));
-    this.pushService.checkSubscribe(currentUser.id);
+
+    this.pushService.checkSubscribe();
 
     this.subscription = this.userService.getById(currentUser.id)
       .map(user => {
@@ -91,7 +92,7 @@ export class EditProfileComponent implements OnInit, DoCheck, OnDestroy {
   }
 
   subscribeToPush(): void {
-    this.pushService.subscribeToPush();
+    this.pushService.confirmPushSubscribe();
   }
 
   unsubscribeToPush(): void {

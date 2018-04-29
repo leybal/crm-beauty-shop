@@ -27,6 +27,30 @@ export class AuthenticationService {
     return false;
   }
 
+  loginSubRequest() {
+    this.pushService.getEndPoint()
+      .then(pushSubscription => {
+        if (pushSubscription) {
+          // browser already have endpoint
+          this.pushService.getUserSubscribed(pushSubscription.endpoint)
+            .subscribe(
+              res => {
+                if (res.subscribed === false) {
+                  this.pushService.confirmPushSubscribe();
+                }
+              },
+              err => console.log(err)
+            )
+        } else {
+          // browser don't have endpoint
+          this.pushService.generatePush()
+            .then(res => {
+              this.pushService.confirmPushSubscribe()
+            })
+        }
+      });
+  }
+
   login(email: string, password: string) {
     return this.http.post<any>(this.apiUrl + 'login', {email: email, password: password})
       .map(user => {
@@ -34,15 +58,7 @@ export class AuthenticationService {
           localStorage.setItem('currentUser', JSON.stringify(user));
 
           if ('serviceWorker' in navigator && environment.production) {
-            this.pushService.getUserSubscribed(user.id)
-              .subscribe(
-                data => {
-                  console.log('aut', data)
-                  if (!data.subscribed) {
-                    this.pushService.subscribeToPush()
-                  }
-                },
-                err => console.log(err))
+            this.loginSubRequest();
           }
         }
         this.editUserAuthorized(this.getUserLoggedIn());

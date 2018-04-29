@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { MatSnackBar, MatSnackBarConfig, MatSnackBarHorizontalPosition,
-  MatSnackBarVerticalPosition } from "@angular/material";
+  MatSnackBarVerticalPosition, MatDialog, MatDialogRef } from "@angular/material";
+import { DialogComponent} from '../shared/dialog/dialog.component';
 
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
@@ -26,16 +27,18 @@ export class PushService {
   verticalPosition: MatSnackBarVerticalPosition = 'bottom';
   addExtraClass = false;
   config: any;
+  dialogComponentRef: MatDialogRef<DialogComponent>;
 
   constructor(
     private http: HttpClient,
     private snackBar: MatSnackBar,
+    private dialog: MatDialog
   ) {
     this.config = this._createConfig();
   }
 
-  getUserSubscribed(userId: string) {
-    return this.http.get<any>(this.apiUrl + `checksubscribe/${userId}`);
+  getUserSubscribed(endpoint: string) {
+    return this.http.post<any>(this.apiUrl + 'checksubscribe', {endpoint: endpoint});
   }
 
   addSubscriber(subscription) {
@@ -48,24 +51,102 @@ export class PushService {
       .catch(this.handleError);
   }
 
-  checkSubscribe(userId: string): boolean {
-    if (!userId) return false;
+  getEndPoint(): Promise<any> {
+    let promise = new Promise(resolve => {
+      navigator['serviceWorker']
+        .getRegistration(this.swScope)
+        .then(registration => {
+          registration.pushManager
+            .getSubscription()
+            .then(pushSubscription => resolve(pushSubscription))
+        })
+    });
 
-    this.getUserSubscribed(userId)
-      .subscribe(data => {
-        console.log('checkSubscribe', data);
-        if (data.subscribed) {
-          this.userSubscribed.next(true);
-          return true;
-        } else {
-          this.userSubscribed.next(false);
-          return false;
-        }
-      },
-      err => {
-        console.log(err);
-        return false;
-      });
+    return promise;
+  }
+
+  checkSubscribe() {
+    if ('serviceWorker' in navigator && environment.production) {
+      this.getEndPoint()
+        .then(pushSubscription => {
+          if (pushSubscription) {
+            this.getUserSubscribed(pushSubscription.endpoint)
+              .subscribe(res => this.userSubscribed.next(res.subscribed))
+          } else {
+            this.userSubscribed.next(false)
+          }
+        });
+    }
+  }
+
+  generatePush(): Promise<any> {
+    let promise = new Promise((resolve, reject) => {
+      if ('serviceWorker' in navigator && environment.production) {
+        let convertedVapidKey = this.urlBase64ToUint8Array(this.VAPID_PUBLIC_KEY);
+        navigator['serviceWorker']
+          .getRegistration(this.swScope)
+          .then(registration => {
+            registration.pushManager
+              .subscribe({userVisibleOnly: true, applicationServerKey: convertedVapidKey})
+          })
+          .then(() => resolve(true))
+      } else {
+        reject(false);
+      }
+    });
+
+    return promise;
+  }
+
+  confirmPushSubscribe() {
+    if ('serviceWorker' in navigator && environment.production) {
+      this.dialogComponentRef = this.dialog.open(DialogComponent);
+
+      this.dialogComponentRef
+        .afterClosed()
+        .subscribe(res => {
+          if (res === true) {
+            this.getEndPoint()
+              .then(pushSubscription => {
+                // App should have pushSubscription
+                this.addSubscriber(pushSubscription)
+                  .subscribe(
+                    res => {
+                      console.log('[App] Add subscriber request answer', res);
+                      this.userSubscribed.next(true);
+                      this.snackBar.open('Now you are subscribed', null, this.config);
+                    },
+                    err => {
+                      console.error('[App] Add subscriber request failed', err);
+                      this.snackBar.open('Subscription failed', null, this.config);
+                    }
+                  )
+              })
+          }
+        });
+    }
+  }
+
+  unsubscribeToPush() {
+    if ('serviceWorker' in navigator && environment.production) {
+      this.getEndPoint()
+        .then(pushSubscription => {
+          this.deleteSubscriber(pushSubscription)
+            .subscribe(
+              res => {
+                if (res.subscribed === false) {
+                  this.userSubscribed.next(false);
+                  this.snackBar.open('Now you are unsubscribed', null, this.config);
+                } else {
+                  this.userSubscribed.next(true);
+                  this.snackBar.open('Unsubscription failed', null, this.config);
+                }
+              })
+        })
+        .catch(err => {
+          console.error(err);
+        })
+    }
   }
 
   private _createConfig() {
@@ -96,74 +177,5 @@ export class PushService {
       errMsg = error.message ? error.message : error.toString();
     }
     return Observable.throw(errMsg);
-  }
-
-  subscribeToPush() {
-    if ('serviceWorker' in navigator && environment.production) {
-      let convertedVapidKey = this.urlBase64ToUint8Array(this.VAPID_PUBLIC_KEY);
-      navigator['serviceWorker']
-        .getRegistration(this.swScope)
-        .then(registration => {
-          registration.pushManager
-            .subscribe({ userVisibleOnly: true, applicationServerKey: convertedVapidKey })
-            .then(pushSubscription => {
-              this.addSubscriber(pushSubscription)
-                .subscribe(
-                  res => {
-                    console.log('[App] Add subscriber request answer', res);
-
-                    this.userSubscribed.next(true);
-                    this.snackBar.open('Now you are subscribed', null, this.config);
-                  },
-                  err => {
-                    console.error('[App] Add subscriber request failed', err);
-
-                    this.snackBar.open('Subscription failed', null, this.config);
-                  }
-                )
-            });
-        })
-        .catch(err => {
-          console.error(err);
-        })
-    }
-  }
-
-  unsubscribeToPush() {
-    if ('serviceWorker' in navigator && environment.production) {
-      navigator['serviceWorker']
-        .getRegistration(this.swScope)
-        .then(registration => {
-          registration.pushManager
-            .getSubscription()
-            .then(pushSubscription => {
-              this.deleteSubscriber(pushSubscription)
-                .subscribe(
-                  res => {
-                    console.log('[App] Delete subscriber request answer', res);
-                    // Unsubscribe current client (browser)
-                    pushSubscription.unsubscribe()
-                      .then(success => {
-                        console.log('[App] Unsubscription successful', success);
-
-                        this.userSubscribed.next(false);
-                        this.snackBar.open('Now you are unsubscribed', null, this.config);
-                      })
-                      .catch(err => {
-                        console.log('[App] Unsubscription failed', err);
-
-                        this.snackBar.open('Unsubscription failed', null, this.config);
-                      })
-                  },
-                  err => {
-                    console.error('[App] Delete subscription request failed', err);
-                  }
-                )
-            })
-        })
-        .catch(err => {
-          console.error(err);
-        })
-    }
   }
 }
