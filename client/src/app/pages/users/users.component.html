@@ -12,16 +12,61 @@
           placeholder="Enter name"
           name="search">
       </div>
+
+      <div class="users-filter">
+
+        <p>
+        <label for="show-all">
+          Show all
+        </label>
+        <input
+          id="show-all"
+          type="radio"
+          [(ngModel)]="roleFilter"
+          class="form-control"
+          name="check-by-role"
+          value="0"
+        >
+        </p>
+
+        <p>
+        <label for="show-customers">
+          Show customers
+        </label>
+        <input
+          id="show-customers"
+          type="radio"
+          [(ngModel)]="roleFilter"
+          class="form-control"
+          name="check-by-role"
+          value="1">
+        </p>
+
+        <p>
+        <label for="show-masters">
+          Show masters
+        </label>
+        <input
+          id="show-masters"
+          type="radio"
+          [(ngModel)]="roleFilter"
+          class="form-control"
+          placeholder="Enter name"
+          name="check-by-role"
+          value="2">
+        </p>
+      </div>
     </aside>
 
     <div class="col-md-8 col-lg-9 order-md-first">
       <div *ngIf="users.length; then usersList else usersListIsEmpy"></div>
 
       <ng-template #usersList>
-        <ul class="list-unstyled mb-4 user-wrap" *ngFor="let user of users | SearchFilterPipe: queryString">
+        <ul class="list-unstyled mb-4 user-wrap"
+            *ngFor="let user of users | FilterByRolePipe: roleFilter | SearchFilterPipe: queryString">
           <li class="d-flex flex-wrap">
 
-            <div class="col-12 col-md-4 col-lg-3 mb-3 mb-md-0 text-center" >
+            <div class="col-12 col-md-4 col-lg-3 mb-3 mb-md-0 text-center">
               <a routerLink="{{user.id}}">
                 <img src="{{user.avatar}}" class="img-fluid" alt="{{user.name}}">
               </a>

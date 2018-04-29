@@ -53,3 +53,10 @@ ngx-carousel button[NgxCarouselNext] {
   box-shadow: 0 0 6px rgba(101, 101, 101, 0.15);
   width: 93%;
 }
+
+
+@media screen and (max-width: 765px){
+  .item-image[_ngcontent-c5]{
+    height: 130px;
+  }
+}
