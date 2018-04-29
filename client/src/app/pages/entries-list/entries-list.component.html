@@ -25,7 +25,7 @@
 
   <div class="col-12 col-md-12 col-lg-9 order-last order-lg-first">
     <ul class="list-group" *ngIf="entries.length; else usersListIsEmpy">
-      <li class="list-group-item" *ngFor="let entry of entries | searchDate: model | searchStatus: selectStatus">
+      <li class="list-group-item" *ngFor="let entry of entries | searchDate: model | searchStatus: selectStatus | paginate: { itemsPerPage: 3, currentPage: p }">
         <div class="row mb-3">
           <div class="col-6">
             <a *ngIf="currentUser.role === 'master'"

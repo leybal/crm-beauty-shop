@@ -37,6 +37,8 @@ import { CarouselComponent } from './shared/carousel/carousel.component';
 import { SliderComponent } from './shared/slider/slider.component';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 import { UpdatePasswordComponent } from './pages/update-password/update-password.component';
+import {NgxPaginationModule} from 'ngx-pagination';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -70,7 +72,8 @@ import { UpdatePasswordComponent } from './pages/update-password/update-password
     NgxCarouselModule,
     MatSnackBarModule,
     BrowserAnimationsModule,
-    ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production })
+    ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production }),
+    NgxPaginationModule,
   ],
   providers: [
     AuthGuard,
