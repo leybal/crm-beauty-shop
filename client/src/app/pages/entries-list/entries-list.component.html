@@ -24,9 +24,9 @@
   </div>
 
   <div class="col-12 col-md-12 col-lg-9 order-last order-lg-first">
-    <pagination-controls (pageChange)="p = $event"></pagination-controls>
     <ul class="list-group" *ngIf="entries.length; else usersListIsEmpy">
-      <li class="list-group-item" *ngFor="let entry of entries | searchDate: model | searchStatus: selectStatus | paginate: { itemsPerPage: 3, currentPage: p }">
+      <li class="list-group-item" *ngFor="let entry of entries | searchDate: model | searchStatus: selectStatus |
+          paginate: { itemsPerPage: 5, currentPage: currentPage }">
         <div class="row mb-3">
           <div class="col-6">
             <a *ngIf="currentUser.role === 'master'"
@@ -64,6 +64,10 @@
         </div>
       </li>
     </ul>
+
+    <div class="mt-4 text-center">
+      <pagination-controls (pageChange)="currentPage = $event"></pagination-controls>
+    </div>
   </div>
 </div>
 

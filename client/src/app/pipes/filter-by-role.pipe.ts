@@ -7,12 +7,12 @@ export class FilterByRolePipe implements PipeTransform {
   transform(value: any, input: string) {
     if (input) {
 
-      if (input === '0') {
+      if (input === 'all') {
         return value.filter(function (el: any) {
           return el.name;
         });
 
-      } else if (input === '1') {
+      } else if (input === 'customer') {
         return value.filter(function (el: any) {
           if (el.role === 'customer') {
             return el.name;
