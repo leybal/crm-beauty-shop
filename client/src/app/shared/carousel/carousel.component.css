@@ -3,17 +3,22 @@ h3 {
   text-align: center;
 }
 
-ngx-carousel img {
+ngu-carousel img {
   width: 150px;
   margin: auto;
   object-position: center;
 }
 
-ngx-item > div {
+ngu-item > div:first-child {
   display: flex;
+  justify-content: center;
+  width: 200px;
+  height: 200px;
+  margin: 0 20px;
+  border-radius: 100%;
 }
 
-ngx-carousel button {
+ngu-carousel button {
   border: none;
   position: absolute;
   bottom: 0;
@@ -24,21 +29,21 @@ ngx-carousel button {
   margin: auto;
 }
 
-ngx-carousel button[NgxCarouselPrev] {
+ngu-carousel button[NguCarouselPrev] {
   left: 0;
   display: block;
   background: #fff;
   border: 1px solid #ccc;
 }
 
-ngx-carousel button[NgxCarouselNext] {
+ngu-carousel button[NguCarouselNext] {
   right: 0;
   display: block;
   background: #fff;
   border: 1px solid #ccc;
 }
 
-.ngxcarouselPointDefault[_ngcontent-c5] .ngxcarouselPoint[_ngcontent-c5] li[_ngcontent-c5] {
+.ngucarouselPointDefault[_ngcontent-c5] .ngucarouselPoint[_ngcontent-c5] li[_ngcontent-c5] {
   border-radius: 0;
   width: 50px;
   height: 5px;
@@ -52,11 +57,4 @@ ngx-carousel button[NgxCarouselNext] {
   border: 1px solid #f1f1f1;
   box-shadow: 0 0 6px rgba(101, 101, 101, 0.15);
   width: 93%;
-}
-
-
-@media screen and (max-width: 765px){
-  .item-image[_ngcontent-c5]{
-    height: 130px;
-  }
 }
