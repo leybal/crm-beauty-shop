@@ -17,19 +17,22 @@
     <ul class="list-group" *ngIf="!entriesLoading">
       <li class="list-group-item entry-time"
           *ngFor="let time of entriesTimes; let i = index">
-        <div *ngIf="availableEntriesTimes[i] && availableTimes[i] && userAuthorized &&
+        <div *ngIf="availableEntriesTimes[i].free && availableTimes[i] && userAuthorized &&
             !profileOwner; else unclickableTime"
             (click)="selectTimeHandler($event); open(entryModal)"
             class="entry-time_free">
           {{time}}
         </div>
         <ng-template #unclickableTime>
-          <div *ngIf="availableEntriesTimes[i]" [ngClass]="{'past-entries': !availableTimes[i]}">
+          <div *ngIf="availableEntriesTimes[i].free" [ngClass]="{'past-entries': !availableTimes[i]}">
             {{time}}
           </div>
         </ng-template>
 
-        <div *ngIf="!availableEntriesTimes[i]" class="entry-time_busy">
+        <div *ngIf="!availableEntriesTimes[i].free" [ngClass]="{'entry-time_busy': true,
+             'entry-new' : availableEntriesTimes[i].status === 'New',
+             'entry-accepted' : availableEntriesTimes[i].status === 'Accepted',
+             'entry-finished' : availableEntriesTimes[i].status === 'Finished'}">
           <div class="row">
             <div class="col-6">{{time}}</div>
             <div class="col-6 text-right">

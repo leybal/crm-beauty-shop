@@ -12,6 +12,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgxCarouselModule } from 'ngx-carousel';
 import { NguCarouselModule } from '@ngu/carousel';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 import { AlertComponent } from './directives';
 import { AuthGuard } from './guards';
@@ -64,7 +65,7 @@ import { DialogComponent } from './shared/dialog/dialog.component';
     SliderComponent,
     ForgotPasswordComponent,
     UpdatePasswordComponent,
-    DialogComponent,
+    DialogComponent
   ],
   imports: [
     BrowserModule,
@@ -80,6 +81,7 @@ import { DialogComponent } from './shared/dialog/dialog.component';
     MatCardModule,
     MatDialogModule,
     MatButtonModule,
+    NgxPaginationModule,
     ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production })
   ],
   entryComponents: [

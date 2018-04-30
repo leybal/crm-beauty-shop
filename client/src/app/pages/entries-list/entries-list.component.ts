@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, DoCheck } from '@angular/core';
 import { Router } from "@angular/router";
-import { EntryService, AlertService, AuthenticationService } from "../../services";
+import { EntryService, AlertService, AuthenticationService,  } from "../../services";
 import { User, Entry } from "../../models";
 import { NgbModal, NgbModalRef, NgbDateStruct } from "@ng-bootstrap/ng-bootstrap";
 import { NgForm } from '@angular/forms';
@@ -35,6 +35,7 @@ export class EntriesListComponent implements OnInit, DoCheck, OnDestroy {
     {'title':'Finished', 'status':['Finished']}
   ];
   selectStatus:  string;
+  currentPage: any;
 
   constructor(
     private router: Router,

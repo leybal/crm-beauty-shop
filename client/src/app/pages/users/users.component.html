@@ -13,48 +13,29 @@
           name="search">
       </div>
 
-      <div class="users-filter">
-
-        <p>
-        <label for="show-all">
-          Show all
-        </label>
-        <input
-          id="show-all"
-          type="radio"
-          [(ngModel)]="roleFilter"
-          class="form-control"
-          name="check-by-role"
-          value="0"
-        >
-        </p>
-
-        <p>
-        <label for="show-customers">
-          Show customers
-        </label>
-        <input
-          id="show-customers"
-          type="radio"
-          [(ngModel)]="roleFilter"
-          class="form-control"
-          name="check-by-role"
-          value="1">
-        </p>
-
-        <p>
-        <label for="show-masters">
-          Show masters
-        </label>
-        <input
-          id="show-masters"
-          type="radio"
-          [(ngModel)]="roleFilter"
-          class="form-control"
-          placeholder="Enter name"
-          name="check-by-role"
-          value="2">
-        </p>
+      <div class="users-filter mt-3">
+        <label class="mb-1">Search by role</label>
+        <div class="form-check">
+          <input [(ngModel)]="roleFilter" class="form-check-input" type="radio" name="check-by-role" id="show-all"
+                 value="all">
+          <label class="form-check-label" for="show-all">
+            Show all
+          </label>
+        </div>
+        <div class="form-check">
+          <input [(ngModel)]="roleFilter" class="form-check-input" type="radio" name="check-by-role" id="show-masters"
+                 value="master">
+          <label class="form-check-label" for="show-masters">
+            Show masters
+          </label>
+        </div>
+        <div class="form-check">
+          <input [(ngModel)]="roleFilter" class="form-check-input" type="radio" name="check-by-role" id="show-customers"
+                 value="customer">
+          <label class="form-check-label" for="show-customers">
+            Show customers
+          </label>
+        </div>
       </div>
     </aside>
 
@@ -63,9 +44,9 @@
 
       <ng-template #usersList>
         <ul class="list-unstyled mb-4 user-wrap"
-            *ngFor="let user of users | FilterByRolePipe: roleFilter | SearchFilterPipe: queryString">
+            *ngFor="let user of users | FilterByRolePipe: roleFilter | SearchFilterPipe: queryString |
+            paginate: { itemsPerPage: 5, currentPage: currentPage }">
           <li class="d-flex flex-wrap">
-
             <div class="col-12 col-md-4 col-lg-3 mb-3 mb-md-0 text-center">
               <a routerLink="{{user.id}}">
                 <img src="{{user.avatar}}" class="img-fluid" alt="{{user.name}}">
@@ -77,9 +58,12 @@
               <p>Role: {{user.role}}</p>
               <p *ngIf="user.userInfo">Info: {{user.userInfo}}</p>
             </div>
-
           </li>
         </ul>
+
+        <div class="mt-4 text-center">
+          <pagination-controls (pageChange)="currentPage = $event"></pagination-controls>
+        </div>
       </ng-template>
 
       <ng-template #usersListIsEmpy>
