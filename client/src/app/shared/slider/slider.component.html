@@ -1,14 +1,14 @@
 <div>
-  <ngx-carousel [inputs]="carouselConfig">
-    <ngx-item
+  <ngu-carousel [inputs]="carouselConfig">
+    <ngu-item
       *ngFor="let item of items"
-      NgxCarouselItem>
+      NguCarouselItem>
       <div [ngStyle]="{'background-color': item.color, 'color': 'white'}">
         <img  src="{{item.src}}" alt="First slide">
         <h3>{{item.title}}</h3>
       </div>
-    </ngx-item>
-    <button NgxCarouselPrev class="leftRs">&lt;</button>
-    <button NgxCarouselNext class="rightRs">&gt;</button>
-  </ngx-carousel>
+    </ngu-item>
+    <button NguCarouselPrev class="leftRs">&lt;</button>
+    <button NguCarouselNext class="rightRs">&gt;</button>
+  </ngu-carousel>
 </div>

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NgxCarousel } from 'ngx-carousel';
+import { NguCarousel } from '@ngu/carousel';
 
 @Component({
   selector: 'app-slider',
@@ -9,7 +9,7 @@ import { NgxCarousel } from 'ngx-carousel';
 export class SliderComponent {
   public items: object[] = [];
 
-  public carouselConfig: NgxCarousel;
+  public carouselConfig: NguCarousel;
 
   constructor() {
     this.items = [
@@ -34,11 +34,13 @@ export class SliderComponent {
       grid: {xs: 1, sm: 1, md: 1, lg: 1, all: 0},
       slide: 1,
       speed: 400,
-      interval: 10000,
+      interval: 4000,
+      load: 1,
+      custom: 'banner',
       point: {
         visible: true,
         pointStyles: `
-          .ngxcarouselPoint {
+          .ngucarouselPoint {
             list-style-type: none;
             text-align: center;
             padding: 12px;
@@ -50,7 +52,7 @@ export class SliderComponent {
             left: 0;
             box-sizing: border-box;
           }
-          .ngxcarouselPoint li {
+          .ngucarouselPoint li {
             display: inline-block;
             border: 1px solid #ccc;
             border-radius: 0; width: 50px; height: 5px;
@@ -60,7 +62,7 @@ export class SliderComponent {
             cursor: pointer;
             transition: .4s ease all;
           }
-          .ngxcarouselPoint li.active {
+          .ngucarouselPoint li.active {
               background: #ccc;
               width: 55px;height: 10px;
           }

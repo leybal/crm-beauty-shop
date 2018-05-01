@@ -1,8 +1,8 @@
 <div>
-  <ngx-carousel [inputs]="carouselConfig">
-    <ngx-item
+  <ngu-carousel [inputs]="carouselConfig">
+    <ngu-item
       *ngFor="let item of items"
-      NgxCarouselItem class="row justify-content-center">
+      NguCarouselItem class="row justify-content-center">
 
       <div class="item-image" [ngStyle]="{'background-color': item.color}">
         <a routerLink="users/{{item.id}}" [ngStyle]="{'margin': 'auto'}">
@@ -14,8 +14,8 @@
           <h3>{{item.name}}</h3>        </a>
       </div>
 
-    </ngx-item>
-    <button NgxCarouselPrev class="leftRs">&lt;</button>
-    <button NgxCarouselNext class="rightRs">&gt;</button>
-  </ngx-carousel>
+    </ngu-item>
+    <button NguCarouselPrev class="leftRs">&lt;</button>
+    <button NguCarouselNext class="rightRs">&gt;</button>
+  </ngu-carousel>
 </div>
