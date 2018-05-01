@@ -24,7 +24,7 @@ export class EntriesComponent implements OnInit, OnDestroy {
   entriesFinish: number = 19;
   entriesStep: number = 1;
   entriesTimes: string[] = [];
-  availableEntriesTimes: boolean[] = [];
+  availableEntriesTimes: any[] = [];
   availableTimes: boolean[] = [];
   comment: any;
   entriesLoading: boolean = false;
@@ -98,14 +98,22 @@ export class EntriesComponent implements OnInit, OnDestroy {
         error => console.log("Error: ", error),
         () => {
           for (let i = 0; i < this.entriesTimes.length; i++) {
-            this.availableEntriesTimes[i] = true;
+            // this.availableEntriesTimes[i] = true;
+            this.availableEntriesTimes[i] = {
+              free: true,
+              status: ''
+            };
             this.entriesForTemplate[i] = {};
           }
           for (let entry of this.entries) {
             let index = this.entriesTimes.indexOf(entry.time);
             if (index > -1) {
               if (entry.status !== 'Rejected') {
-                this.availableEntriesTimes[index] = false;
+                // this.availableEntriesTimes[index] = false;
+                this.availableEntriesTimes[index] = {
+                  free: false,
+                  status: entry.status
+                };
               }
               this.entriesForTemplate[index] = entry;
             }

@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { User } from '../../models/index';
-import { UserService } from '../../services/index';
-import { AuthenticationService } from '../../services/index';
+import { User } from '../../models';
+import { UserService } from '../../services';
+import { AuthenticationService } from '../../services';
 import { environment } from '../../../environments/environment';
 import { ISubscription } from "rxjs/Subscription";
 import 'rxjs/add/operator/map';
@@ -18,6 +18,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   users: User[] = [];
   userAuthorized: boolean;
   queryString: string;
+  roleFilter: string;
   avatarUrl = environment.avatarUrl;
   private subscription: ISubscription;
 
@@ -26,6 +27,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     private authentication: AuthenticationService
   ) {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.roleFilter = 'all';
   }
 
   ngOnInit() {

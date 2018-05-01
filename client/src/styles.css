@@ -65,16 +65,41 @@ input:-webkit-autofill:active {
 }
 
 .entry-time_busy {
-  background-color: #e4e4e4;
+  background-color: #f7f7f7;
 }
 
 .entry-time_free:hover {
   cursor: pointer;
-  box-shadow: inset 0px 0px 5px 0px rgba(0,0,0,0.5);
+  box-shadow: inset 0px 0px 5px 1px rgba(0,0,0,.5);
+}
+
+.entry-new {
+  box-shadow: inset 0px 0px 5px 1px rgba(0,123,255,.75);
+}
+
+.entry-accepted {
+  box-shadow: inset 0px 0px 5px 1px rgba(40,167,69,.75);
+}
+
+.entry-finished {
+  box-shadow: inset 0px 0px 5px 1px rgba(53, 58, 64, 1);
 }
 
 .past-entries {
   background-color: #f6f6f6;
+}
+
+ngb-datepicker:focus {
+  outline: none;
+}
+
+.ngx-pagination {
+  padding-left: 0;
+}
+
+.ngx-pagination li.current {
+  background: #343a40;
+  border-radius: .25rem !important;
 }
 
 @media only screen and (max-width: 767px) {
