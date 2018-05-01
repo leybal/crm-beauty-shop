@@ -3,7 +3,7 @@ import { NguCarousel } from '@ngu/carousel';
 
 import { ISubscription } from "rxjs/Subscription";
 import { environment } from '../../../environments/environment';
-import { User } from './../../models';
+import { User } from '../../models';
 import { UserService } from '../../services';
 
 @Component({

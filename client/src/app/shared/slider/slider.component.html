@@ -4,8 +4,10 @@
       *ngFor="let item of items"
       NguCarouselItem>
       <div [ngStyle]="{'background-color': item.color, 'color': 'white'}">
-        <img  src="{{item.src}}" alt="First slide">
-        <h3>{{item.title}}</h3>
+        <img src="{{item.srcSm}}"
+             srcset="{{item.srcSm}} 550w, {{item.src}} 700w"
+             sizes="(max-width: 550px) 550px, 700px"
+              alt="{{item.title}}">
       </div>
     </ngu-item>
     <button NguCarouselPrev class="leftRs">&lt;</button>

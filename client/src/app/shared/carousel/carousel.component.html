@@ -1,4 +1,4 @@
-<div>
+<div class="mb-5">
   <ngu-carousel [inputs]="carouselConfig">
     <ngu-item
       *ngFor="let item of items"
@@ -11,7 +11,7 @@
       </div>
       <div>
         <a routerLink="users/{{item.id}}" [ngStyle]="{'margin': 'auto'}">
-          <h3>{{item.name}}</h3>        </a>
+          <h3>{{item.name}}</h3></a>
       </div>
 
     </ngu-item>

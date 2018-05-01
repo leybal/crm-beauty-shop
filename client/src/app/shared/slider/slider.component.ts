@@ -16,17 +16,20 @@ export class SliderComponent {
       {
         title: 'slide 1',
         color: 'f1f1f1',
-        src: 'https://s3.eu-central-1.amazonaws.com/aws-avatars/slider/slider-1.jpg'
+        src: 'https://s3.eu-central-1.amazonaws.com/aws-avatars/slider/slider-1.jpg',
+        srcSm: 'https://s3.eu-central-1.amazonaws.com/aws-avatars/slider/sm-slider-1.jpg',
       },
       {
         title: 'slide 2',
         color: 'f1f1f1',
-        src: 'https://s3.eu-central-1.amazonaws.com/aws-avatars/slider/slider-2.jpg'
+        src: 'https://s3.eu-central-1.amazonaws.com/aws-avatars/slider/slider-2.jpg',
+        srcSm: 'https://s3.eu-central-1.amazonaws.com/aws-avatars/slider/sm-slider-2.jpg',
       },
       {
         title: 'slide 3',
         color: 'f1f1f1',
-        src: 'https://s3.eu-central-1.amazonaws.com/aws-avatars/slider/slider-3.jpg'
+        src: 'https://s3.eu-central-1.amazonaws.com/aws-avatars/slider/slider-3.jpg',
+        srcSm: 'https://s3.eu-central-1.amazonaws.com/aws-avatars/slider/sm-slider-3.jpg',
       }
     ];
 

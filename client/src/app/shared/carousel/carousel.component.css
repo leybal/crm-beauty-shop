@@ -43,6 +43,10 @@ ngu-carousel button[NguCarouselNext] {
   border: 1px solid #ccc;
 }
 
+ngu-carousel button:focus {
+  outline: none;
+}
+
 .ngucarouselPointDefault[_ngcontent-c5] .ngucarouselPoint[_ngcontent-c5] li[_ngcontent-c5] {
   border-radius: 0;
   width: 50px;
@@ -58,3 +62,4 @@ ngu-carousel button[NguCarouselNext] {
   box-shadow: 0 0 6px rgba(101, 101, 101, 0.15);
   width: 93%;
 }
+

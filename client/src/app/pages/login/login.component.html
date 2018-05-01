@@ -1,50 +1,51 @@
-<div class="row justify-content-center">
-  <form [formGroup]="loginForm" name="form" (ngSubmit)="login(loginForm)"
-        class="col-12 col-md-8 col-lg-6 align-content-center reg-form bg-dark text-light">
-    <br>
-    <h3 class="text-center">Log in</h3>
+<div class="container">
+  <div class="row justify-content-center">
+    <form [formGroup]="loginForm" name="form" (ngSubmit)="login(loginForm)"
+          class="col-12 col-md-8 col-lg-6 align-content-center reg-form bg-dark text-light">
+      <br>
+      <h3 class="text-center">Log in</h3>
 
-    <alert></alert>
+      <alert></alert>
 
-    <div class="form-group">
-      <label for="email">E-mail</label>
-      <input type="email" class="form-control bg-dark  text-light" name="email"  id="email" formControlName="email"
-             placeholder="Enter email"/>
+      <div class="form-group">
+        <label for="email">E-mail</label>
+        <input type="email" class="form-control bg-dark  text-light" name="email"  id="email" formControlName="email"
+               placeholder="Enter email"/>
 
-      <div class="help-block"
-           *ngIf="loginForm.controls['email'].invalid && loginForm.controls['email'].touched">
-        <span *ngIf="loginForm.controls['email'].hasError('required')">
-            email is required
-            </span>
-        <span *ngIf="loginForm.controls['email'].hasError('email') ">
-            Invalid email
-            </span>
+        <div class="help-block"
+             *ngIf="loginForm.controls['email'].invalid && loginForm.controls['email'].touched">
+          <span *ngIf="loginForm.controls['email'].hasError('required')">
+              email is required
+              </span>
+          <span *ngIf="loginForm.controls['email'].hasError('email') ">
+              Invalid email
+              </span>
+        </div>
       </div>
-    </div>
 
-    <div class="form-group">
-      <label for="password">Password</label>
-      <input type="password" class="form-control bg-dark  text-light" name="password"
-             id="password" formControlName="password" placeholder="Password"/>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" class="form-control bg-dark  text-light" name="password"
+               id="password" formControlName="password" placeholder="Password"/>
 
-      <div class="help-block" *ngIf="loginForm.controls['password'].touched">
-        <span *ngIf="loginForm.controls['password'].hasError('required') ">
-            password is required
+        <div class="help-block" *ngIf="loginForm.controls['password'].touched">
+          <span *ngIf="loginForm.controls['password'].hasError('required') ">
+              password is required
+          </span>
+        </div>
+      </div>
+
+      <div class="row form-group justify-content-center">
+        <button type="submit" class="btn btn-outline-light submit-btn" [disabled]="!loginForm.valid">Log in</button>
+        <span>
+          <img *ngIf="loading"
+               src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
         </span>
+        <a [routerLink]="['/register']" class="btn btn-link text-light">Register</a>
       </div>
-    </div>
-
-    <div class="row form-group justify-content-center">
-      <button type="submit" class="btn btn-outline-light submit-btn" [disabled]="!loginForm.valid">Log in</button>
-      <span>
-        <img *ngIf="loading"
-             src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
-      </span>
-      <a [routerLink]="['/register']" class="btn btn-link text-light">Register</a>
-    </div>
-    <div class="text-center">
-      <a [routerLink]="['/forgot-password']" class="text-white">Forgot password?</a>
-    </div>
-  </form>
-
+      <div class="text-center">
+        <a [routerLink]="['/forgot-password']" class="text-white">Forgot password?</a>
+      </div>
+    </form>
+  </div>
 </div>
