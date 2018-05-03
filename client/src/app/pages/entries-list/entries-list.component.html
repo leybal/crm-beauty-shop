@@ -74,52 +74,57 @@
     </ul>
 
     <div class="mt-4 text-center">
-      <label class="control">itemsPerPage
-        <input type="number" class="input" min="0" [(ngModel)]="pageSize">
-      </label>
-      <pagination-controls autoHide="true" (pageChange)="currentPage = $event"></pagination-controls>
+      <div class="row">
+        <div class="col-sm">
+          <label class="control">Entries on page
+            <input type="number" class="input" min="0" [(ngModel)]="pageSize">
+          </label>
+        </div>
+        <div class="col-sm">
+          <pagination-controls autoHide="true" (pageChange)="currentPage = $event"></pagination-controls>
+        </div>
+      </div>
     </div>
   </div>
-</div>
 
-<ng-template #usersListIsEmpy>
-  <p>No entries yet.</p>
-</ng-template>
+  <ng-template #usersListIsEmpy>
+    <p>No entries yet.</p>
+  </ng-template>
 
-<ng-template #changeStatusModal let-c="close" let-d="dismiss">
-  <div class="modal-header">
-    <h4 class="modal-title">{{newStatus}} entry</h4>
-    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-    <form #changeStatusForm="ngForm" novalidate>
-      <alert></alert>
-      <div class="row">
-        <div class="col-6">
-          <div class="form-group">
-            <label>Date</label>
-            <p>{{selectedEntry.date}}</p>
+  <ng-template #changeStatusModal let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h4 class="modal-title">{{newStatus}} entry</h4>
+      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form #changeStatusForm="ngForm" novalidate>
+        <alert></alert>
+        <div class="row">
+          <div class="col-6">
+            <div class="form-group">
+              <label>Date</label>
+              <p>{{selectedEntry.date}}</p>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group">
+              <label>Time</label>
+              <p>{{selectedEntry.time}}</p>
+            </div>
           </div>
         </div>
-        <div class="col-6">
-          <div class="form-group">
-            <label>Time</label>
-            <p>{{selectedEntry.time}}</p>
-          </div>
+        <div class="form-group">
+          <label for="comment">Comment</label>
+          <textarea class="form-control" name="comment" id="comment" [(ngModel)]="comment"></textarea>
         </div>
-      </div>
-      <div class="form-group">
-        <label for="comment">Comment</label>
-        <textarea class="form-control" name="comment" id="comment" [(ngModel)]="comment"></textarea>
-      </div>
-      <div class="form-group text-center">
-        <button [disabled]="buttonDisable" class="btn btn-dark" (click)="submitForm(changeStatusForm)">{{newStatus}}
-        </button>
-        <img *ngIf="loading"
-             src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
-      </div>
-    </form>
-  </div>
-</ng-template>
+        <div class="form-group text-center">
+          <button [disabled]="buttonDisable" class="btn btn-dark" (click)="submitForm(changeStatusForm)">{{newStatus}}
+          </button>
+          <img *ngIf="loading"
+               src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
+        </div>
+      </form>
+    </div>
+  </ng-template>
