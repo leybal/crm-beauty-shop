@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgxCarouselModule } from 'ngx-carousel';
+import { NguCarouselModule } from '@ngu/carousel';
 import { NgxPaginationModule } from 'ngx-pagination';
 
 import { AlertComponent } from './directives';
@@ -74,6 +75,7 @@ import { DialogComponent } from './shared/dialog/dialog.component';
     HttpClientModule,
     NgbModule.forRoot(),
     NgxCarouselModule,
+    NguCarouselModule,
     MatSnackBarModule,
     BrowserAnimationsModule,
     MatCardModule,

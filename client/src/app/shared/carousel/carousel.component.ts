@@ -1,8 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { NgxCarousel } from 'ngx-carousel';
+import { NguCarousel } from '@ngu/carousel';
+
 import { ISubscription } from "rxjs/Subscription";
 import { environment } from '../../../environments/environment';
-import { User } from './../../models';
+import { User } from '../../models';
 import { UserService } from '../../services';
 
 @Component({
@@ -14,7 +15,7 @@ export class CarouselComponent implements OnInit, OnDestroy {
   users: User[] = [];
   avatarUrl = environment.avatarUrl;
   public items: object[] = [];
-  public carouselConfig: NgxCarousel;
+  public carouselConfig: NguCarousel;
   private subscription: ISubscription;
 
   constructor(private userService: UserService) { }

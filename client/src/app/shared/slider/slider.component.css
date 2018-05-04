@@ -1,68 +1,38 @@
-h3 { height:20px; text-align:center; }
+p { height:20px; text-align:center; }
 
-/*ngx-carousel .ngxcarouselPointDefault {*/
-/*position: absolute;*/
-/*bottom: 0;*/
-/*left: 0;*/
-/*right: 0;*/
-/*}*/
-/*ngx-carousel .ngxcarouselPoint li {*/
-/*!*transform: scale(1);*!*/
-/*}*/
-
-
-ngx-carousel img {
-  width: 100%;
+ngu-carousel {
+  /*position: relative;*/
 }
 
-ngx-carousel  button {
+ngu-carousel  button {
   border: none;
   position: absolute;
   bottom: 0;
   top: 0;
   width: 50px;
   height: 50px;
-  border-radius: 999%;
+  border-radius: 50%;
   margin: auto;
+  background-color: rgba(221, 221, 221, .5);
 }
 
-ngx-carousel button[NgxCarouselPrev] {
+ngu-carousel  button:focus {
+  outline: none;
+}
+
+ngu-carousel button[NguCarouselPrev] {
   left: 50px;
 }
-ngx-carousel button[NgxCarouselNext] {
+ngu-carousel button[NguCarouselNext] {
   right: 50px;
 }
 
-ngx-item>div {
-  height: 450px;
+ngu-item {
+  overflow: hidden;
 }
 
-@media screen and (max-width: 1176px) {
-
-  ngx-item>div {
-    height: 400px;
-  }
+ngu-item>div {
+  display: flex;
+  justify-content: center;
 }
 
-@media screen and (max-width: 1016px) {
-  ngx-item {
-  }
-
-  ngx-item>div {
-    height: 300px;
-    position: relative;
-    background: #ccc;
-  }
-
-  ngx-carousel[_ngcontent-c4]   img[_ngcontent-c4] {
-    width: auto;
-    height: 80%;
-    display: block;
-    position: absolute;
-    object-fit: contain;
-    object-position: center;
-    bottom: 0;
-    top: 0;
-    margin: auto;
-  }
-}

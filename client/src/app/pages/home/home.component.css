@@ -1,17 +1,9 @@
-app-slider {
-  position: absolute;
-  width: 100%;
-  left: 0;
-  right: 0;
-  top: 56px;
-}
-
 .slider {
-  min-height: 450px;
+  margin-top: -2rem;
 }
 
-.info-about-site {
-  padding: 35px 0;
+.home-info {
+  margin-bottom: 2rem;
 }
 
 .list-icon {
@@ -24,7 +16,7 @@ app-slider {
 }
 
 .advantages-list {
-  margin: 50px 0;
+  margin: 2.5rem 0 1.5rem 0;
 }
 
 .advantages-list-item-text {
