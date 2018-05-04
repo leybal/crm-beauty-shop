@@ -1,73 +1,87 @@
-<div class="container">
-  <h2 class="text-center mb-4">Entries list</h2>
-  <div class="row entry-comp-wrap">
-    <div class="col-12 col-md-12 col-lg-3 order-first order-lg-last text-center text-md-left mb-3">
-      <div class="mb-3">
-        <button class="btn btn-secondary" (click)="resetFilters()">Reset filters</button>
-      </div>
-      <div class="input-group mb-3 select-role ml-auto mr-auto ml-md-0 mr-md-0">
-        <div class="input-group-prepend">
-          <label class="input-group-text" for="inputGroupSelect">Status</label>
-        </div>
-        <select class="custom-select" id="inputGroupSelect" type="number" [(ngModel)]="selectStatus">
-          <option *ngFor="let status of statuses" [ngValue]="status" >{{status.title}}</option>
-        </select>
-      </div>
-      <div class="mb-3">
-        <ngb-datepicker #dp [(ngModel)]="model" (navigate)="date = $event.next"></ngb-datepicker>
-      </div>
-      <div class="btn-group mb-3" role="group">
-        <button type="button" class="btn btn-sm btn-secondary"
-                (click)="selectToday(); dp.navigateTo()">Select Today</button>
-        <button type="button" class="btn btn-sm btn-secondary"
-                (click)="dp.navigateTo()">To current month</button>
-      </div>
+<h2 class="text-center mb-4">Entries list</h2>
+<div class="row entry-comp-wrap">
+  <div class="col-12 col-md-12 col-lg-3 order-first order-lg-last text-center text-md-left">
+    <div class="mb-3">
+      <button class="btn btn-secondary" (click)="resetFilters()">Reset filters</button>
     </div>
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <label class="input-group-text" for="inputGroupSelect">Status</label>
+      </div>
+      <select class="custom-select" id="inputGroupSelect" type="number" [(ngModel)]="selectStatus">
+        <option *ngFor="let status of statuses" [ngValue]="status">{{status.title}}</option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <ngb-datepicker #dp [(ngModel)]="model" (navigate)="date = $event.next"></ngb-datepicker>
+    </div>
+    <div class="btn-group mb-3" role="group">
+      <button type="button" class="btn btn-sm btn-secondary"
+              (click)="selectToday(); dp.navigateTo()">Select Today
+      </button>
+      <button type="button" class="btn btn-sm btn-secondary"
+              (click)="dp.navigateTo()">To current month
+      </button>
+    </div>
+  </div>
 
-    <div class="col-12 col-md-12 col-lg-9 order-last order-lg-first">
-      <ul class="list-group" *ngIf="entries.length; else usersListIsEmpy">
-        <li class="list-group-item" *ngFor="let entry of entries | searchDate: model | searchStatus: selectStatus |
-            paginate: { itemsPerPage: 5, currentPage: currentPage }">
-          <div class="row mb-3">
-            <div class="col-6">
-              <a *ngIf="currentUser.role === 'master'"
-                  routerLink="/users/{{entry.customerId._id}}">{{entry.customerId.name}}</a>
-              <a *ngIf="currentUser.role === 'customer'"
-                  routerLink="/users/{{entry.masterId._id}}">{{entry.masterId.name}}</a>
-            </div>
-            <div class="col-6 text-right">
-              <span [ngClass]="{'bg-primary': entry.status === 'New',
-                  'bg-success': entry.status === 'Accepted',
-                  'bg-warning': entry.status === 'Rejected',
-                  'bg-dark': entry.status === 'Finished',
-                  'text-white': entry.status === 'New' || entry.status === 'Accepted' || entry.status === 'Finished',
-                  'p-1': true }">{{entry.status}}</span>
-            </div>
+  <div class="col-12 col-md-12 col-lg-9 order-last order-lg-first">
+    <ul class="list-group" *ngIf="entries.length; else usersListIsEmpy">
+      <li class="list-group-item" *ngFor="let entry of entries | searchDate: model | searchStatus: selectStatus |
+          paginate: { itemsPerPage: pageSize, currentPage: currentPage }">
+        <div class="row mb-3">
+          <div class="col-6">
+            <a *ngIf="currentUser.role === 'master'"
+               routerLink="/users/{{entry.customerId._id}}">{{entry.customerId.name}}</a>
+            <a *ngIf="currentUser.role === 'customer'"
+               routerLink="/users/{{entry.masterId._id}}">{{entry.masterId.name}}</a>
           </div>
-          <div class="row mb-3">
-            <div class="col-6">Date: {{entry.date}}</div>
-            <div class="col-6 text-right">Time: {{entry.time}}</div>
+          <div class="col-6 text-right">
+            <span [ngClass]="{'bg-primary': entry.status === 'New',
+                'bg-success': entry.status === 'Accepted',
+                'bg-warning': entry.status === 'Rejected',
+                'bg-dark': entry.status === 'Finished',
+                'text-white': entry.status === 'New' || entry.status === 'Accepted' || entry.status === 'Finished',
+                'p-1': true }">{{entry.status}}</span>
           </div>
-          <p>
-            Phone:
-            <span *ngIf="currentUser.role === 'master'">{{entry.customerId.phoneNumber}}</span>
-            <span *ngIf="currentUser.role === 'customer'">{{entry.masterId.phoneNumber}}</span>
-          </p>
-          <p *ngIf="entry.customerComment">Customer comment: {{entry.customerComment}}</p>
-          <p *ngIf="entry.masterComment">Master comment: {{entry.masterComment}}</p>
-          <div>
-            <button *ngIf="currentUser.role === 'master' && entry.status === 'New'" type="button" class="btn btn-success"
-                    (click)="open(changeStatusModal, entry, 'Accept')">accept</button>
-            <button *ngIf="entry.status !== 'Rejected' && entry.status !== 'Finished'" type="button" class="btn btn-warning"
-                    (click)="open(changeStatusModal, entry, 'Reject')">reject</button>
-            <button *ngIf="currentUser.role === 'master' && entry.status === 'Accepted'" type="button" class="btn btn-dark"
-                    (click)="open(changeStatusModal, entry, 'Finish')">set as finished</button>
-          </div>
-        </li>
-      </ul>
+        </div>
+        <div class="row mb-3">
+          <div class="col-6">Date: {{entry.date}}</div>
+          <div class="col-6 text-right">Time: {{entry.time}}</div>
+        </div>
+        <p>
+          Phone:
+          <span *ngIf="currentUser.role === 'master'">{{entry.customerId.phoneNumber}}</span>
+          <span *ngIf="currentUser.role === 'customer'">{{entry.masterId.phoneNumber}}</span>
+        </p>
+        <p *ngIf="entry.customerComment">Customer comment: {{entry.customerComment}}</p>
+        <p *ngIf="entry.masterComment">Master comment: {{entry.masterComment}}</p>
+        <div>
+          <button *ngIf="currentUser.role === 'master' && entry.status === 'New'" type="button" class="btn btn-success"
+                  (click)="open(changeStatusModal, entry, 'Accept')">accept
+          </button>
+          <button *ngIf="entry.status !== 'Rejected' && entry.status !== 'Finished'" type="button"
+                  class="btn btn-warning"
+                  (click)="open(changeStatusModal, entry, 'Reject')">reject
+          </button>
+          <button *ngIf="currentUser.role === 'master' && entry.status === 'Accepted'" type="button"
+                  class="btn btn-dark"
+                  (click)="open(changeStatusModal, entry, 'Finish')">set as finished
+          </button>
+        </div>
+      </li>
+    </ul>
 
-      <div class="mt-4 text-center">
-        <pagination-controls (pageChange)="currentPage = $event"></pagination-controls>
+    <div class="mt-4 text-center">
+      <div class="row">
+        <div class="col-sm" *ngIf="isEntries">
+          <label class="control">Entries on page
+            <input type="number" class="input" min="0" [(ngModel)]="pageSize">
+          </label>
+        </div>
+        <div class="col-sm">
+          <pagination-controls autoHide="true" (pageChange)="currentPage = $event"></pagination-controls>
+        </div>
       </div>
     </div>
   </div>
@@ -105,11 +119,11 @@
           <textarea class="form-control" name="comment" id="comment" [(ngModel)]="comment"></textarea>
         </div>
         <div class="form-group text-center">
-          <button [disabled]="buttonDisable" class="btn btn-dark" (click)="submitForm(changeStatusForm)">{{newStatus}}</button>
+          <button [disabled]="buttonDisable" class="btn btn-dark" (click)="submitForm(changeStatusForm)">{{newStatus}}
+          </button>
           <img *ngIf="loading"
                src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
         </div>
       </form>
     </div>
   </ng-template>
-</div>

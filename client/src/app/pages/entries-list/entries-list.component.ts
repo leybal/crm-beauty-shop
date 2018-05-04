@@ -5,6 +5,7 @@ import { User, Entry } from "../../models";
 import { NgbModal, NgbModalRef, NgbDateStruct } from "@ng-bootstrap/ng-bootstrap";
 import { NgForm } from '@angular/forms';
 import "rxjs/add/operator/takeWhile";
+import {PaginationInstance} from "ngx-pagination";
 
 const now = new Date();
 
@@ -36,6 +37,8 @@ export class EntriesListComponent implements OnInit, DoCheck, OnDestroy {
   ];
   selectStatus:  string;
   currentPage: any;
+  pageSize: number;
+  isEntries: boolean;
 
   constructor(
     private router: Router,
@@ -49,6 +52,8 @@ export class EntriesListComponent implements OnInit, DoCheck, OnDestroy {
     this.authentication.cast.subscribe(userAuthorized => this.userAuthorized = userAuthorized);
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.getEntries();
+    this.pageSize = 5;
+    this.isEntries = false;
   }
 
   ngDoCheck() {
@@ -68,7 +73,7 @@ export class EntriesListComponent implements OnInit, DoCheck, OnDestroy {
 
   getEntries(): void {
     this.entryService.getByUserId(this.currentUser.id, this.currentUser.role)
-      .subscribe(entries => this.entries = entries);
+      .subscribe(entries => {this.entries = entries; this.isEntries = true;});
   }
 
   open(content, selectedEntry, newStatus) {
