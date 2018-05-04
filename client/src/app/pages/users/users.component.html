@@ -45,7 +45,7 @@
       <ng-template #usersList>
         <ul class="list-unstyled mb-4 user-wrap"
             *ngFor="let user of users | FilterByRolePipe: roleFilter | SearchFilterPipe: queryString |
-            paginate: { itemsPerPage: 5, currentPage: currentPage }">
+            paginate: { itemsPerPage: pageSize, currentPage: currentPage }">
           <li class="d-flex flex-wrap">
             <div class="col-12 col-md-4 col-lg-3 mb-3 mb-md-0 text-center">
               <a routerLink="{{user.id}}">
@@ -62,7 +62,16 @@
         </ul>
 
         <div class="mt-4 text-center">
-          <pagination-controls (pageChange)="currentPage = $event"></pagination-controls>
+          <div class="row">
+            <div class="col-sm" *ngIf="isUsers">
+              <label class="control">Users on page
+                <input type="number" class="input" min="0" [(ngModel)]="pageSize">
+              </label>
+            </div>
+            <div class="col-sm">
+              <pagination-controls autoHide="true" (pageChange)="currentPage = $event"></pagination-controls>
+            </div>
+          </div>
         </div>
       </ng-template>
 

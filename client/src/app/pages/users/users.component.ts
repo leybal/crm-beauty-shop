@@ -21,6 +21,8 @@ export class UsersComponent implements OnInit, OnDestroy {
   roleFilter: string;
   avatarUrl = environment.avatarUrl;
   private subscription: ISubscription;
+  pageSize: number;
+  isUsers: boolean;
 
   constructor(
     private userService: UserService,
@@ -33,6 +35,8 @@ export class UsersComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.loadAllUsers();
     this.authentication.cast.subscribe(userAuthorized => this.userAuthorized = userAuthorized);
+    this.pageSize = 5;
+    this.isUsers = false;
   }
 
   ngOnDestroy() {
@@ -48,6 +52,6 @@ export class UsersComponent implements OnInit, OnDestroy {
         });
         return users;
       })
-      .subscribe(users => this.users = users);
+      .subscribe(users => {this.users = users; this.isUsers = true});
   }
 }

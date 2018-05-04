@@ -37,7 +37,7 @@ export class EntriesListComponent implements OnInit, DoCheck, OnDestroy {
   ];
   selectStatus:  string;
   currentPage: any;
-  pageSize: any;
+  pageSize: number;
   isEntries: boolean;
 
   constructor(
