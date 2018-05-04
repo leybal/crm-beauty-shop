@@ -38,6 +38,7 @@ export class EntriesListComponent implements OnInit, DoCheck, OnDestroy {
   selectStatus:  string;
   currentPage: any;
   pageSize: any;
+  isEntries: boolean;
 
   constructor(
     private router: Router,
@@ -52,6 +53,7 @@ export class EntriesListComponent implements OnInit, DoCheck, OnDestroy {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     this.getEntries();
     this.pageSize = 5;
+    this.isEntries = false;
   }
 
   ngDoCheck() {
@@ -71,7 +73,7 @@ export class EntriesListComponent implements OnInit, DoCheck, OnDestroy {
 
   getEntries(): void {
     this.entryService.getByUserId(this.currentUser.id, this.currentUser.role)
-      .subscribe(entries => this.entries = entries);
+      .subscribe(entries => {this.entries = entries; this.isEntries = true;});
   }
 
   open(content, selectedEntry, newStatus) {
