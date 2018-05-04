@@ -11,6 +11,11 @@
   color: #ccc;
 }
 
+.advantages-list li:first-child i {
+  font-size: 78px;
+  padding-bottom: 2px;
+}
+
 .advantages-list-item {
   width: 200px;
 }

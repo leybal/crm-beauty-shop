@@ -1,9 +1,5 @@
 p { height:20px; text-align:center; }
 
-ngu-carousel {
-  /*position: relative;*/
-}
-
 ngu-carousel  button {
   border: none;
   position: absolute;
@@ -21,10 +17,10 @@ ngu-carousel  button:focus {
 }
 
 ngu-carousel button[NguCarouselPrev] {
-  left: 50px;
+  left: 15px;
 }
 ngu-carousel button[NguCarouselNext] {
-  right: 50px;
+  right: 15px;
 }
 
 ngu-item {

@@ -73,7 +73,10 @@ export class EntriesListComponent implements OnInit, DoCheck, OnDestroy {
 
   getEntries(): void {
     this.entryService.getByUserId(this.currentUser.id, this.currentUser.role)
-      .subscribe(entries => {this.entries = entries; this.isEntries = true;});
+      .subscribe(entries => {
+        this.entries = entries;
+        this.isEntries = true;
+      });
   }
 
   open(content, selectedEntry, newStatus) {
@@ -86,6 +89,13 @@ export class EntriesListComponent implements OnInit, DoCheck, OnDestroy {
   resetFilters() {
     this.selectStatus = '';
     this.model =  null;
+  }
+
+  paginationChangeHandler(e): number {
+    let val = e.target.value;
+    if (!val) return this.pageSize = 5;
+    if (val > 20) return this.pageSize = 20;
+    if (val < 1) return this.pageSize = 1;
   }
 
   submitForm(form: NgForm) {

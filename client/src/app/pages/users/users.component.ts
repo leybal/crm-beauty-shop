@@ -43,6 +43,13 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
+  paginationChangeHandler(e): number {
+    let val = e.target.value;
+    if (!val) return this.pageSize = 5;
+    if (val > 20) return this.pageSize = 20;
+    if (val < 1) return this.pageSize = 1;
+  }
+
   private loadAllUsers() {
     this.subscription =  this.userService.getAll()
       .retryWhen(errors => errors.delay(1000))
